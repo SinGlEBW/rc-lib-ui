@@ -1,0 +1,63 @@
+
+.clockLoader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 0; top: 0;
+  z-index: 10;
+}
+.clockLoader .itemTitle{
+  // color: #222222
+}
+
+
+.item {
+  $clock-color: #345;
+  $clock-width: 4rem;
+  $clock-radius: calc($clock-width);
+  $clock-minute-length: calc($clock-width * 0.4);
+  $clock-hour-length: calc($clock-width * 0.2);
+  $clock-thickness: 0.2rem;
+
+  width: $clock-width;
+  height: $clock-width;
+  border-radius: 50%;
+  border: 3px solid $clock-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  &::before,
+  &::after 
+  {
+    content: "";
+    position: absolute;
+    width: $clock-thickness;
+   
+    border-radius: 10px;
+    transform: translateY(-45%);
+    transform-origin: 50% 95%;
+    animation: spin infinite linear;
+  }
+
+  &::before {
+    height: $clock-minute-length;
+    animation-duration: 2s;
+    background-color: $clock-color;
+  }
+
+  &::after {
+    background-color: rgba($clock-color, 0.8);
+    height: $clock-hour-length;
+    animation-duration: 15s;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: translateY(-45%) rotate(1turn);
+  }
+}
