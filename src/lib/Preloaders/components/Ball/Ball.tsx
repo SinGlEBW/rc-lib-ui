@@ -3,35 +3,33 @@ import { Box, SxProps } from '@mui/material';
 import s from "./Ball.module.scss";
 
 export interface BallProps {
-  titlePreloader?: string;
-  children?: React.ReactNode;
-  sx?:SxProps;
+  text?: string;
+  textPosition?: 'top' | 'bottom';
+  sx?: SxProps;
 }
 
-const BallMemo = React.forwardRef<HTMLDivElement, BallProps>(({titlePreloader, sx, children}, ref) => {
-
+const BallMemo = React.forwardRef<HTMLDivElement, BallProps>(({ text, sx, textPosition = 'top' }, ref) => {
+  // const _textPosition 
+  // [textPosition]: '-50%' 
   return (
-    <>
-      <Box sx={sx} className={s.wrap} ref={ref}>
+
+    <Box sx={sx} className={s.wrap} ref={ref}>
+      <Box className={s.inner}>
+        {
+          (text)
+          && (
+            <Box sx={{ order: textPosition === 'top' ? 0 : 1 }} component={'p'} className={s.text}>
+              {text}
+            </Box>
+          )
+        }
         <Box className={s.loader}>
-          <Box className={`${s.inner} ${s.one}`}></Box>
-          <Box className={`${s.inner} ${s.two}`}></Box>
-          <Box className={`${s.inner} ${s.three}`}></Box>
+          <Box className={`${s.item} ${s.one}`}></Box>
+          <Box className={`${s.item} ${s.two}`}></Box>
+          <Box className={`${s.item} ${s.three}`}></Box>
         </Box>
-        <Box className='Ball-Content' sx={{position: 'absolute'}}>
-        { children }
       </Box>
-      </Box>
-      {
-        (titlePreloader) 
-        ? (
-          <Box component={'p'} className={s.text}>
-          { `Загрузка ${titlePreloader} ...` }
-          </Box>
-        )
-        : ''
-      }
-    </>
+    </Box>
   );
 })
 export const Ball = React.memo(BallMemo);

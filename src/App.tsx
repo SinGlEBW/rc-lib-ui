@@ -1,13 +1,14 @@
 // import { Preloaders } from '@lib';
 // import { Preloaders } from '../dist'
-import './App.css'
+import { Preloaders } from 'rc-lib-ui'
+
 
 export const App = () => {
   return (
     <>
-     {/* <Preloaders  name='RotateCube' show={true} > 
+     <Preloaders  name='Ball' show={true} > 
        <div className='content'></div>
-     </Preloaders> */}
+     </Preloaders>
     </>
   )
 }

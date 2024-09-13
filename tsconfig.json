@@ -21,17 +21,18 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+    // Для теста
     "paths": {
       "@lib": ["src/lib/index.ts"]
     }
   },
 
-  "typeRoots": [
-    "./src/*",
-  ],
-
-  "include": ["src"],
-
+  
+ 
+  "include": ["src", "README/Preloaders.stories.tsx"],
+  "exclude": ["node_modules", "dist"],
+  /*exclude не убирает файл, а исключает во время билда. */
+  // "exclude": ["src/lib/declaration.d.ts"],
   "references": [{
     "path": "./tsconfig.node.json"
   }]

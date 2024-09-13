@@ -1,7 +1,9 @@
 {
-  "name": "@react/ui",
+  "name": "rc-lib-ui",
   "private": false,
-  "version": "1.0.13",
+  "version": "1.0.6",
+  "author": "SinGlEBW",
+  "license": "MIT",
   "type": "module",
   "module": "./dist/index.js",
   "main": "./dist/index.js",
@@ -10,29 +12,44 @@
     "dist"
   ],
   "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
     "directory": "dist"
   },
   "keywords": [
-    "@react/ui"
+    "rc-lib-ui"
   ],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "doc": "storybook dev -p 6006",
+    "doc-build": "storybook build"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@mui/material": "^6.1.0",
     "@mui/styled-engine": "^6.1.0",
+  
     "classnames": "^2.5.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-transition-group": "^4.4.5",
-    "sass-embedded": "^1.78.0"
+    "rc-lib-ui": "^1.0.0",
+    "react": "^18.2.0 || ^19.0.0",
+    "react-dom": "^18.2.0 || ^19.0.0",
+    "react-transition-group": "^4.4.5"
   },
   "devDependencies": {
+    "@storybook/builder-vite": "^8.3.0",
+    "@chromatic-com/storybook": "^1.9.0",
+    "@storybook/addon-essentials": "^8.3.0",
+    "@storybook/addon-interactions": "^8.3.0",
+    "@storybook/addon-links": "^8.3.0",
+    "@storybook/addon-onboarding": "^8.3.0",
+    "@storybook/blocks": "^8.3.0",
+    "@storybook/react": "^8.3.0",
+    "@storybook/react-vite": "^8.3.0",
+    "@storybook/test": "^8.3.0",
     "@types/node": "^22.5.4",
     "@types/react": "^18.2.64",
     "@types/react-dom": "^18.2.21",
@@ -43,13 +60,27 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "eslint-plugin-storybook": "^0.8.0",
     "glob": "^11.0.0",
     "prettier": "^3.3.3",
     "sass": "^1.78.0",
+    "sass-embedded": "^1.78.0",
+    "storybook": "^8.3.0",
     "typescript": "^5.2.2",
     "typescript-plugin-css-modules": "^5.1.0",
     "vite": "^5.1.6",
     "vite-plugin-dts": "^4.2.1",
     "vite-plugin-lib-inject-css": "^2.1.1"
-  }
+  },
+  "peerDependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/material": "^6.1.0",
+    "@mui/styled-engine": "^6.1.0",
+    "classnames": "^2.5.1",
+    "react": "^18.2.0 || ^19.0.0",
+    "react-dom": "^18.2.0 || ^19.0.0",
+    "react-transition-group": "^4.4.5"
+  },
+  "peerDependenciesMeta": {}
 }

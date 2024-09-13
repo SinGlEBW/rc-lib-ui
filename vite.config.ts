@@ -5,12 +5,13 @@ import { libInjectCss } from "vite-plugin-lib-inject-css";
 import { extname, relative, resolve } from "path";
 import { fileURLToPath } from "node:url";
 import { glob } from "glob";
+import packageJson from './package.json';
 
-const fullNameComponent = `@react/ui`;
+const fullNameComponent = `react-ui`;
 const entryPathLib = "src/lib";
 
 
-// const excludeFiles = [`${entryPathLib}/declaration.d.ts`];
+// const excludeFiles = ['**/*.stories.js'];
 
 // const filesPathToExclude = excludeFiles.map((src) => {
 //   return fileURLToPath(new URL(src, import.meta.url));
@@ -20,7 +21,6 @@ const entryPathLib = "src/lib";
 
 export default defineConfig({
   plugins: [
-    
     dts({ include: entryPathLib }),
     libInjectCss()
   ],
@@ -48,16 +48,9 @@ export default defineConfig({
     rollupOptions: {
       //В пакет не входит external. Пользователь сам это ставит
       external: [
-        "@emotion/react",
-        "@emotion/styled",
-        "@mui/material",
-        "@mui/styled-engine",
-        "classnames",
-        "react",
-        "react-dom",
-        "react-transition-group",
-        "sass-embedded",
         "react/jsx-runtime",
+        ...Object.keys(packageJson.dependencies),
+        ...Object.keys(packageJson.devDependencies),
         // ...filesPathToExclude
       ], //, '@emotion/react', '@emotion/styled', '@mui/material'
       input: Object.fromEntries(
@@ -72,17 +65,16 @@ export default defineConfig({
           if(originalFileName){
             const itemsPath = originalFileName.replace('src/lib/', '').split('/');
             const currentPath =  itemsPath.slice(0, itemsPath.length - 1).join('/');
-            console.dir(currentPath);
             return `${currentPath}/${name}`;
           }
           return "";
         },
         entryFileNames: "[name].js",
-        // globals: {
-        //   react: 'React',
-        //   'react-dom': 'ReactDOM',
-        //   "styled-components": "styled"
-        // }
+        globals: {
+          react: 'React',
+          'react-dom': 'ReactDOM',
+          "styled-components": "styled"
+        }
       },
     },
   },
