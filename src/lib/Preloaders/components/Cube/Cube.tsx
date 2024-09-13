@@ -7,7 +7,7 @@ export interface CubeProps {
   color?:string;
 }
 
-export const CubeMemo = forwardRef<HTMLDivElement, CubeProps>(({color = 'primary'}, ref) => {
+const CubeMemo = forwardRef<HTMLDivElement, CubeProps>(({color = 'primary'}, ref) => {
   const _color = color.startsWith('#') ? color : `${color}.main`;
   return (
     <div className={s.wrap} ref={ref}>

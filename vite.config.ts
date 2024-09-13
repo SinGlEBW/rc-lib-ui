@@ -6,8 +6,17 @@ import { extname, relative, resolve } from "path";
 import { fileURLToPath } from "node:url";
 import { glob } from "glob";
 
-const fullNameComponent = `@ui-r`;
+const fullNameComponent = `@react/ui`;
 const entryPathLib = "src/lib";
+
+
+// const excludeFiles = [`${entryPathLib}/declaration.d.ts`];
+
+// const filesPathToExclude = excludeFiles.map((src) => {
+//   return fileURLToPath(new URL(src, import.meta.url));
+// });
+
+
 
 export default defineConfig({
   plugins: [
@@ -48,7 +57,8 @@ export default defineConfig({
         "react-dom",
         "react-transition-group",
         "sass-embedded",
-        "react/jsx-runtime"
+        "react/jsx-runtime",
+        // ...filesPathToExclude
       ], //, '@emotion/react', '@emotion/styled', '@mui/material'
       input: Object.fromEntries(
         glob
@@ -68,11 +78,11 @@ export default defineConfig({
           return "";
         },
         entryFileNames: "[name].js",
-        globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM',
-          "styled-components": "styled"
-        }
+        // globals: {
+        //   react: 'React',
+        //   'react-dom': 'ReactDOM',
+        //   "styled-components": "styled"
+        // }
       },
     },
   },
