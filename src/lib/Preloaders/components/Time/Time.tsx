@@ -1,5 +1,5 @@
 import React, { forwardRef, type ReactNode } from "react";
-import { Box } from '@mui/material';
+import { Box, type SxProps } from '@mui/material';
 
 import s from './Time.module.scss';
 
@@ -7,13 +7,14 @@ import s from './Time.module.scss';
 export interface TimeProps {
   children?: ReactNode;
   color?: string;
+  sx?: SxProps;
 }
 
-const TimeMemo = forwardRef<HTMLDivElement, TimeProps>(({ color = 'primary', children }, ref) => {
+const TimeMemo = forwardRef<HTMLDivElement, TimeProps>(({ sx, color = 'primary', children }, ref) => {
   const _color = color.startsWith('#') ? color : `${color}.main`;
 
   return (
-    <Box className={`${s.clockLoader} d-flex flex-column`} ref={ref}>
+    <Box sx={sx} className={`${s.clockLoader} d-flex flex-column`} ref={ref}>
       <Box
         sx={{
           borderColor: _color,

@@ -1,4 +1,4 @@
-import { Box, styled } from '@mui/material';
+import { Box, styled, type SxProps } from '@mui/material';
 import React, { forwardRef } from "react";
 import s from './Spinner3D.module.scss';
 
@@ -7,6 +7,7 @@ export interface Spinner3DProps {
   bgColor?: string;
   color?: string;
   isBgGradient?: boolean;
+  sx?: SxProps;
 }
 
 
@@ -35,12 +36,12 @@ const BgBox = styled(
 })
 
 
-const Spinner3DMemo = forwardRef<HTMLDivElement, Spinner3DProps>(({ isBgGradient = true, text = '', bgColor = '', color = 'primary' }, ref) => {
+const Spinner3DMemo = forwardRef<HTMLDivElement, Spinner3DProps>(({ sx = {}, isBgGradient = true, text = '', bgColor = '', color = 'primary' }, ref) => {
   const _bgColor = bgColor.startsWith('#') ? bgColor : `${bgColor}.main`
   const _color = color.startsWith('#') ? color : `${color}.main`
 
   return (
-    <BgBox bgcolor={_bgColor} sx={{ color: _color }} ref={ref} isBgGradient={isBgGradient}>
+    <BgBox bgcolor={_bgColor} sx={{ color: _color, ...sx }} ref={ref} isBgGradient={isBgGradient}>
       <div className={s.pl}>
         <div className={s['pl__dot']}></div>
         <div className={s['pl__dot']}></div>
