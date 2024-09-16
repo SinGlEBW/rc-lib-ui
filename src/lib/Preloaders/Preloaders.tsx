@@ -35,16 +35,16 @@ type ListPreloaders_P =
 
 export type PreloadersProps = {
   show: boolean;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 } & ListPreloaders_P;
 
-const PreloadersMemo: FC<PreloadersProps> = ({ show, name, children, ...props }) => {
+const PreloadersMemo: FC<PreloadersProps> = ({ show, name, children = null, ...props }) => {
   const PreloaderComponent = PreloaderComponents[name];
   // debugger
   const preloaderRef = useRef(null);
   const switchData = show
     ? { key: 'preloader', element: <PreloaderComponent ref={preloaderRef} {...props} /> }
-    : { key: 'content', element: children };
+    : { key: 'content', element: <>{children}</> };
 
   return (
     <SwitchTransition>

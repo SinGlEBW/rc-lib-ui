@@ -49,6 +49,9 @@ export default defineConfig({
       //В пакет не входит external. Пользователь сам это ставит
       external: [
         "react/jsx-runtime",
+        "@mui/material",
+        "@mui/styled-engine",
+        "react",
         ...Object.keys(packageJson.dependencies),
         ...Object.keys(packageJson.devDependencies),
         // ...filesPathToExclude

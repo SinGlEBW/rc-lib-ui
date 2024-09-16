@@ -1,5 +1,6 @@
 // import type { Meta, StoryObj } from '@storybook/react';
-// import { Preloaders } from '../src/lib/Preloaders/Preloaders.tsx';
+// import { Preloaders } from '../src/lib/Preloaders/Preloaders';
+
 
 
 // const meta = {
@@ -20,7 +21,7 @@
 //     show: true,
 //     text: 'Загрузка данных...',
 //     textPosition: 'bottom',
-//     // children: <div>Контент</div>
+//     children: <div>Контент</div>
 //   },
 //   tags: ['autodocs'],
 //   decorators: (Preloader, a) => {
