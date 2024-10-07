@@ -11,22 +11,24 @@ const fullNameComponent = `react-ui`;
 const entryPathLib = "src/lib";
 
 
-// const excludeFiles = ['**/*.stories.js'];
+const excludeFiles = ["src/LibTesting/**/*"];
 
 // const filesPathToExclude = excludeFiles.map((src) => {
 //   return fileURLToPath(new URL(src, import.meta.url));
 // });
 
-
+// console.dir(Object.keys(packageJson.dependencies));
+// console.dir(Object.keys(packageJson.devDependencies));
 
 export default defineConfig({
   plugins: [
     dts({ include: entryPathLib }),
     libInjectCss()
   ],
+  base: './',
   resolve: {
     alias: {
-      [`@lib`]: resolve(__dirname, `./src/lib/index`),
+      [`@lib`]: resolve(__dirname, `./src/lib`),
     },
   },
   server: {
@@ -50,12 +52,14 @@ export default defineConfig({
       external: [
         "react/jsx-runtime",
         "@mui/material",
+        "@mui/material/styles",
         "@mui/styled-engine",
         "react",
         ...Object.keys(packageJson.dependencies),
         ...Object.keys(packageJson.devDependencies),
+   
         // ...filesPathToExclude
-      ], //, '@emotion/react', '@emotion/styled', '@mui/material'
+      ],
       input: Object.fromEntries(
         glob
           .sync(entryPathLib + "/**/*.{ts,tsx}")
@@ -64,7 +68,6 @@ export default defineConfig({
       output: {
         // inlineDynamicImports: false,
         assetFileNames: ({originalFileName, name}) => {
-          
           if(originalFileName){
             const itemsPath = originalFileName.replace('src/lib/', '').split('/');
             const currentPath =  itemsPath.slice(0, itemsPath.length - 1).join('/');

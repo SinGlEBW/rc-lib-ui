@@ -1,11 +1,11 @@
-import { Box, type SxProps } from '@mui/material';
+import { Box, type SxProps, type Theme } from '@mui/material';
 import { forwardRef, memo } from 'react';
 import s from './SpinnerGrow.module.scss';
 
 
 export interface SpinnerGrowProps {
   bgColor?: string;
-  sx?: SxProps;
+  sx?: SxProps<Theme>;
 }
 
 

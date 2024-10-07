@@ -1,11 +1,11 @@
 import { forwardRef, memo } from 'react';
 import s from './Cube.module.scss'
 import cn from 'classnames';
-import { Box, type SxProps } from '@mui/material';
+import { Box, type SxProps, type Theme } from '@mui/material';
 
 export interface CubeProps {
   color?:string;
-  sx?: SxProps;
+  sx?: SxProps<Theme>;
 }
 
 const CubeMemo = forwardRef<HTMLDivElement, CubeProps>(({color = 'primary', sx }, ref) => {

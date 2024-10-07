@@ -8,6 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 100;
 }
 $sizeInner: 200px;
 $sizeItem: calc($sizeInner / 2);
@@ -28,7 +29,6 @@ $sizeItem: calc($sizeInner / 2);
   background-color: #FA5667;
   top: 0;
   left: 0;
-  z-index: 1;
   animation: oneAnim 1.8s cubic-bezier(.6,.01,.4,1) infinite;
 }
 
@@ -43,7 +43,6 @@ $sizeItem: calc($sizeInner / 2);
   background-color: #1B91F7;
   bottom: 0;
   right: 0;
-  z-index: 1;
   animation: threeAnim 1.8s cubic-bezier(.6,.01,.4,1) infinite;
 }
 

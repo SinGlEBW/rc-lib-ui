@@ -1,13 +1,11 @@
 import React, { forwardRef, type ReactNode } from "react";
-import { Box, type SxProps } from '@mui/material';
-
+import { Box, type SxProps, type Theme } from '@mui/material';
 import s from './Time.module.scss';
-
 
 export interface TimeProps {
   children?: ReactNode;
   color?: string;
-  sx?: SxProps;
+  sx?: SxProps<Theme>;
 }
 
 const TimeMemo = forwardRef<HTMLDivElement, TimeProps>(({ sx, color = 'primary', children }, ref) => {

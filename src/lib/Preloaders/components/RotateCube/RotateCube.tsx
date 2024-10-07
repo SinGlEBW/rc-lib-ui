@@ -1,11 +1,11 @@
 import { forwardRef, memo } from 'react';
 import s from "./RotateCube.module.scss"
 import cn from 'classnames';
-import { Box, styled, type SxProps } from '@mui/material';
+import { Box, styled, type SxProps, type Theme } from '@mui/material';
 
 export interface RotateCubeProps {
   isCircle?: boolean;
-  sx?: SxProps;
+  sx?: SxProps<Theme>;
   size?: number;
   variant?: 'spread' | 'nearby'
 }
@@ -120,7 +120,7 @@ const RotateCubeMemo = forwardRef<HTMLDivElement, RotateCubeProps>(({ isCircle =
   const sizeItem = size / 2;
   const spread = variant === 'spread' ? 20 : 0;//spread в пикселях
   return (
-    <Box className={cn('RotateCube', s.wrap)} ref={ref} sx={sx}>
+    <Box sx={sx} className={cn('RotateCube', s.wrap)} ref={ref} >
       <BoxInner sizeInner={size} className={cn('RotateCube-Inner',s.inner)} 
         sx={{[`& .${s.item}`]: {borderRadius: isCircle ?  '50%' : '0'}}}
       >

@@ -1,4 +1,4 @@
-import { Box, styled, type SxProps } from '@mui/material';
+import { Box, styled, type SxProps, type Theme } from '@mui/material';
 import React, { forwardRef } from "react";
 import s from './Spinner3D.module.scss';
 
@@ -7,7 +7,7 @@ export interface Spinner3DProps {
   bgColor?: string;
   color?: string;
   isBgGradient?: boolean;
-  sx?: SxProps;
+  sx?: SxProps<Theme>;
 }
 
 

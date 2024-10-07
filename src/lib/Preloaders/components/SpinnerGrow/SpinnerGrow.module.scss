@@ -19,6 +19,7 @@ $spinner-border-width-sm: .2em !default;
   border-radius: 50%;
   opacity: 0;
   animation: $spinner-animation-speed linear infinite spinner-grow;
+  z-index: 100;
 }
 
 .spinner-grow-sm {

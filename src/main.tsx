@@ -1,9 +1,12 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { App } from './App.tsx'
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import { App } from './LibTesting/App.tsx';
+import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  <BrowserRouter>
+    {/* <MaterialDarkMode isDarkTheme={false}> */}
     <App />
-  </React.StrictMode>,
+    {/* </MaterialDarkMode> */}
+  </BrowserRouter>
 )
