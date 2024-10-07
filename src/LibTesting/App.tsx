@@ -129,21 +129,21 @@ export const App = () => {
         ref={dashboardControlRef}
         styleList='variant2'
         listMenu={listMenu}
-        // Footer={
-        //   <div style={{
-        //     display: 'flex',
-        //     justifyContent: 'center',
-        //     alignItems: 'center',
-        //     height: '100%'
-        //   }}>
-        //     Footer
-        //   </div>
-        // }
+        Footer={
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%'
+          }}>
+            Footer
+          </div>
+        }
         columnMenu={{
           initWidth: 280,
-          // minWidthColumn: {
-          //   width: 40, //min 40
-          // },
+          minWidthColumn: {
+            width: 53, //min 40
+          },
           // position: "right",
         }}
         HeaderContent={

@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState, type ReactNode } from "react";
+import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState, type ReactNode } from "react";
 
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
@@ -62,12 +62,21 @@ const DashboardMemo = forwardRef<DashboardControlProps, DashboardProps>(({ Foote
   const isHeaderDefault = statuses?.isHeaderDefault === undefined ? true : statuses?.isHeaderDefault;
   const isHeader = statuses?.isHeader === undefined ? true : statuses?.isHeader;
   const initWidth = columnMenu?.initWidth || 250;
-  const minWidthColumn = columnMenu?.minWidthColumn || {
-    width: `calc(${theme.spacing(7)} + 1px)`,
-    [theme.breakpoints.up('sm')]: {
-      width: `calc(${theme.spacing(8)} + 1px)`,
-    },
-  };
+
+
+  const minWidthColumn = useMemo(() => {
+    console.dir(theme.spacing(7));
+    if(columnMenu?.minWidthColumn && Object.keys(columnMenu?.minWidthColumn).length){
+      return columnMenu?.minWidthColumn
+    }else{
+      return {
+        width: `calc(${theme.spacing(7)} + 1px)`,
+        [theme.breakpoints.up('sm')]: {
+          width: `calc(${theme.spacing(8)} + 1px)`,
+        },
+      }
+    }
+  }, [columnMenu?.minWidthColumn])
 
   /*--------------------------------------------------------------------------------------------*/
   /*--------------------------------------------------------------------------------------------*/
@@ -125,7 +134,7 @@ const DashboardMemo = forwardRef<DashboardControlProps, DashboardProps>(({ Foote
   }
 
 
-  console.dir(state.widthScroll);
+ 
 
   /*#############-------------<{ Helpers }>-------------###############*/
 
@@ -151,11 +160,11 @@ const DashboardMemo = forwardRef<DashboardControlProps, DashboardProps>(({ Foote
                 sx={itemsProps?.MuiHeader?.sx}
                 className={classes?.header}
                 children={typeof HeaderContent === 'function' ? HeaderContent(config) : HeaderContent}
-              />
-            )
-            : (typeof HeaderContent === 'function' ? HeaderContent(config) : HeaderContent)
-          : null
-      }
+                />
+              )
+              : (typeof HeaderContent === 'function' ? HeaderContent(config) : HeaderContent)
+              : null
+            }
 
       <MuiMenu
         variant="permanent"
@@ -163,6 +172,7 @@ const DashboardMemo = forwardRef<DashboardControlProps, DashboardProps>(({ Foote
         isRight={isRight}
         isWrapText={isWrapText}
         columnMenu={{ initWidth, minWidthColumn }}
+        styleList={styleList}
       >
         {
           (statuses?.isMenuHeader !== false) && (

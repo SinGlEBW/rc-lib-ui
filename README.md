@@ -107,7 +107,8 @@ export const App = () => {
         columnMenu={{
           initWidth: 280,
           minWidthColumn: {
-            width: 80, //min 40
+            width: 80, 
+            // variant1 - min 40,  variant2 - min 53,
           },
           position: "right",
         }}
@@ -124,6 +125,11 @@ export const App = () => {
           isButtonCenterMenu: false
           //isHeader: false, full off header
         }}
+        Footer={
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
+            Footer
+          </div>
+        }
         children={/*...*/}
       />
     </>

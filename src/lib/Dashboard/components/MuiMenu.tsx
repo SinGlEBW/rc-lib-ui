@@ -37,10 +37,11 @@ export interface MuiMenuProps extends DrawerProps {
     initWidth: number;
     minWidthColumn: Pick<CSSObject, 'width'>;
   };
+  styleList?: 'variant1' | 'variant2';
 }
 
 export const MuiMenu = styled(Drawer, {
-  shouldForwardProp: (prop) => !['open', 'isWrapText', 'columnMenu', 'isRight'].includes(prop as string),
+  shouldForwardProp: (prop) => !['open', 'isWrapText', 'columnMenu', 'isRight', 'styleList'].includes(prop as string),
 
 })<MuiMenuProps>(
   ({ theme, open, isRight, columnMenu }) => {
