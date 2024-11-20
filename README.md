@@ -86,6 +86,7 @@ export const App = () => {
       </Toolbar>
     </>
   )}
+ itemsProps={{MuiHeader: {AfterComponent: <OfflineDetection/>}}}
   children={/*...*/}
 />;
 
@@ -107,8 +108,7 @@ export const App = () => {
         columnMenu={{
           initWidth: 280,
           minWidthColumn: {
-            width: 80, 
-            // variant1 - min 40,  variant2 - min 53,
+            width: 80, // variant1 - min 40,  variant2 - min 53,
           },
           position: "right",
         }}

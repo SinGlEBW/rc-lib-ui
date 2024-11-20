@@ -1,17 +1,14 @@
-import Box from '@mui/material/Box';
-import { useTheme } from '@mui/material/styles';
 import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState, type ReactNode } from "react";
+import { useTheme } from '@mui/material/styles';
+import { Box, type SxProps, type Theme, Divider, IconButton } from '@mui/material';
 
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
 
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 
-
 import { setStateDecorator } from '@lib/_helpers';
-import type { SxProps, Theme } from '@mui/system';
+
 import { ContentBox } from './components/ContentBox';
 import { DrawerToggleMenu } from './components/DrawerToggleMenu';
 import { ListMenu, ListMenuProps } from './components/ListMemu/ListMenu';
@@ -38,7 +35,7 @@ export interface DashboardProps extends Pick<ListMenuProps, 'listMenu' | 'styleL
   statuses?: Partial<Record<Statuses_OR, boolean>>;
   sx?: SxProps<Theme>,
   itemsProps?: {
-    MuiHeader?: Pick<MuiHeaderProps, 'sx' | 'bgColor'>;
+    MuiHeader?: Pick<MuiHeaderProps, 'sx' | 'bgColor' | 'AfterComponent'>;
     // listMenu?: Pick<ListMenuProps, 'sx'>;
   }
   classes?: Partial<Record<'listMenu' | 'header', string>>;
@@ -65,7 +62,7 @@ const DashboardMemo = forwardRef<DashboardControlProps, DashboardProps>(({ Foote
 
 
   const minWidthColumn = useMemo(() => {
-    console.dir(theme.spacing(7));
+  
     if(columnMenu?.minWidthColumn && Object.keys(columnMenu?.minWidthColumn).length){
       return columnMenu?.minWidthColumn
     }else{
@@ -159,6 +156,7 @@ const DashboardMemo = forwardRef<DashboardControlProps, DashboardProps>(({ Foote
                 isHeaderResize={statuses?.isHeaderResize}
                 sx={itemsProps?.MuiHeader?.sx}
                 className={classes?.header}
+                AfterComponent={itemsProps?.MuiHeader?.AfterComponent}
                 children={typeof HeaderContent === 'function' ? HeaderContent(config) : HeaderContent}
                 />
               )

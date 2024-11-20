@@ -146,18 +146,18 @@ export const App = () => {
           },
           // position: "right",
         }}
-        HeaderContent={
-          <header style={{ position: "fixed", zIndex: 1, width: "100%", backgroundColor: "#456789" }}>
-            <Toolbar>
-              <IconButton onClick={handleMenuToggle} size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }} children={<MenuIcon />} />
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} children={"App"} />
-            </Toolbar>
-          </header>
-        }
-
+        // HeaderContent={
+        //   <header style={{ position: "fixed", zIndex: 1, width: "100%", backgroundColor: "#456789" }}>
+        //     <Toolbar>
+        //       <IconButton onClick={handleMenuToggle} size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }} children={<MenuIcon />} />
+        //       <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} children={"App"} />
+        //     </Toolbar>
+        //   </header>
+        // }
+        itemsProps={{MuiHeader: {AfterComponent: <div>ffff</div>}}}
         statuses={{
-          isHeaderDefault: false,
-          isButtonCenterMenu: false,
+          isHeaderDefault: true,
+          isButtonCenterMenu: true,
           // isScrollIndentation: true
           //isHeader: false, full off header
         }}

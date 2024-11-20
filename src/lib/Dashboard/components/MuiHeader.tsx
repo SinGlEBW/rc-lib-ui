@@ -7,6 +7,7 @@ import { Utils } from '@lib/_helpers';
 export interface MuiHeaderProps extends AppBarProps {
   className?: string;
   sx?:SxProps<Theme>,
+  AfterComponent?: React.ReactNode
 }
 
 const MuiHeaderMemo: FC<MuiHeaderProps> = ({
@@ -17,6 +18,7 @@ const MuiHeaderMemo: FC<MuiHeaderProps> = ({
   isHeaderResize = true,
   bgColor,
   className,
+  AfterComponent,
   sx
 }) => {
 
@@ -36,6 +38,7 @@ const MuiHeaderMemo: FC<MuiHeaderProps> = ({
           {children}
         </Toolbar>
       </Container>
+      {AfterComponent && AfterComponent}
     </AppBar>
   )
 };
