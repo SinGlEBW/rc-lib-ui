@@ -53,7 +53,7 @@ export default defineConfig({
         "react/jsx-runtime",
         "@mui/material",
         "@mui/material/styles",
-        "@mui/styled-engine",
+        // "@mui/styled-engine",
         "react",
         ...Object.keys(packageJson.dependencies),
         ...Object.keys(packageJson.devDependencies),

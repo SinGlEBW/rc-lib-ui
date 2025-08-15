@@ -1,9 +1,10 @@
-import { Dashboard, DashboardProps, type DashboardControlProps } from '@lib/index';
+// import { Dashboard, DashboardProps, type DashboardControlProps } from '@lib/index';
+import { Dashboard, DashboardProps, type DashboardControlProps } from '../../dist';
 import { useRef } from 'react';
 // import { Preloaders } from '../dist'
 // import { Preloaders } from 'rc-lib-ui'
-import { Archive, ListSharp, Menu as MenuIcon, StarBorder } from '@mui/icons-material';
-import { Chip, IconButton, Toolbar, Typography } from '@mui/material';
+import { Archive, ListSharp, StarBorder } from '@mui/icons-material';
+import { Chip } from '@mui/material';
 
 // const handlePopoverButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 //   event.stopPropagation();
@@ -119,9 +120,9 @@ export const App = () => {
 
   const dashboardControlRef = useRef<DashboardControlProps>(null)
 
-  const handleMenuToggle = () => {
-    dashboardControlRef.current?.handleMenuToggle()
-  }
+  // const handleMenuToggle = () => {
+  //   dashboardControlRef.current?.handleMenuToggle()
+  // }
 
   return (
     <>
@@ -154,7 +155,7 @@ export const App = () => {
         //     </Toolbar>
         //   </header>
         // }
-        itemsProps={{MuiHeader: {AfterComponent: <div>ffff</div>}}}
+        itemsProps={{MuiHeader: {AfterComponent: <div>ffff</div>}, }}
         statuses={{
           isHeaderDefault: true,
           isButtonCenterMenu: true,

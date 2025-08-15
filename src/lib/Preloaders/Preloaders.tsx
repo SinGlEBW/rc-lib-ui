@@ -34,11 +34,12 @@ type ListPreloaders_P =
 
 
 export type PreloadersProps = {
+  timeout?: number;
   show: boolean;
   children?: React.ReactNode;
 } & ListPreloaders_P;
 
-const PreloadersMemo: FC<PreloadersProps> = ({ show, name, children = null, ...props }) => {
+const PreloadersMemo: FC<PreloadersProps> = ({ timeout = 300, show, name, children = null, ...props }) => {
   const PreloaderComponent = PreloaderComponents[name];
   // debugger
   const preloaderRef = useRef(null);
@@ -51,7 +52,7 @@ const PreloadersMemo: FC<PreloadersProps> = ({ show, name, children = null, ...p
       <CSSTransition
         key={switchData.key}
         nodeRef={preloaderRef}
-        timeout={300}
+        timeout={timeout}
         classNames={{
           enter: s.fadeEnter,
           enterActive: s.fadeEnterActive,
