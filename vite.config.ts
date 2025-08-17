@@ -50,13 +50,14 @@ export default defineConfig({
     rollupOptions: {
       //В пакет не входит external. Пользователь сам это ставит
       external: [
+        "react",
+        "react-dom",
         "react/jsx-runtime",
+        //Если нужно оставить в пакете, то убрать отсюда и оставить в dependencies
         "@mui/material",
         "@mui/material/styles",
-        // "@mui/styled-engine",
-        "react",
-        ...Object.keys(packageJson.dependencies),
-        ...Object.keys(packageJson.devDependencies),
+        "@emotion/react",
+        "@emotion/styled",
    
         // ...filesPathToExclude
       ],
