@@ -56,6 +56,7 @@ export default defineConfig({
         //Если нужно оставить в пакете, то убрать отсюда и оставить в dependencies
         "@mui/material",
         "@mui/material/styles",
+        "@mui/material/*",
         "@emotion/react",
         "@emotion/styled",
    
