@@ -1,10 +1,10 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState, type ReactNode } from "react";
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles/index.js';
 import { Box, type SxProps, type Theme, Divider, IconButton } from '@mui/material';
 
 
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft.js';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight.js';
 
 
 import { setStateDecorator } from '@lib/_helpers';

@@ -1,6 +1,6 @@
 
-import { blueGrey, teal } from "@mui/material/colors";
-import { alpha, createTheme, getContrastRatio } from "@mui/material/styles";
+import { blueGrey, teal } from "@mui/material/colors/index.js";
+import { alpha, createTheme, getContrastRatio } from "@mui/material/styles/index.js";
 
 
 type NameColor_OR = "info" | "ochre" | "profile1" | "violet" | "primary" | "secondary" | "success" | "error" | "info" | "warning" | "gray";

@@ -27,9 +27,32 @@ export default defineConfig({
   ],
   base: './',
   resolve: {
-    alias: {
-      [`@lib`]: resolve(__dirname, `./src/lib`),
-    },
+    alias: [
+      {
+        find: '@lib',
+        replacement: resolve(__dirname, `./src/lib`)
+      },
+      // {
+      //   find: /^@mui\/icons-material\/(.*)/,
+      //   replacement: '@mui/icons-material/$1.js'
+      // },
+      // {
+      //   find: /^@mui\/material\/styles\/(.*)/,
+      //   replacement: '@mui/material/styles/$1.js' // Явное указание расширения
+      // },
+      // {
+      //   find: 'react-router-dom',
+      //   replacement: 'react-router-dom/dist/index.js'
+      // },
+      // {
+      //   find: 'react-transition-group',
+      //   replacement: 'react-transition-group/dist/react-transition-group.js'
+      // },
+      // {
+      //   find: 'classnames',
+      //   replacement: 'classnames/index.js'
+      // }
+    ],
   },
   server: {
     open: true,
@@ -43,7 +66,15 @@ export default defineConfig({
     copyPublicDir: false,
     cssCodeSplit: false,
     lib: {
-      entry: resolve(__dirname, entryPathLib),
+      entry: {
+        index: entryPathLib + '/index.ts',
+        /*
+          Четкий контроль, но не обязательно указывать. Можно только в package.json в exports. 
+          для разделения компонентов по папкам нужно включать в 
+          output: { preserveModules: true, preserveModulesRoot: 'src/lib', ...} 
+        */
+        // Dashboard: 'src/lib/Dashboard/index.ts' 
+      },
       formats: ["es"],
       name: fullNameComponent,
     },
@@ -54,11 +85,11 @@ export default defineConfig({
         "react-dom",
         "react/jsx-runtime",
         //Если нужно оставить в пакете, то убрать отсюда и оставить в dependencies
-        "@mui/material",
-        "@mui/material/styles",
-        "@mui/material/*",
-        "@emotion/react",
-        "@emotion/styled",
+        /^@mui\/.*/,
+        /^@emotion\/.*/,
+        'react-router-dom',
+        'react-transition-group',
+        'classnames'
    
         // ...filesPathToExclude
       ],
@@ -69,6 +100,12 @@ export default defineConfig({
       ),
       output: {
         // inlineDynamicImports: false,
+        //preserveModules: false,//Для возможности разделения компонентов по отдельным папкам.Пример: import { Dashboard } from 'your-lib/Dashboard';
+        //preserveModulesRoot: 'src/lib',//Теперь можно отдельные компоненты экспортировать в package.json
+
+        entryFileNames: '[name].js',
+        // assetFileNames: 'assets/[name][extname]',
+
         assetFileNames: ({originalFileName, name}) => {
           if(originalFileName){
             const itemsPath = originalFileName.replace('src/lib/', '').split('/');
@@ -77,7 +114,8 @@ export default defineConfig({
           }
           return "";
         },
-        entryFileNames: "[name].js",
+
+  
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',

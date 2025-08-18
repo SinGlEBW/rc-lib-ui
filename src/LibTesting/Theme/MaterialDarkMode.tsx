@@ -1,4 +1,4 @@
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles/index.js';
 import React, { useMemo, type FC, type ReactNode } from 'react';
 
 

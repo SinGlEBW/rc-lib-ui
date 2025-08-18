@@ -1,4 +1,5 @@
-export * from './Preloaders/Preloaders';
+export * from './Preloaders';
 export * from './Dashboard';
-export * from './TextLine/TextLine';
+export * from './TextLine';
+export * from './Tooltips';
 
