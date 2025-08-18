@@ -1,9 +1,9 @@
 // import { Dashboard, DashboardProps, type DashboardControlProps } from '@lib/index';
-import { Dashboard, DashboardProps, type DashboardControlProps } from '../../dist';
+import { Dashboard, DashboardProps, type DashboardControlProps } from '@lib/Dashboard';
 import { useRef } from 'react';
 // import { Preloaders } from '../dist'
 // import { Preloaders } from 'rc-lib-ui'
-import { Archive, ListSharp, StarBorder } from '@mui/icons-material';
+import { Archive } from '@mui/icons-material';
 import { Chip } from '@mui/material';
 
 // const handlePopoverButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -68,50 +68,7 @@ const listMenu = [
     path: '/test6',
     action: <Chip label={7} color="primary" size="small" />,
   },
-  {
-    icon: <Archive sx={{ width: 25 }} />,
-    title: 'Архив ddddddddddddddddddddddddddddddddsssssssssssssssssss',
-    path: '/test4',
-    action: <Chip label={7} color="primary" size="small" />,
-  },
-  {
-    icon: <Archive sx={{ width: 25 }} />,
-    title: 'Архив ddddddddddddddddddddddddddddddddsssssssssssssssssss',
-    path: '/test5',
-    action: <Chip label={7} color="primary" size="small" />,
-  },
-  {
-    icon: <Archive sx={{ width: 25 }} />,
-    title: 'Архив ddddddddddddddddddddddddddddddddsssssssssssssssssss',
-    path: '/test6',
-    action: <Chip label={7} color="primary" size="small" />,
-  },
-  {
-    icon: <Archive sx={{ width: 25 }} />,
-    title: 'Архив ddddddddddddddddddddddddddddddddsssssssssssssssssss',
-    path: '/test4',
-    action: <Chip label={7} color="primary" size="small" />,
-  },
-  {
-    icon: <Archive sx={{ width: 25 }} />,
-    title: 'Архив ddddddddddddddddddddddddddddddddsssssssssssssssssss',
-    path: '/test5',
-    action: <Chip label={7} color="primary" size="small" />,
-  },
-  {
-    icon: <Archive sx={{ width: 25 }} />,
-    title: 'Архив ddddddddddddddddddddddddddddddddsssssssssssssssssss',
-    path: '/test6',
-    action: <Chip label={7} color="primary" size="small" />,
-  },
-  {
-    icon: <ListSharp />,
-    title: 'Архив',
-    children: [
-      { title: 'Список 1', path: '/listOne', },
-      { title: 'Список 22222222222222222222222222222222222', path: '/listTwo', icon: <StarBorder />, action: <Chip label={7} color="primary" size="small" />, },
-    ]
-  },
+
 ] as DashboardProps['listMenu']
 
 
@@ -155,7 +112,7 @@ export const App = () => {
         //     </Toolbar>
         //   </header>
         // }
-        itemsProps={{MuiHeader: {AfterComponent: <div>ffff</div>}, }}
+        itemsProps={{MuiHeader: {AfterComponent: <div>Заголовок</div>}, }}
         statuses={{
           isHeaderDefault: true,
           isButtonCenterMenu: true,
