@@ -1,0 +1,47 @@
+.watcher{
+	pointer-events: none;
+	overflow: hidden; 
+	position: absolute;
+
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+
+.watcherItem{
+	transition: all 300ms ease;
+	position: absolute;
+	margin: 0;
+	left: 0; right: 0;
+	top: 0; bottom: 0;
+	font-size: 10px;
+	font-weight: 700;
+	text-align: center;
+	transform: translateY(-101%);
+
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+	z-index: -1;
+}
+.active {
+	transform: translateY(0%) !important;
+}
+
+.watcherItemTitle{
+	color: #f8f8f8;
+	text-shadow: 0.05em 0.05em 0.2em rgba(10,10,10,0.9);
+	letter-spacing: .4px;
+}
+
+.watcherItemTitleSpan{
+	background-color: rgba(0,0,0,0.3);
+	height: 100%;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	padding: 3px 10px;
+	border-radius: 5px 5px 5px 5px;
+	line-height: normal;
+}

@@ -3,7 +3,10 @@ import { BrowserRouter } from 'react-router-dom';
 import { App } from './LibTesting/App.tsx';
 
 import './index.css';
-import { Preloaders } from '../dist/Preloaders/index.js';
+import { Preloaders, } from '../dist/Preloaders/index.js';
+import { SocketApi } from 'lib-socket-api';
+
+SocketApi.on('network', (status) => { console.log('reConnect', status); });
  
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
