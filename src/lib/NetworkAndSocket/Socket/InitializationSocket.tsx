@@ -25,24 +25,17 @@ const InitializationSocketMemo:FC<InitializationSocketProps> = (props) => {
   });
 
 
-  console.group('Обновление компонента');
-    console.log('isModalNoConnectServer:', isModalNoConnectServer);
-    console.log('isReConnectSocket:', isReConnectSocket);
-    console.log('isDisableConnectSocket:', isDisableConnectSocket);
-    console.log('statusWS:', statusWS);
-    console.log('state:', statusWS);
-  console.groupEnd()
-
   const setStateLocal = setStateDecorator(state, setState);
 
   useEffect(() => {
+    SocketApi.on("network", (info) => { console.log('network: ', info);
+      setStateLocal(info)
+    });
     SocketApi.init(props.init);        
     SocketApi.on("status", (status) => {
       socketActions.setStatusConnectSocket({ statusConnect: status });
     });
-    SocketApi.on("network", (info) => { console.log('network: ', info);
-      setStateLocal(info)
-    });
+  
 
     SocketApi.on('reConnect', (status) => { console.log('reConnect', status);
    
