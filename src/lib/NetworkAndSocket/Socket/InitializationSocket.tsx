@@ -23,6 +23,16 @@ const InitializationSocketMemo:FC<InitializationSocketProps> = (props) => {
     isNetwork: false,
     typeNetwork: '',
   });
+
+
+  console.group('Обновление компонента');
+    console.log('isModalNoConnectServer:', isModalNoConnectServer);
+    console.log('isReConnectSocket:', isReConnectSocket);
+    console.log('isDisableConnectSocket:', isDisableConnectSocket);
+    console.log('statusWS:', statusWS);
+    console.log('state:', statusWS);
+  console.groupEnd()
+
   const setStateLocal = setStateDecorator(state, setState);
 
   useEffect(() => {

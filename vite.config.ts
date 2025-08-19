@@ -23,6 +23,14 @@ export default defineConfig({
         find: '@lib',
         replacement: resolve(__dirname, `./src/lib`)
       },
+      // {
+      //   find: 'lib-socket-api',
+      //   replacement: resolve(__dirname, `./src/lib/NetworkAndSocket/Socket/SocketApi/index.ts`)
+      // },
+      // {
+      //   find: '@deps',
+      //   replacement: resolve(__dirname, './src/lib/NetworkAndSocket/Socket/SocketApi/deps')
+      // }
     ],
   },
   server: {
