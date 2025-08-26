@@ -1,0 +1,115 @@
+.wrap {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+$sizeInner: 200px;
+$sizeItem: calc($sizeInner / 2);
+
+.inner{
+  width: $sizeInner;
+  height: $sizeInner;
+
+
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.loader {
+  margin: 0 auto;
+  position: relative;
+  flex-shrink: 0;
+  order: 1;
+  // top: 0;
+  // bottom: 0;
+  width: inherit;
+  height: inherit;
+
+}
+.item {
+  width: $sizeItem;
+  height: $sizeItem;
+  position: absolute;
+}
+
+.one {
+  background-color: #FA5667;
+  top: 0;
+  left: 0;
+  animation: oneAnim 1.8s cubic-bezier(.6,.01,.4,1) infinite;
+}
+
+.two {
+  background-color: #7A45E5;
+  top: 0;
+  right: 0;
+  animation: twoAnim 1.8s cubic-bezier(.6,.01,.4,1) infinite;
+}
+
+.three {
+  background-color: #1B91F7;
+  bottom: 0;
+  right: 0;
+  animation: threeAnim 1.8s cubic-bezier(.6,.01,.4,1) infinite;
+}
+
+.four {
+  background-color: #FAC24C;
+  bottom: 0;
+  left: 0;
+  animation: fourAnim 1.8s cubic-bezier(.6,.01,.4,1) infinite;
+}
+.text {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  // position: absolute;
+  text-wrap: nowrap;
+  z-index: 106;
+  text-align: center;
+  margin: 30px 0px;
+  animation: textAnim .5s linear infinite alternate;
+}
+
+@keyframes textAnim {
+  0% { color: rgba(211, 210, 214, 0.99) }
+  100% { color: rgba(161, 160, 162, 0.99) }
+}
+
+
+@keyframes oneAnim {
+  0%, 100% { transform: translate(0, 0) } 
+  25% { transform: translate(0, $sizeItem) } 
+  50% { transform: translate($sizeItem, $sizeItem) } 
+  75% { transform: translate($sizeItem, 0) } 
+}
+
+@keyframes twoAnim {
+  0%, 100% { transform: translate(0, 0) } 
+  25% { transform: translate(-$sizeItem, 0) } 
+  50% { transform: translate(-$sizeItem, $sizeItem) } 
+  75% { transform: translate(0, $sizeItem) } 
+}
+
+@keyframes threeAnim {
+  0%, 100% { transform: translate(0, 0) } 
+  25% { transform: translate(0, -$sizeItem) } 
+  50% { transform: translate(-$sizeItem, -$sizeItem) } 
+  75% { transform: translate(-$sizeItem, 0) } 
+}
+
+@keyframes fourAnim {
+  0%, 100% { transform: translate(0, 0) } 
+  25% { transform: translate($sizeItem, 0) } 
+  50% { transform: translate($sizeItem, -$sizeItem) } 
+  75% { transform: translate(0, -$sizeItem) } 
+}

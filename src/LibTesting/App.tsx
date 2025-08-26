@@ -1,13 +1,19 @@
 // import { Dashboard, DashboardProps, type DashboardControlProps } from '@lib/index';
-import { Dashboard, DashboardProps, type DashboardControlProps } from '@lib/Dashboard';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
+import { DashboardProps, type DashboardControlProps } from '@libs/Dashboard';
+import { socketActions, socketSelectors, socketStore } from '@libs/NetworkAndSocket/Socket/store/socket.store';
 // import { Preloaders } from '../dist'
 // import { Preloaders } from 'rc-lib-ui'
 import { Archive } from '@mui/icons-material';
 import { Chip } from '@mui/material';
 
+// import { SocketApi } from 'lib-socket-api';
+import { Network } from '@libs/NetworkAndSocket/Network';
 
-
+// (window as any).SocketApi = SocketApi;
+(window as any).socketSelectors = socketSelectors;
+(window as any).socketStore = socketStore;
+(window as any).socketActions = socketActions;
 
 // const handlePopoverButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 //   event.stopPropagation();
@@ -76,6 +82,7 @@ const listMenu = [
 
 
 
+
 export const App = () => {
 
   const dashboardControlRef = useRef<DashboardControlProps>(null)
@@ -84,12 +91,17 @@ export const App = () => {
   //   dashboardControlRef.current?.handleMenuToggle()
   // }
 
-
-
-
   return (
     <>
-      <Dashboard
+      {/* <Socket.Initialization init={{
+        url: 'wss://tmk.ivmis.ru/tm/',
+        timeReConnect: 5000
+      }}/>
+      <Socket.ConnectDetection />
+      <Socket.ReConnectButton children={(actions) => <span>asdsadassa</span>} />
+      <Network.Detection /> */}
+
+      {/* <Dashboard
         ref={dashboardControlRef}
         styleList='variant2'
         listMenu={listMenu}
@@ -126,11 +138,22 @@ export const App = () => {
           //isHeader: false, full off header
         }}
         children={(
-          <div className={'content'} style={{ position: 'relative' }} >
-            Контент
+          <div className={'content'} style={{ position: 'relative',  }} >
+          
+            <div style={{position: 'relative'}}>
+              
+            <Socket.OfflineDetection sx={{ position: 'absolute', bottom: 0, right: 0 }} children={({ isDisableConnectSocket }) => isDisableConnectSocket ? 'Режим оффлайн' : 'оффлайн'} />
+            </div>
           </div>
         )}
-      />
+        />
+      */}
+
+      {/* <div className={'content'} style={{ position: 'relative', overflow: 'hidden', height: '100%' }} >
+        <Socket.OfflineDetection sx={{ position: 'absolute', bottom: 0, right: 0 }} children={({ isDisableConnectSocket }) => isDisableConnectSocket ? 'Режим оффлайн' : 'оффлайн'} />
+        <Network.Render />
+      </div> */}
+
     </>
   )
 }

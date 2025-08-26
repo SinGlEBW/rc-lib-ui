@@ -1,9 +1,10 @@
 <h1 align="center">rc-ui-lib</h1>
 
-#### Preloaders
+
+<h3 align="center">Preloaders</h3>
 
 ```tsx
-import { Preloaders } from "rc-lib-ui";
+import { Preloaders } from "rc-lib-ui/preloaders";
 
 export const App = () => {
   //SpinnerGrow | SpinnerBorder | Spinner3D | Ball | Time | Cube | RotateCube
@@ -18,12 +19,13 @@ export const App = () => {
 };
 ```
 
----
 
-#### Dashboard
+
+___
+<h3 align="center">Dashboard</h3>
 
 ```tsx
-import { Dashboard } from "rc-lib-ui";
+import { Dashboard } from "rc-lib-ui/dashboard";
 
 const listMen = [
   {
@@ -137,4 +139,38 @@ export const App = () => {
 }
 ```
 
----
+___
+
+<h3 align="center">Socket Components</h3>
+
+
+```tsx
+import { Socket } from "rc-lib-ui/socket";
+
+<Socket.Initialization
+    onMount={() => {
+      dispatch(InitSocketEvents())
+    }}
+    isNetwork={!!isNetwork}
+    typeNetwork={typeNetwork}
+    init={{
+      url: process.env.REACT_APP_URL_WS as string,
+      timeReConnect: 10000,
+      isReConnectNetworkOnline: true,
+   
+    }}
+  />
+
+// Отображение состояния сокета
+  <Socket.ConnectDetection/> 
+  <Socket.OfflineDetection 
+    isNetwork={!!isNetwork}
+    children={({isDisableConnectSocket}) => {
+      const titleOffline = 'Оффлайн';
+      return isDisableConnectSocket ? `Режим ${titleOffline}` : titleOffline
+    }}
+    />
+  //Воздействие на сокет
+  <Socket.ReConnectButton/>,
+ 
+```

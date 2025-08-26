@@ -19,6 +19,16 @@
 ## [1.1.7] - 2025-08-18
 ### Added
 - Добавлена обработка network
+
 ## [1.1.9] - 2025-08-18
 ### Fixed
 - Исправлена работа network
+
+## [1.1.11] - 2025-08-18
+### Added
+- Socket 
+### Changes
+- Большие компоненты разбиты на доп пути
+  import { Socket } from "rc-lib-ui/socket";
+  import { Dashboard } from "rc-lib-ui/dashboard";
+  import { Preloaders } from "rc-lib-ui/preloaders";

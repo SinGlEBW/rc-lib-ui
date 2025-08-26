@@ -8,7 +8,7 @@ import { glob } from "glob";
 import packageJson from './package.json';
 
 const fullNameComponent = `react-ui`;
-const entryPathLib = "src/lib";
+const entryPathLib = "src/libs";
 
 
 export default defineConfig({
@@ -20,17 +20,9 @@ export default defineConfig({
   resolve: {
     alias: [
       {
-        find: '@lib',
-        replacement: resolve(__dirname, `./src/lib`)
-      },
-      // {
-      //   find: 'lib-socket-api',
-      //   replacement: resolve(__dirname, `./src/lib/NetworkAndSocket/Socket/SocketApi/index.ts`)
-      // },
-      // {
-      //   find: '@deps',
-      //   replacement: resolve(__dirname, './src/lib/NetworkAndSocket/Socket/SocketApi/deps')
-      // }
+        find: '@libs',
+        replacement: resolve(__dirname, `./` + entryPathLib)
+      }
     ],
   },
   server: {
@@ -47,7 +39,9 @@ export default defineConfig({
     lib: {
       entry: {
         index: entryPathLib + '/index.ts',
-        socket: entryPathLib +'/NetworkAndSocket/Socket/index.ts' 
+        network: entryPathLib +'/NetworkAndSocket/Socket/index.ts',
+        preloaders: entryPathLib +'/Preloaders/index.ts',
+        dashboard: entryPathLib +'/Dashboard/index.ts',
       },
       formats: ["es"],
       name: fullNameComponent,

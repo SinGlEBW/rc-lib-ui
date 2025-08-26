@@ -16,6 +16,14 @@
     "./socket": {
       "import": "./dist/socket.js",
       "types": "./dist/NetworkAndSocket/Socket/index.d.ts"
+    },
+    "./preloaders": {
+      "import": "./dist/preloaders.js",
+      "types": "./dist/Preloaders/index.d.ts"
+    },
+    "./dashboard": {
+      "import": "./dist/dashboard.js",
+      "types": "./dist/Dashboard/index.d.ts"
     }
   },
   "files": [
@@ -39,7 +47,6 @@
   },
   "dependencies": {
     "classnames": "^2.5.1",
-    "lib-socket-api": "^1.3.42",
     "react-transition-group": "^4.4.5",
     "uuid4": "^2.0.3",
     "zustand": "^5.0.7"

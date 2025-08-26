@@ -36,9 +36,7 @@
     "noFallthroughCasesInSwitch": true,
     // Для теста
     "paths": {
-      "@lib/*": ["src/lib/*"],
-      // "lib-socket-api": ["src/lib/NetworkAndSocket/Socket/SocketApi/index.ts"],
-      // "@deps/*": ["src/lib/NetworkAndSocket/Socket/SocketApi/deps/*"],
+      "@libs/*": ["src/libs/*"],
       // "@mui/material/styles": ["node_modules/@mui/material/styles/index.d.ts"],
       // "@mui/icons-material/*": ["node_modules/@mui/icons-material/*.d.ts"]
     }
