@@ -32,3 +32,8 @@
   import { Socket } from "rc-lib-ui/socket";
   import { Dashboard } from "rc-lib-ui/dashboard";
   import { Preloaders } from "rc-lib-ui/preloaders";
+
+
+## [1.1.12] - 2025-08-27
+### Changes
+- Изменены зависимости peerDependencies
