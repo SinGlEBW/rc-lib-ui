@@ -44,37 +44,37 @@ const listMenu = [
   {
     icon: <Archive sx={{ width: 25 }} />,
     title: 'Архив ddddddddddddddddddddddddddddddddsssssssssssssssssss',
-    path: '/test',
+    to: '/test',
     action: <Chip label={7} color="primary" size="small" />,
   },
   {
     icon: <Archive sx={{ width: 25 }} />,
     title: 'Архив ddddddddddddddddddddddddddddddddsssssssssssssssssss',
-    path: '/test2',
+    to: '/test2',
     action: <Chip label={7} color="primary" size="small" />,
   },
   {
     icon: <Archive sx={{ width: 25 }} />,
     title: 'Архив ddddddddddddddddddddddddddddddddsssssssssssssssssss',
-    path: '/test3',
+    to: '/test3',
     action: <Chip label={7} color="primary" size="small" />,
   },
   {
     icon: <Archive sx={{ width: 25 }} />,
     title: 'Архив ddddddddddddddddddddddddddddddddsssssssssssssssssss',
-    path: '/test4',
+    to: '/test4',
     action: <Chip label={7} color="primary" size="small" />,
   },
   {
     icon: <Archive sx={{ width: 25 }} />,
     title: 'Архив ddddddddddddddddddddddddddddddddsssssssssssssssssss',
-    path: '/test5',
+    to: '/test5',
     action: <Chip label={7} color="primary" size="small" />,
   },
   {
     icon: <Archive sx={{ width: 25 }} />,
     title: 'Архив ddddddddddddddddddddddddddddddddsssssssssssssssssss',
-    path: '/test6',
+    to: '/test6',
     action: <Chip label={7} color="primary" size="small" />,
   },
 

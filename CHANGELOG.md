@@ -37,3 +37,7 @@
 ## [1.1.12] - 2025-08-27
 ### Changes
 - Изменены зависимости peerDependencies
+
+## [1.1.13] - 2025-08-28
+### Changes
+- Изменено свойство DashboardProps['listMenu'][number] = { ... "path на to" }

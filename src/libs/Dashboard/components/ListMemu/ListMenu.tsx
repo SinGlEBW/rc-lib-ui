@@ -21,12 +21,12 @@ interface ItemListMenuCommonProps extends
 }
 
 type OneVariantMenuList = {
-  children?: Array<ItemListMenuCommonProps & { path: string }>;
-  path?: never;
+  children?: Array<ItemListMenuCommonProps & { to: string }>;
+  to?: never;
 }
 type TwoVariantMenuList = {
   children?: never;
-  path?: string;
+  to?: string;
 }
 
 type VariantsMenuListProps = | OneVariantMenuList | TwoVariantMenuList;
@@ -53,7 +53,7 @@ const ListMenuMemo = forwardRef<HTMLUListElement, ListMenuProps>(({ styleList = 
 
 
   const childrenList = useMemo(() => {
-    return (listMenu).map(({ action, icon, title, sx = {}, onClick, children, path, }, index) => {
+    return (listMenu).map(({ action, icon, title, sx = {}, onClick, children, to, }, index) => {
 
       if (children && Array.isArray(children)) {
         return (
@@ -93,12 +93,12 @@ const ListMenuMemo = forwardRef<HTMLUListElement, ListMenuProps>(({ styleList = 
                   <Collapse in={config.is && isOpen} timeout="auto" unmountOnExit>
                     <List disablePadding >
                       {
-                        children.map(({ action, icon, title, path, sx = {}, onClick }, inx) => {
+                        children.map(({ action, icon, title, to, sx = {}, onClick }, inx) => {
                    
                           return (
                             <ListItem key={`${index}-${inx}`} disablePadding sx={sx}>
                               <ListButton
-                                to={path}
+                                to={to}
                                 component={MuiNavLink}
                                 sx={({ spacing }) => ({ ...!icon && { paddingLeft: spacing(2) } })}
                                 isOpen
@@ -132,7 +132,7 @@ const ListMenuMemo = forwardRef<HTMLUListElement, ListMenuProps>(({ styleList = 
       return (
         <ListItem key={index} disablePadding sx={sx}>
           <RenderIcon icon={icon} sx={minWidthColumn}  />
-          <ListButton component={MuiNavLink} to={path as string} isOpen={isOpen} onClick={onClick as any} isWrapText={isWrapText} >
+          <ListButton component={MuiNavLink} to={to as string} isOpen={isOpen} onClick={onClick as any} isWrapText={isWrapText} >
             <ListText sx={mlSx} unmount={!isOpen} title={title} isWrapText={isWrapText} />
             {isOpen && action}
           </ListButton >
