@@ -25,8 +25,9 @@ export interface SocketOfflineDetectionPayloadProps {
 export interface SocketOfflineDetectionProps {
   sx?: SxProps;
   className?: string
-  children: (payload: SocketOfflineDetectionPayloadProps) => React.ReactNode
+  children?: (payload: SocketOfflineDetectionPayloadProps) => React.ReactNode
   isNetwork: boolean;
+  
 }
 /*
   INFO: Нет интернета или включён isOfflineSocket отображает плашку.
@@ -55,8 +56,12 @@ const OfflineDetectionMemo: FC<SocketOfflineDetectionProps> = ({ children, class
         }
       }}
     >
-      {/* {children({ isDisableConnectSocket })} */}
-      {isDisableConnectSocket ? `Режим ${titleOffline}` : titleOffline}
+      {
+        typeof children == 'function' 
+        ? children({ isDisableConnectSocket }) 
+        : isDisableConnectSocket ? `Режим ${titleOffline}` : titleOffline
+      }
+   
     </SocketCollapse>
   )
 };

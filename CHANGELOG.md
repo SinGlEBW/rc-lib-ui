@@ -41,3 +41,7 @@
 ## [1.1.13] - 2025-08-28
 ### Changes
 - Изменено свойство DashboardProps['listMenu'][number] = { ... "path на to" }
+
+## [1.1.14] - 2025-08-28
+### Changes
+- Убран обязательная передача children в Socket.OfflineDetection. При передача children заменяет стандартный вывод (Режим Оффлине || Оффлине) в зависимости от isDisableConnectSocket
