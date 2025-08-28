@@ -3,7 +3,7 @@ import { ListItemIcon } from '@mui/material';
 import type { FC } from 'react';
 
 export interface RenderIconProps{
-  icon: React.ReactNode;
+  icon?: React.ReactElement<unknown, string | React.JSXElementConstructor<any>>;
   sx?: SxProps<Theme>;
 
 }

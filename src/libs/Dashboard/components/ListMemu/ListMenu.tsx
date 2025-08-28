@@ -100,7 +100,7 @@ const ListMenuMemo = forwardRef<HTMLUListElement, ListMenuProps>(({ styleList = 
                               <ListButton
                                 to={to}
                                 component={MuiNavLink}
-                                sx={({ spacing }) => ({ ...!icon && { paddingLeft: spacing(2) } })}
+                                sx={({ spacing }) => ({ ...(!icon && { paddingLeft: spacing(2) } )})}
                                 isOpen
                                 onClick={onClick as any}
                                 isWrapText={isWrapText}
