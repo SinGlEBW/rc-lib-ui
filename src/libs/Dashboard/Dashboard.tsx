@@ -1,10 +1,10 @@
 import { Box, Divider, IconButton, type SxProps, type Theme } from '@mui/material';
-import { useTheme } from '@mui/material/styles/index.js';
+import { useTheme } from '@mui/material/styles';
 import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState, type ReactNode } from "react";
 
 
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft.js';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight.js';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 
 import { setStateDecorator } from '../_helpers';
