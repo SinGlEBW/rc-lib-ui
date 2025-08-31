@@ -24,7 +24,7 @@ import { MuiMenuHeader } from './components/MuiMenuHeader';
 export type DashboardControlProps = Record<'handleMenuOpen' | 'handleMenuClose' | 'handleMenuToggle', () => void>
   & { isOpen: boolean }
 
-type Statuses_OR = 'isDefaultOpen' | 'isHeader' | 'isMenuHeader' | 'isHeaderResize' | 'isButtonCenterMenu' | 'isHeaderDefault';
+type Statuses_OR = 'isDefaultOpen' | 'isHeader' | 'isMenu' | 'isMenuHeader' | 'isHeaderResize' | 'isButtonCenterMenu' | 'isHeaderDefault';
 
 export interface DashboardProps extends Pick<ListMenuProps, 'listMenu' | 'styleList'> {
   Footer?: ReactNode;
@@ -58,6 +58,7 @@ const DashboardMemo = forwardRef<DashboardControlProps, DashboardProps>(({ Foote
   const isScrollIndentation = true //!!statuses?.isScrollIndentation
   const isHeaderDefault = statuses?.isHeaderDefault === undefined ? true : statuses?.isHeaderDefault;
   const isHeader = statuses?.isHeader === undefined ? true : statuses?.isHeader;
+  const isMenu = statuses?.isMenu === undefined ? true : statuses?.isMenu;
   const initWidth = columnMenu?.initWidth || 250;
 
 
@@ -163,68 +164,72 @@ const DashboardMemo = forwardRef<DashboardControlProps, DashboardProps>(({ Foote
               : (typeof HeaderContent === 'function' ? HeaderContent(config) : HeaderContent)
               : null
             }
-
+  {
+    isMenu && (
       <MuiMenu
-        variant="permanent"
-        open={state.isOpen}
-        isRight={isRight}
-        isWrapText={isWrapText}
-        columnMenu={{ initWidth, minWidthColumn }}
-        styleList={styleList}
-      >
-        {
-          (statuses?.isMenuHeader !== false) && (
-            <>
-              <MuiMenuHeader />
-              <Divider />
-            </>
-          )
-        }
-        <Box className='MuiListWrap' sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          flexGrow: 1,
-          overflow: 'hidden'
-        }}>
-          <ListMenu
-            ref={listRef}
-            columnMenu={{
-              initWidth,
-              ...(isScrollIndentation
-                ? { minWidthColumn: convertWidthToLeftPM(minWidthColumn, { newProp: 'width', positionCorrect: `- ${state.widthScroll}px` }) }
-                : { minWidthColumn })
-            }}
-            listMenu={listMenu}
-            isOpen={state.isOpen}
-            sx={{
-              ...sx,
-            }}
-            className={classes?.listMenu}
-            isWrapText={isWrapText}
-            styleList={styleList}
-          />
-        </Box>
-        {
-          (statuses?.isButtonCenterMenu !== false) && (
-            <DrawerToggleMenu >
-              <IconButton onClick={handleMenuToggle} sx={{ pointerEvents: 'auto' }}>
-                {state.isOpen ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-              </IconButton>
-            </DrawerToggleMenu>
-          )
-        }
+      variant="permanent"
+      open={state.isOpen}
+      isRight={isRight}
+      isWrapText={isWrapText}
+      columnMenu={{ initWidth, minWidthColumn }}
+      styleList={styleList}
+    >
+      {
+        (statuses?.isMenuHeader !== false) && (
+          <>
+            <MuiMenuHeader />
+            <Divider />
+          </>
+        )
+      }
+      <Box className='MuiListWrap' sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 1,
+        overflow: 'hidden'
+      }}>
+        <ListMenu
+          ref={listRef}
+          columnMenu={{
+            initWidth,
+            ...(isScrollIndentation
+              ? { minWidthColumn: convertWidthToLeftPM(minWidthColumn, { newProp: 'width', positionCorrect: `- ${state.widthScroll}px` }) }
+              : { minWidthColumn })
+          }}
+          listMenu={listMenu}
+          isOpen={state.isOpen}
+          sx={{
+            ...sx,
+          }}
+          className={classes?.listMenu}
+          isWrapText={isWrapText}
+          styleList={styleList}
+        />
+      </Box>
+      {
+        (statuses?.isButtonCenterMenu !== false) && (
+          <DrawerToggleMenu >
+            <IconButton onClick={handleMenuToggle} sx={{ pointerEvents: 'auto' }}>
+              {state.isOpen ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            </IconButton>
+          </DrawerToggleMenu>
+        )
+      }
 
-        {
-          Footer && (
-            <>
-              <MuiFooter >
-                <Divider />
-                {Footer}
-              </MuiFooter>
-            </>
-          )
-        }
-      </MuiMenu>
+      {
+        Footer && (
+          <>
+            <MuiFooter >
+              <Divider />
+              {Footer}
+            </MuiFooter>
+          </>
+        )
+      }
+    </MuiMenu>
+    )
+  }
+     
       <ContentBox>
         {(isHeader) && (<MuiMenuHeader />)}
         {children}

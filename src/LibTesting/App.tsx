@@ -1,6 +1,6 @@
 // import { Dashboard, DashboardProps, type DashboardControlProps } from '@lib/index';
 import { useRef } from 'react';
-import { DashboardProps, type DashboardControlProps } from '@libs/Dashboard';
+import { Dashboard, DashboardProps, type DashboardControlProps } from '@libs/Dashboard';
 import { socketActions, socketSelectors, socketStore } from '@libs/NetworkAndSocket/Socket/store/socket.store';
 // import { Preloaders } from '../dist'
 // import { Preloaders } from 'rc-lib-ui'
@@ -101,7 +101,7 @@ export const App = () => {
       <Socket.ReConnectButton children={(actions) => <span>asdsadassa</span>} />
       <Network.Detection /> */}
 
-      {/* <Dashboard
+      <Dashboard
         ref={dashboardControlRef}
         styleList='variant2'
         listMenu={listMenu}
@@ -134,20 +134,25 @@ export const App = () => {
         statuses={{
           isHeaderDefault: true,
           isButtonCenterMenu: true,
+          isMenu: true
           // isScrollIndentation: true
           //isHeader: false, full off header
         }}
         children={(
           <div className={'content'} style={{ position: 'relative',  }} >
-          
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam veniam explicabo, eveniet aliquid enim repellat harum impedit eos voluptatum consequatur non sit id, rerum, voluptatibus quasi natus! Repudiandae, voluptate culpa.
+            Mollitia vitae culpa doloribus! Commodi ratione natus iusto itaque cumque, neque modi delectus cupiditate dolorem quasi at tempora quidem rerum numquam consequatur quos aliquam quas eum ullam obcaecati rem blanditiis?
+            Sunt at, vero repudiandae ratione perspiciatis, hic explicabo accusamus qui maiores ipsum numquam, natus doloremque odit quas pariatur unde magnam reprehenderit excepturi voluptas eum maxime nulla eius ex! Nobis, doloribus.
+            Adipisci sint aliquid corporis consectetur. Vitae modi minima officiis autem tempore vel dolore dolorum dolorem iure earum non, quia voluptates dolor nesciunt nihil ipsa corrupti atque? Error iure tenetur ea!
+            Maiores magnam, placeat, ullam et magni nam ipsa voluptates ratione cupiditate dignissimos, porro hic a eligendi autem consequuntur nemo ut quaerat dolor sint? Molestias, incidunt distinctio magni facere magnam soluta!
             <div style={{position: 'relative'}}>
-              
-            <Socket.OfflineDetection sx={{ position: 'absolute', bottom: 0, right: 0 }} children={({ isDisableConnectSocket }) => isDisableConnectSocket ? 'Режим оффлайн' : 'оффлайн'} />
+
+            {/* <Socket.OfflineDetection sx={{ position: 'absolute', bottom: 0, right: 0 }} children={({ isDisableConnectSocket }) => isDisableConnectSocket ? 'Режим оффлайн' : 'оффлайн'} /> */}
             </div>
           </div>
         )}
         />
-      */}
+     
 
       {/* <div className={'content'} style={{ position: 'relative', overflow: 'hidden', height: '100%' }} >
         <Socket.OfflineDetection sx={{ position: 'absolute', bottom: 0, right: 0 }} children={({ isDisableConnectSocket }) => isDisableConnectSocket ? 'Режим оффлайн' : 'оффлайн'} />
