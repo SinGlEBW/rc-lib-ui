@@ -36,7 +36,7 @@ export interface DashboardProps extends Pick<ListMenuProps, 'listMenu' | 'styleL
   sx?: SxProps<Theme>,
   itemsProps?: {
     MuiHeader?: Pick<MuiHeaderProps, 'sx' | 'bgColor' | 'AfterComponent'>;
-    // listMenu?: Pick<ListMenuProps, 'sx'>;
+    MuiListMenu?: Pick<ListMenuProps, 'sx'>;
   }
   classes?: Partial<Record<'listMenu' | 'header' | 'dashboard' | 'main', string>>;
 }
@@ -144,7 +144,7 @@ const DashboardMemo = forwardRef<DashboardControlProps, DashboardProps>(({ Foote
   }
   useImperativeHandle(ref, () => config);
   return (
-    <Box className={cn('Dashboard', classes?.dashboard)} sx={{ display: 'flex', height: 'inherit' }}>
+    <Box className={cn('Dashboard', classes?.dashboard)} sx={{ display: 'flex', height: 'inherit', ...sx,}}>
       {
         (isHeader) ?
           isHeaderDefault
@@ -198,9 +198,7 @@ const DashboardMemo = forwardRef<DashboardControlProps, DashboardProps>(({ Foote
           }}
           listMenu={listMenu}
           isOpen={state.isOpen}
-          sx={{
-            ...sx,
-          }}
+          sx={itemsProps?.MuiListMenu?.sx}
           className={classes?.listMenu}
           isWrapText={isWrapText}
           styleList={styleList}
