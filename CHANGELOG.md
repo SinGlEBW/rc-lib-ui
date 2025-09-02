@@ -57,3 +57,6 @@
 ## [1.1.19] - 2025-09-01
 ### Added
 - Dashboard statuses?.isMenu
+## [1.1.20] - 2025-09-02
+### Added
+- Dashboard: Расширен classes

@@ -17,7 +17,7 @@ import { MuiFooter } from './components/MuiFooter';
 import { MuiHeader, MuiHeaderProps } from './components/MuiHeader';
 import { MuiMenu, MuiMenuProps } from './components/MuiMenu';
 import { MuiMenuHeader } from './components/MuiMenuHeader';
-
+import cn from 'classnames';
 
 
 
@@ -38,7 +38,7 @@ export interface DashboardProps extends Pick<ListMenuProps, 'listMenu' | 'styleL
     MuiHeader?: Pick<MuiHeaderProps, 'sx' | 'bgColor' | 'AfterComponent'>;
     // listMenu?: Pick<ListMenuProps, 'sx'>;
   }
-  classes?: Partial<Record<'listMenu' | 'header', string>>;
+  classes?: Partial<Record<'listMenu' | 'header' | 'dashboard' | 'main', string>>;
 }
 
 const getSizeScroll = (el: HTMLElement) => {
@@ -144,7 +144,7 @@ const DashboardMemo = forwardRef<DashboardControlProps, DashboardProps>(({ Foote
   }
   useImperativeHandle(ref, () => config);
   return (
-    <Box sx={{ display: 'flex', height: 'inherit' }}>
+    <Box className={cn('Dashboard', classes?.dashboard)} sx={{ display: 'flex', height: 'inherit' }}>
       {
         (isHeader) ?
           isHeaderDefault
@@ -229,8 +229,7 @@ const DashboardMemo = forwardRef<DashboardControlProps, DashboardProps>(({ Foote
     </MuiMenu>
     )
   }
-     
-      <ContentBox>
+      <ContentBox className={cn('Dashboard-main', classes?.main)}>
         {(isHeader) && (<MuiMenuHeader />)}
         {children}
       </ContentBox>
