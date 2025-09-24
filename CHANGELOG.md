@@ -65,3 +65,7 @@
 ## [1.1.21] - 2025-09-02
 ### Added
 - Dashboard: Добавлен MuiListMenu в itemsProps
+
+## [1.1.22] - 2025-09-24
+### Change
+- Socket:ReConnectButton  setStatusDisableConnectSocket переименован в setIsDisableConnectSocket

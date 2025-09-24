@@ -4,7 +4,7 @@ import { socketActions, socketSelectors } from '../../store/socket.store';
 
 
 export interface ButtonActionsProps {
-  setDisableConnectSocket: () => void
+  setIsDisableConnectSocket: (isDisableConnectSocket: boolean) => void
 }
 export interface ReConnectButtonProps {
   children: (actions: ButtonActionsProps) => React.ReactNode
@@ -13,15 +13,15 @@ export interface ReConnectButtonProps {
 const ReConnectButtonMemo:FC<ReConnectButtonProps> = ({children}) => {
   const isDisableConnectSocket = useSocketSelector(socketSelectors.getIsDisableConnectSocket);
 
-  
-  const setDisableConnectSocket = () => {
-    socketActions.setIsDisableConnectSocket({isDisableConnectSocket: false});
+  const setIsDisableConnectSocket = (isDisableConnectSocket) => {
+    socketActions.setIsDisableConnectSocket({isDisableConnectSocket: isDisableConnectSocket});
   }
+
+
   return (
     <>
-      { isDisableConnectSocket && ( children({ setDisableConnectSocket }) ) }
+      { isDisableConnectSocket && ( children({ setIsDisableConnectSocket }) ) }
     </>
-
   )
 };
 
