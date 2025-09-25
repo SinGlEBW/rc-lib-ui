@@ -69,3 +69,7 @@
 ## [1.1.22] - 2025-09-24
 ### Change
 - Socket:ReConnectButton  setStatusDisableConnectSocket переименован в setIsDisableConnectSocket
+
+## [1.1.23] - 2025-09-25
+### Added 
+- Добавлены 2 кнопки в Socket.Button   ReConnect и OfflineActive 

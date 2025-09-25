@@ -171,6 +171,7 @@ import { Socket } from "rc-lib-ui/socket";
     }}
     />
   //Воздействие на сокет
-  <Socket.ReConnectButton/>,
+  <Socket.Buttons.OfflineActive chidlren={({offlineActive}) => <Button onClick={offlineActive}/> } />,
+  <Socket.Buttons.ReConnect chidlren={({reConnect}) => <Button onClick={reConnect}/> } />,
  
 ```
