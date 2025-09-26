@@ -9,6 +9,7 @@ import { Chip } from '@mui/material';
 
 // import { SocketApi } from 'lib-socket-api';
 import { Network } from '@libs/NetworkAndSocket/Network';
+import { Socket } from '@libs/NetworkAndSocket';
 
 // (window as any).SocketApi = SocketApi;
 (window as any).socketSelectors = socketSelectors;
@@ -147,7 +148,7 @@ export const App = () => {
             Maiores magnam, placeat, ullam et magni nam ipsa voluptates ratione cupiditate dignissimos, porro hic a eligendi autem consequuntur nemo ut quaerat dolor sint? Molestias, incidunt distinctio magni facere magnam soluta!
             <div style={{position: 'relative'}}>
 
-            {/* <Socket.OfflineDetection sx={{ position: 'absolute', bottom: 0, right: 0 }} children={({ isDisableConnectSocket }) => isDisableConnectSocket ? 'Режим оффлайн' : 'оффлайн'} /> */}
+            {/* <Socket.OfflineDetection isNetwork={false} sx={{  }} /> */}
             </div>
           </div>
         )}
