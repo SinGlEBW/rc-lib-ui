@@ -80,3 +80,6 @@
 ## [1.1.25] - 2025-09-26
 ### Fixed 
 - Socket: OfflineDetection. Поправлены стили. Убранны классы bootstrap
+## [1.1.26] - 2025-09-26
+### Fixed 
+- Socket: OfflineDetection. Подкорректирован цвет.
