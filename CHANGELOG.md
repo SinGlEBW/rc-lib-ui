@@ -73,3 +73,7 @@
 ## [1.1.23] - 2025-09-25
 ### Added 
 - Добавлены 2 кнопки в Socket.Button   ReConnect и OfflineActive 
+
+## [1.1.24] - 2025-09-26
+### Change 
+- Socket: ConnectDetection, OfflineDetection. Можно прокинуть свойства. В том числе sx

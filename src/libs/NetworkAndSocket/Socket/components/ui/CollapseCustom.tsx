@@ -12,14 +12,11 @@ const Message = styled('span')({
 })
 
 
-type SocketSpanProps = Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'> & {
-  sx?: SxProps<Theme>
-}
 
 export const SocketCollapse = styled(
-  ({ children, itemSpan, ...props }: CollapseProps & { itemSpan?: SocketSpanProps}) => (
+  ({ children, ...props }: CollapseProps) => (
     <Collapse {...props} unmountOnExit>
-      <Message {...itemSpan}>{children}</Message>
+      <Message>{children}</Message>
     </Collapse>
   )
 )(({ theme }) => ({

@@ -1,38 +1,46 @@
 import React, { type FC } from 'react';
-import { SxProps } from '@mui/material';
+import { SxProps, type CollapseProps } from '@mui/material';
 import { useSocketSelector } from '../../store/socket.store';
 import { socketSelectors } from '../../store/socket.store';
 import { SocketCollapse } from '../ui/CollapseCustom';
 import s from './ConnectDetection.module.scss';
 import cn from 'classnames';
 
-const ds = {
-  callapse: {
-    top: '100%',
-    '& .MuiCollapse-wrapper': {
-      height: 10,
-    },
-  } as SxProps,
-}
+import { styled } from '@mui/material'
 
-export interface SocketConnectDetectionProps {
+interface StyledSocketDirectionProps extends CollapseProps { }
+
+const StyledSocketDirection = styled(SocketCollapse, {
+  shouldForwardProp: (propName) => ![''].includes(propName as string),
+})<StyledSocketDirectionProps>(({ theme }) => ({
+  top: '100%',
+  '& .MuiCollapse-wrapper': {
+    height: 10,
+  },
+  '& span': {
+    height: '100%'
+  }
+}))
+
+
+
+export interface SocketConnectDetectionProps extends Omit<StyledSocketDirectionProps, 'children'>{
   text?: string
   className?: string
 }
-const ConnectDetectionMemo:FC<SocketConnectDetectionProps> = ({text = 'Происходит подключение к серверу', className}) => {
+const ConnectDetectionMemo: FC<SocketConnectDetectionProps> = ({ text = 'Происходит подключение к серверу', className, ...props }) => {
   const statusConnectSocket = useSocketSelector(socketSelectors.getStatusConnectSocket);
   const is = statusConnectSocket === 'pending'
   return (
-    <SocketCollapse
+    <StyledSocketDirection
       in={is}
-      sx={ds.callapse}
       collapsedSize='1px'
       className={cn(s['connect-server-anim'], className)}
       unmountOnExit
-      itemSpan={{ sx: { height: '100%' } }}
+      {...props}
     >
       {text}
-    </SocketCollapse>
+    </StyledSocketDirection>
   )
 };
 
