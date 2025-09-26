@@ -13,7 +13,8 @@ const StyledOfflineCollapse = styled(SocketCollapse, {
   shouldForwardProp: (propName) => ![''].includes(propName as string),
 })<StyledOfflineCollapseProps>(({ theme }) => ({
   bottom: '100%',
-  bgcolor: 'danger.main',
+  backgroundColor: 'danger.main',
+  backgroundImage: 'linear-gradient(180deg, rgba(255, 255, 255, .15), rgba(255, 255, 255, 0))',
   '& .MuiCollapse-wrapper': {},
   '& span': {
     padding: '1px 10px',
@@ -42,7 +43,7 @@ const OfflineDetectionMemo: FC<SocketOfflineDetectionProps> = ({ children, class
   return (
     <StyledOfflineCollapse
       in={is}
-      className={cn("socket-offline bg-gradient bg-danger", className)}
+      className={cn("socket-offline", className)}
       {...props}
     >
       {
