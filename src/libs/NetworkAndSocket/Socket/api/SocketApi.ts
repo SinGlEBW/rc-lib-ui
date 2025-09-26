@@ -105,7 +105,7 @@ export class SocketApi {
   private static setOptions(options: Partial<SocketApi_Options_P>) {
     SocketApi.options = { ...SocketApi.options, ...options };
   }
-
+  
   private static setStatusReConnect(status: boolean) {
     SocketApi.setState({ isActiveReConnect: status });
     SocketApi.events.publish("reConnect", status);
@@ -154,7 +154,9 @@ export class SocketApi {
   };
   /*---------------------------------------------------------------------------------------------------------------------------*/
   static getState = () => SocketApi.state;
-
+  static getOptions = () => {
+    return {...SocketApi.options, ...SocketApi.wsApi.getOptions()}
+  }
   static on: <K extends keyof CommonEvents>(name: K, cb: CommonEvents[K]) => void  = (name, listener) => {
     const wsApi_RegisteredEvents = SocketApi.wsApi.events.getListNameEvents();
     if (!wsApi_RegisteredEvents.includes(name)) {

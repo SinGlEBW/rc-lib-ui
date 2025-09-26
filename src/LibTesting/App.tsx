@@ -148,7 +148,7 @@ export const App = () => {
             Maiores magnam, placeat, ullam et magni nam ipsa voluptates ratione cupiditate dignissimos, porro hic a eligendi autem consequuntur nemo ut quaerat dolor sint? Molestias, incidunt distinctio magni facere magnam soluta!
             <div style={{position: 'relative'}}>
 
-            {/* <Socket.OfflineDetection isNetwork={false} sx={{  }} /> */}
+            <Socket.OfflineDetection isNetwork={false} sx={{  }} />
             </div>
           </div>
         )}
