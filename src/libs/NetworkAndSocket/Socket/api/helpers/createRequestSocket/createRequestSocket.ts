@@ -1,23 +1,22 @@
+import { BasePayloadSocket } from './../../SocketApi.types';
 import { SocketApi } from '../../SocketApi';
 import type { CreateRequestSocketProps } from './createRequestSocket.types';
 
 
 
 
-export const createRequestSocket = <ResponseSocket = any>(
+
+export const createRequestSocket = <RequestSocket, ResponseSocket extends BasePayloadSocket & {[key in string]: any}>(
   cb: (data: ResponseSocket) => void, 
-  { payload, socketAction, signal }:CreateRequestSocketProps
+  { payload, signal }:CreateRequestSocketProps<RequestSocket>
 ) => {
 
-  const saveRequestId = Math.random().toString(36).slice(2, 9);
 
     let isCompleted = false;
 
 
-
     const messageHandler = (res: any) => {
-      const requestId = res?.request?.requestId
-      if (saveRequestId === requestId && res.action === socketAction) {
+      if ( res.action === payload.action) {
         complete(res, false);
       }
     };
@@ -43,7 +42,7 @@ export const createRequestSocket = <ResponseSocket = any>(
     SocketApi.on('msg', messageHandler);
 
     try {
-      SocketApi.send({...payload, action: socketAction, requestId: saveRequestId}, );
+      SocketApi.send(payload);
     } catch (error) {
       complete(error, true);
     }

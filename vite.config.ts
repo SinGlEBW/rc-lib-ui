@@ -18,12 +18,9 @@ export default defineConfig({
   ],
   base: './',
   resolve: {
-    alias: [
-      {
-        find: '@libs',
-        replacement: resolve(__dirname, `./` + entryPathLib)
-      }
-    ],
+    alias: {
+      "@libs": resolve(__dirname, `./${entryPathLib}`),
+    },
   },
   server: {
     open: true,
@@ -43,7 +40,6 @@ export default defineConfig({
         socket: entryPathLib +'/NetworkAndSocket/Socket/index.ts',
         preloaders: entryPathLib +'/Preloaders/index.ts',
         dashboard: entryPathLib +'/Dashboard/index.ts',
-
       },
       formats: ["es"],
       name: fullNameComponent,

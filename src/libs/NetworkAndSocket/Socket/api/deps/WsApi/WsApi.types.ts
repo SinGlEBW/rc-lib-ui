@@ -20,7 +20,7 @@ export interface WsApi_RequestMeta<P>{
   requestAction: string,
   requestTime: number,
   payload: P, 
-  reqId: string, 
+  request_id: string, 
 }
 export type WsApi_Response<P, D> = D & {request: WsApi_RequestMeta<P>}
 export interface WsApi_SaveRequest_P<P, D> extends WsApi_RequestMeta<P>{
@@ -33,7 +33,7 @@ export interface WsApi_StateProps {
     requestAction: string,
     requestTime: number,
     payload: {action: string, [key: string]: any}, 
-    reqId: string, 
+    request_id: string, 
     cb: any
   }[];
 }

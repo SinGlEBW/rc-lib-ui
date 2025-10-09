@@ -1,6 +1,7 @@
-export interface CreateRequestSocketProps<D = any>{
-  payload:D
-  socketAction: string;
+import type { BasePayloadSocket } from '../../SocketApi.types';
+
+export interface CreateRequestSocketProps<D>{
+  payload: D & BasePayloadSocket,
   signal?: AbortSignal
 }
 

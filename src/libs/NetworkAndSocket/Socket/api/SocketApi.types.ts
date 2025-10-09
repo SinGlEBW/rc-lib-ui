@@ -11,10 +11,11 @@ export type SocketApi_StateProps_P = Record<SocketApi_StateProps_OR, boolean>;
 export type SocketApi_StatusConnect_OR = WsApiE_StatusConnect_OR;
 
 
-export interface SocketRequest {
+export type BasePayloadSocket = {
   action: string;
-  [key: string]: any;
-}
+  request_id?:string;
+} & {[key: string]: any;};
+
 
 export type SocketResponse<P = any, Data = any> = WsApi_Response<P, Data>
 
@@ -22,3 +23,5 @@ export interface SocketApiOptionsRequest {
   timeout?: number,
   signal?: AbortSignal
 }
+
+

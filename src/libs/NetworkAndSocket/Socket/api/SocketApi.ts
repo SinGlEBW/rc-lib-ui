@@ -1,11 +1,12 @@
 import uuid4 from "uuid4";
 import { DelaysPromise } from "./deps/DelaysPromise";
 import { EventSubscribers } from "./deps/EventSubscribers/EventSubscribers";
-import { NetworkInfo } from './deps/NetworkControls';
+
 import { NetworkStatusTracker } from './deps/NetworkStatusTracker/NetworkStatusTracker';
 import { WsApi, WsApi_Options_P } from "./deps/WsApi";
 import type { WsApi_Events } from './deps/WsApi/WsApi.types';
-import type { SocketApi_Options_P, SocketApi_StateProps_P, SocketApiOptionsRequest, SocketResponse } from "./SocketApi.types";
+import type { BasePayloadSocket, SocketApi_Options_P, SocketApi_StateProps_P, SocketApiOptionsRequest, SocketResponse } from "./SocketApi.types";
+import type { NetworkStatusInfoTracker } from './deps/NetworkStatusTracker/NetworkStatusTracker.types';
 /*
   TODO: Передавать опции
   SocketApi.init({
@@ -62,7 +63,7 @@ import type { SocketApi_Options_P, SocketApi_StateProps_P, SocketApiOptionsReque
 interface SocketApi_Events {
   timeOffReConnect(info: { status: boolean; msg: string }): void;
   reConnect(status: boolean): void;
-  network(info: NetworkInfo): void;
+  network(info: NetworkStatusInfoTracker): void;
 }
 
 type CommonEvents = SocketApi_Events & WsApi_Events;
@@ -185,7 +186,7 @@ export class SocketApi {
   };
 
   //INFO: Проверить как часто вызываеться
-  private static setNetworkStatus = (info:NetworkInfo) => {
+  private static setNetworkStatus = (info:NetworkStatusInfoTracker) => {
     SocketApi.events.publish("network", info)
     
     info.isNetwork ? SocketApi.online() : SocketApi.offline();
@@ -204,6 +205,7 @@ export class SocketApi {
 
       this.networkTicker = new NetworkStatusTracker(SocketApiOptions.listUrlsCheckConnectNetwork ?? []);
       this.networkTicker.startEvents((info) => {
+        
         SocketApi.setNetworkStatus(info);
       });
       // this.networkTicker.fetchingNetwork
@@ -291,15 +293,15 @@ export class SocketApi {
     }
   }
 
-  static send<P = any, Data = any>(payload: P, cb?: (data: Data) => void) {
-    const { action, ...other } = payload as any;
+  static send<P extends BasePayloadSocket, Data extends BasePayloadSocket>(payload: P, cb?: (data: Data) => void) {
+    const { action, ...other } = payload;
     
-    const reqId = uuid4();
+    const request_id = other?.request_id ? other.request_id : uuid4();
     const requestTime = Date.now();
   
     SocketApi.wsApi.setRequestSave({
       requestAction: action,
-      reqId,
+      request_id,
       requestTime,
       payload: { action, ...other },
       cb,
@@ -386,7 +388,7 @@ export class SocketApi {
 
 
 
-  static async request<P = any, Data = any>(
+  static async request<P extends BasePayloadSocket, Data extends BasePayloadSocket>(
     keyRequest: string,
     payload: P, 
     options: SocketApiOptionsRequest = {} 
@@ -397,12 +399,12 @@ export class SocketApi {
         return;
       }
 
-      const reqId = uuid4();
+      const request_id = payload.request_id ? payload.request_id : uuid4();
       const requestTime = Date.now();
     
       SocketApi.wsApi.setRequestSave({
-        requestAction: keyRequest,
-        reqId,
+        requestAction: payload.action,
+        request_id,
         requestTime,
         payload: payload as any,
         cb: undefined,

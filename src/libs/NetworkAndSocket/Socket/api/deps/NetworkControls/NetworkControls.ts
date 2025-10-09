@@ -4,7 +4,7 @@ import type { OnStatusChange } from '../NetworkStatusTracker/NetworkStatusTracke
 import type { NetworkControlsConfigProps, NetworkControlsStateProps, NetworkInfo, NetworkMonitorCallback, NetworkMonitorCallbackInterval } from './NetworkControls.types';
 
 
-
+//INFO: Не используеться
 export class NetworkControls {
 
   private networkTicker:NetworkStatusTracker | null = null

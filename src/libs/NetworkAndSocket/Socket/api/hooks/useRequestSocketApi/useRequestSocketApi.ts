@@ -1,10 +1,11 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { SocketApi } from '../../SocketApi';
 import type { UseRequestSocketOptions } from './useRequestSocketApi.types';
+import type { BasePayloadSocket } from '../../SocketApi.types';
 
 
 //INFO: Пока не используться. Универсальный хук
-export const useRequestSocketApi = <P = any, Data = any>(
+export const useRequestSocketApi = <P extends BasePayloadSocket, Data extends BasePayloadSocket>(
   keyRequest: string,
   payload: P,
   options: UseRequestSocketOptions<Data> = {}
@@ -34,8 +35,6 @@ export const useRequestSocketApi = <P = any, Data = any>(
     const signal = abortControllerRef.current.signal;
 
     try {
-   
-      // Выполняем запрос через SocketApi.request
       const response = await SocketApi.request<P, Data>(
         keyRequest,
         payload, 
