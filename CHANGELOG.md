@@ -86,6 +86,6 @@
 ## [1.1.28] - 2025-09-26
 ### Added
 - SocketApi: getOptions. Добавлен просмотр опций для анализа передачи init данных.
-## [1.1.44] - 2025-10-14
+## [1.1.45] - 2025-10-14
 ### Added
 - Socket: socketSelectors.getReadySocket.
