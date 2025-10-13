@@ -3,8 +3,8 @@ import React from 'react';
 import { ConnectDetection, SocketConnectDetectionProps } from './ConnectDetection/ConnectDetection';
 import { Initialization, InitializationSocketProps } from './Initialization/Initialization';
 import { OfflineDetection, SocketOfflineDetectionPayloadProps, SocketOfflineDetectionProps } from './OfflineDetection/OfflineDetection';
-import { ReConnect, ReConnectButtonProps } from './Buttons/ReConnect';
-import { OfflineButton, OfflineButtonProps } from './Buttons/OfflineButton';
+import { ReConnect } from './Buttons/ReConnect';
+import { OfflineButton } from './Buttons/OfflineButton';
 
 
 

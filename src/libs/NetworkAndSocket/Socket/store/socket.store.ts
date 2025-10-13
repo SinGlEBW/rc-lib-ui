@@ -11,6 +11,7 @@ export const socketActions:SocketActions = {
   resetState: () => socketStore.setState(defaultInitialState),
   setStatusConnectSocket: ({statusConnect}) => socketStore.setState({ statusConnect }),
   setStatusIsReConnectSocket: ({isReConnectSocket}) => socketStore.setState({ isReConnectSocket }),
+  setStatusReady: ({isReadySocket}) => socketStore.setState({ isReadySocket }),
   setIsOfflineSocket: ({isOfflineSocket}) => socketStore.setState({ isOfflineSocket }),
   setInfoNoConnectServer: (info) => socketStore.setState(state => ({ infoNoConnectServer: { ...state.infoNoConnectServer, ...info } })),
   setIsDisableConnectSocket: ({isDisableConnectSocket}) => socketStore.setState({ isDisableConnectSocket }),
@@ -19,6 +20,7 @@ export const socketActions:SocketActions = {
 export const socketSelectors = {
   getStatusConnectSocket: (state: InitialStatePropsSocket) => state.statusConnect,
   getStatusIsReConnectSocket: (state: InitialStatePropsSocket) => state.isReConnectSocket,
+  getStatusReady: (state: InitialStatePropsSocket) => state.isReadySocket,
   getIsOfflineSocket: (state: InitialStatePropsSocket) => state.isOfflineSocket,
   getInfoNoConnectServer: (state: InitialStatePropsSocket) => state.infoNoConnectServer,
   getIsDisableConnectSocket: (state: InitialStatePropsSocket) => state.isDisableConnectSocket,

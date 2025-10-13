@@ -1,5 +1,4 @@
 import React, { useCallback, type FC } from "react";
-import { useSocketSelector } from '../../store/socket.store';
 import { socketActions, socketSelectors } from '../../store/socket.store';
 
 

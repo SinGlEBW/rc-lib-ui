@@ -1,4 +1,4 @@
-import { SxProps, type CollapseProps } from '@mui/material';
+import { type CollapseProps } from '@mui/material';
 import React, { type FC } from "react";
 import cn from 'classnames';
 

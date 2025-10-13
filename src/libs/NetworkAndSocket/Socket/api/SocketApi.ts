@@ -73,9 +73,9 @@ export class SocketApi {
     isDisconnect: true,
     isActiveReConnect: false,
     isOfflineSocket: true,
-    isReady: false,
+ 
     isGotWasFirstConnection: false,
-    isStartCheckNetwork: false
+    isStartCheckNetwork: false//не используеться
   };
   private static options: SocketApi_Options_P = {
     isReConnectNetworkOnline: false,
@@ -312,7 +312,7 @@ export class SocketApi {
       console.log("Нет подключения к сокету");
       return;
     }
-    
+    console.log('Дулаем запроc, SocketApi.wsApi.send(payload)');
     SocketApi.wsApi.send(payload);
   }
 
@@ -324,10 +324,7 @@ export class SocketApi {
     console.dir("функция stop не присвоена к stopReConnect");
   }
 
-  static #getTimeRequest() {
-    //TODO: придумать как получить время запроса. Нужно ориентироваться на action ответа что бы понимать ответ данного сообщения
-  }
-
+ 
   /*------------------------------------------------------------------------------------------------------*/
 
   static socketReConnect = () => {
@@ -389,7 +386,6 @@ export class SocketApi {
 
 
   static async request<P extends BasePayloadSocket, Data extends BasePayloadSocket>(
-    keyRequest: string,
     payload: P, 
     options: SocketApiOptionsRequest = {} 
   ): Promise<Data> {
@@ -398,12 +394,12 @@ export class SocketApi {
         reject(new DOMException('Aborted', 'AbortError'));
         return;
       }
-
+      const keyRequest = payload.action;
       const request_id = payload.request_id ? payload.request_id : uuid4();
       const requestTime = Date.now();
     
       SocketApi.wsApi.setRequestSave({
-        requestAction: payload.action,
+        requestAction: keyRequest,
         request_id,
         requestTime,
         payload: payload as any,
@@ -459,7 +455,9 @@ export class SocketApi {
 
       const ws = SocketApi.wsApi.getSocket();
       if (!ws || ws.readyState !== 1) {
-        console.log("Нет подключения к сокету");
+        const error = 'Нет подключения к сокету';
+        console.error(error);
+        reject(new Error(error));
         return;
       }
       

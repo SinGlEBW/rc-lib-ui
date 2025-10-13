@@ -1,6 +1,5 @@
 import React from 'react';
-import { Collapse, type CollapseProps, styled, type SxProps } from '@mui/material';
-import type { Theme } from '@mui/material/styles';
+import { Collapse, type CollapseProps, styled } from '@mui/material';
 
 const Message = styled('span')({
   backgroundColor: 'rgba(0,0,0,0.3)',

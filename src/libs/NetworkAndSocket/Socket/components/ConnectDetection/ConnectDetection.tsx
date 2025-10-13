@@ -1,7 +1,6 @@
 import React, { type FC } from 'react';
-import { SxProps, type CollapseProps } from '@mui/material';
-import { useSocketSelector } from '../../store/socket.store';
-import { socketSelectors } from '../../store/socket.store';
+import { type CollapseProps } from '@mui/material';
+import { socketSelectors, useSocketSelector } from '../../store/socket.store';
 import { SocketCollapse } from '../ui/CollapseCustom';
 import s from './ConnectDetection.module.scss';
 import cn from 'classnames';

@@ -56,7 +56,15 @@ const InitializationMemo:FC<InitializationSocketProps> = (props) => {
 
     // });
     SocketApi.on("status", (status) => {
-      console.log('status', status);
+      const stateSocket = socketStore.getState();
+      const { isReadySocket } = stateSocket
+   
+      if(status !== 'ready' && isReadySocket){
+         socketActions.setStatusReady({ isReadySocket: false });
+      }
+      if(!isReadySocket && status === 'ready'){
+        socketActions.setStatusReady({ isReadySocket: true });
+      }
       socketActions.setStatusConnectSocket({ statusConnect: status });
     });
   
