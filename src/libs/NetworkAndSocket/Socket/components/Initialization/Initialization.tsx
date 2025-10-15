@@ -70,7 +70,7 @@ const InitializationMemo:FC<InitializationSocketProps> = (props) => {
   
 
     SocketApi.on("error", (info) => { console.log('error: ', info); });
-    SocketApi.on('reConnect', (status) => { console.log('reConnect', status);
+    SocketApi.on('reConnect', (status) => { console.log('on"reConnect" (status): ', status);
       const stateSocket = socketStore.getState();
       const { isReConnectSocket, infoNoConnectServer: { isModal:isModalNoConnectServer } } = stateSocket;   
       isReConnectSocket !== status && socketActions.setStatusIsReConnectSocket({isReConnectSocket: status});

@@ -155,8 +155,6 @@ export class WsApi {
 
   send(data) {
     const messageSend = JSON.stringify(data);
-    console.log('Смотрим сообщение в строке', messageSend);
-    console.log('роверяем есть ли this.state.ws', this.state.ws);
     this.state.ws?.send(messageSend);
   }
 

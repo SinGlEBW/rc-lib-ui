@@ -309,10 +309,9 @@ export class SocketApi {
     const ws = SocketApi.wsApi.getSocket();
     /*FIXME: Нужно слать id запроса, после ответ искать по id, потому что может быть запрошено несколько */
     if (!ws || ws.readyState !== 1) {
-      console.log("Нет подключения к сокету");
+      console.log("Нет подключения к сокету. Запрос сохранён в getRequestSave");
       return;
     }
-    console.log('Дулаем запроc, SocketApi.wsApi.send(payload)');
     SocketApi.wsApi.send(payload);
   }
 
@@ -332,12 +331,14 @@ export class SocketApi {
       return;
     }
     
-    console.log("reconnect");
+    console.log("reConnect");
     if (!SocketApi.saveID.idReConnect) {
       SocketApi.setStatusReConnect(true);
 
       SocketApi.connect();
       const { timeReConnect, numberOfRepit } = SocketApi.wsApi.getOptions();
+      const defaultNumberOfRepit = 3;
+      const countAction = numberOfRepit && numberOfRepit > 1  ? numberOfRepit - 1 : defaultNumberOfRepit;
       const delayControlActionEvery = SocketApi.delay.startActionEvery(
         () => {
           console.log("reconnect:>>delay");
@@ -351,7 +352,7 @@ export class SocketApi {
         },
         {
           interval: timeReConnect,
-          countAction: numberOfRepit,
+          countAction,
           watchIdInterval: (id) => {
             SocketApi.saveID.idReConnect = id;
           },
