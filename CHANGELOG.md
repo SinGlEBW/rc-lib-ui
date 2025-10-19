@@ -89,3 +89,6 @@
 ## [1.1.45] - 2025-10-14
 ### Added
 - Socket: socketSelectors.getReadySocket.
+## [1.1.47] - 2025-10-14
+### Fixed
+- Socket: Мелкие исправления 

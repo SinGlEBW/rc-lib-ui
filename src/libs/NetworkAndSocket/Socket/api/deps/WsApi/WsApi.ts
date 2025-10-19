@@ -61,6 +61,7 @@ export class WsApi {
       }else{
         this.events.publish("msg",  data);
       }
+      //Отправляем в cb
       action && this.filterSaveItemsByResponse(data);
 
     } catch (error) {
