@@ -102,8 +102,8 @@ export class WsApi {
   };
 
   private setStatus = (status: WsApiE_StatusConnect_OR) => {
-    this.events.publish("status", status);
     this.setState({ statusConnect: status });
+    this.events.publish("status", status);
   };
 
   /*----------------------------------------------------------------------------------------------------------*/

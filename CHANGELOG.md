@@ -92,3 +92,6 @@
 ## [1.1.47] - 2025-10-14
 ### Fixed
 - Socket: Мелкие исправления 
+## [1.1.48] - 2025-10-20
+### Fixed
+- Socket: SocketApi.getStatusSocket отрабатывает раньше чем  on('status', () => {})
