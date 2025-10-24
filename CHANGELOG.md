@@ -95,3 +95,9 @@
 ## [1.1.48] - 2025-10-20
 ### Fixed
 - Socket: SocketApi.getStatusSocket отрабатывает раньше чем  on('status', () => {})
+## [1.1.49] - 2025-10-24
+### Change
+- Socket: Initialization. Если socketStaus ready, то Initialization 
+      socketActions.setInfoNoConnectServer({isModal: false});
+      socketActions.setIsOfflineSocket({isOfflineSocket: false});
+- Так же перенесено изменение isOfflineSocket в SocketApi. Теперь привязано к событию wsApi status

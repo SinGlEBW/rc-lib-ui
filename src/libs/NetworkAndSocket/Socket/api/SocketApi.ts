@@ -3,10 +3,10 @@ import { DelaysPromise } from "./deps/DelaysPromise";
 import { EventSubscribers } from "./deps/EventSubscribers/EventSubscribers";
 
 import { NetworkStatusTracker } from "./deps/NetworkStatusTracker/NetworkStatusTracker";
+import type { NetworkStatusInfoTracker } from "./deps/NetworkStatusTracker/NetworkStatusTracker.types";
 import { WsApi, WsApi_Options_P } from "./deps/WsApi";
 import type { WsApi_Events } from "./deps/WsApi/WsApi.types";
 import type { BasePayloadSocket, SocketApi_Options_P, SocketApi_StateProps_P, SocketApiOptionsRequest, SocketResponse } from "./SocketApi.types";
-import type { NetworkStatusInfoTracker } from "./deps/NetworkStatusTracker/NetworkStatusTracker.types";
 /*
   TODO: Передавать опции
   SocketApi.init({
@@ -52,8 +52,12 @@ import type { NetworkStatusInfoTracker } from "./deps/NetworkStatusTracker/Netwo
 //   })
 // }
 
+interface ConnectInfoProps {
+  status: boolean;
+  msg: string;
+}
 interface SocketApi_Events {
-  timeOffReConnect(info: { status: boolean; msg: string }): void;
+  timeOffReConnect(info: ConnectInfoProps): void;
   reConnect(status: boolean): void;
   network(info: NetworkStatusInfoTracker): void;
 }
@@ -103,14 +107,14 @@ export class SocketApi {
     SocketApi.setState({ isActiveReConnect: status });
     SocketApi.events.publish("reConnect", status);
   }
-  private static setInfoConnect = (info) => {
+  private static setInfoConnect = (info: ConnectInfoProps) => {
     if (!info.status) {
       SocketApi.close();
     }
-    SocketApi.setState({ isOfflineSocket: !info.status });
     SocketApi.events.publish("timeOffReConnect", info);
     SocketApi.setStatusReConnect(false);
   };
+
   private static online = () => {
     // SocketApi.setState({ isNetworkStatus: true });
 
@@ -204,6 +208,10 @@ export class SocketApi {
 
     SocketApi.setOptions(SocketApiOptions);
     SocketApi.wsApi.init(WsOptions);
+
+    SocketApi.wsApi.events.subscribe("status", (status) => {
+      SocketApi.setState({ isOfflineSocket: status !== "ready" });
+    });
   };
 
   static async connect() {
@@ -316,6 +324,10 @@ export class SocketApi {
       const { timeReConnect, numberOfRepit } = SocketApi.wsApi.getOptions();
       const defaultNumberOfRepit = 3;
       const countAction = numberOfRepit && numberOfRepit > 1 ? numberOfRepit - 1 : defaultNumberOfRepit;
+      /*
+        Как будто отрабатывает catch где выдаёт isOfflineSocket: true и после бывает socket ready
+        Получается есть модалка и при этом работает сокет, чего не должно быть
+      */
       const delayControlActionEvery = SocketApi.delay.startActionEvery(
         () => {
           console.log("reconnect:>>delay");
@@ -346,7 +358,11 @@ export class SocketApi {
           SocketApi.setInfoConnect(info);
         })
         .catch((info) => {
-          //INFO: Проверить работу
+          if (SocketApi.wsApi.getStatusSocket() === "ready") {
+            console.log("Сокет успел подключиться, игнорируем ошибку таймаута");
+            SocketApi.setInfoConnect({ status: true, msg: "Подключено (восстановлено)"});
+            return;
+          }
           SocketApi.setInfoConnect(info);
         });
     } else {
@@ -375,7 +391,6 @@ export class SocketApi {
         cb: undefined,
       });
 
-    
       let timeoutId: NodeJS.Timeout;
       if (options?.timeout) {
         timeoutId = setTimeout(() => {
@@ -384,7 +399,6 @@ export class SocketApi {
         }, options.timeout);
       }
 
-      
       const handleError = (error: any) => {
         cleanup();
         reject(error);

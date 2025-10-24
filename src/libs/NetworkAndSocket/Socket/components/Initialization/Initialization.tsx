@@ -57,13 +57,20 @@ const InitializationMemo:FC<InitializationSocketProps> = (props) => {
     // });
     SocketApi.on("status", (status) => {
       const stateSocket = socketStore.getState();
-      const { isReadySocket } = stateSocket
+      const { isReadySocket, infoNoConnectServer: { isModal:isModalNoConnectServer }, isOfflineSocket } = stateSocket;
    
-      if(status !== 'ready' && isReadySocket){
-         socketActions.setStatusReady({ isReadySocket: false });
-      }
+      (status !== 'ready' && isReadySocket) && socketActions.setStatusReady({ isReadySocket: false });
+  
+      
       if(!isReadySocket && status === 'ready'){
         socketActions.setStatusReady({ isReadySocket: true });
+
+        if(isModalNoConnectServer && isOfflineSocket){
+          console.log('Вырубаем модалку т.к. сокет законектился после окончания timeOffReConnect')
+          socketActions.setInfoNoConnectServer({isModal: false});
+          socketActions.setIsOfflineSocket({isOfflineSocket: false});
+        }
+
       }
       socketActions.setStatusConnectSocket({ statusConnect: status });
     });
