@@ -101,3 +101,6 @@
       socketActions.setInfoNoConnectServer({isModal: false});
       socketActions.setIsOfflineSocket({isOfflineSocket: false});
 - Так же перенесено изменение isOfflineSocket в SocketApi. Теперь привязано к событию wsApi status
+## [1.1.50] - 2025-11-24
+### Change
+- useRequestSocketApi: Добавлена проверка готовности сокета и авто запрос по готовности
