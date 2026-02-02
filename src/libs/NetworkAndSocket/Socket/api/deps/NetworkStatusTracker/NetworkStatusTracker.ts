@@ -28,23 +28,16 @@ export class NetworkStatusTracker {
       typeNetwork: this.getTypeNetwork(this.getConnection(), isNetwork)
     };
   }
-  // private getFetchOptions = (controller: AbortController) => ({
-  //   method: 'HEAD',
-  //   cache: 'no-store',
-  //   signal: controller.signal,
-  //   headers: {
-  //     'Cache-Control': 'no-cache, no-store, must-revalidate',
-  //     'Pragma': 'no-cache',
-  //     'Expires': '0'
-  //   }
-  // } as const);
+
   private getConnection():any { return (window as any)?.navigator?.connection; }
 
 
   private getIsNetwork = (typeNetwork:string) => !['unknown', 'none'].includes(typeNetwork);
-  private getTypeNetwork = ({ effectiveType, type }: NetworkInfoConnection, isOnlineFetch: boolean | null) => (
-    isOnlineFetch || isOnlineFetch === null ? effectiveType || type || "none" : "none"
-  )
+  private getTypeNetwork = (props: NetworkInfoConnection, isOnlineFetch: boolean | null) => {
+ 
+      //  isOnlineFetch || isOnlineFetch === null ? effectiveType || type || "none" : "none"
+    return isOnlineFetch || isOnlineFetch === null ? "4g" : "none"
+  }
 
   private updateState(isOnlineFetch: boolean, onStatusChange?: OnStatusChange): void {
     const info:NetworkStatusInfoTracker = {
