@@ -107,3 +107,6 @@
 ## [1.1.51] - 2026-02-02
 ### Change
 - NetworkStatusTracker: Изменено поведение getTypeNetwork т.к. возникают проблемы на safari
+## [1.2.01] - 2026-02-02
+### Added
+- Доабавлена зависимость dev-classes. Перенесён NetworkStatusTracker

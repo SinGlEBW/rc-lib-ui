@@ -2,11 +2,12 @@ import uuid4 from "uuid4";
 import { DelaysPromise } from "./deps/DelaysPromise";
 import { EventSubscribers } from "./deps/EventSubscribers/EventSubscribers";
 
-import { NetworkStatusTracker } from "./deps/NetworkStatusTracker/NetworkStatusTracker";
-import type { NetworkStatusInfoTracker } from "./deps/NetworkStatusTracker/NetworkStatusTracker.types";
+
+
 import { WsApi, WsApi_Options_P } from "./deps/WsApi";
 import type { WsApi_Events } from "./deps/WsApi/WsApi.types";
 import type { BasePayloadSocket, SocketApi_Options_P, SocketApi_StateProps_P, SocketApiOptionsRequest, SocketResponse } from "./SocketApi.types";
+import { NetworkStatusTracker, NetworkStatusInfoTracker } from 'dev-classes'
 /*
   TODO: Передавать опции
   SocketApi.init({
