@@ -1,57 +1,12 @@
 import uuid4 from "uuid4";
 import { DelaysPromise } from "./deps/DelaysPromise";
 import { EventSubscribers } from "./deps/EventSubscribers/EventSubscribers";
-
-
-
 import { WsApi, WsApi_Options_P } from "./deps/WsApi";
 import type { WsApi_Events } from "./deps/WsApi/WsApi.types";
+
 import type { BasePayloadSocket, SocketApi_Options_P, SocketApi_StateProps_P, SocketApiOptionsRequest, SocketResponse } from "./SocketApi.types";
 import { NetworkStatusTracker, NetworkStatusInfoTracker } from 'dev-classes'
-/*
-  TODO: Передавать опции
-  SocketApi.init({
-    isReconnect: true//Если появиться интернет
-  })
-*/
 
-// class NetworkPC  {
-//   getControls:INetworkItemControls['getControls'] = () => ({
-//     keyNameSystem: 'pc',
-//     getInfo: () => {
-//       const isNetwork = typeof navigator !== 'undefined' ? navigator.onLine : true;
-//       const effectiveType = (navigator as any)?.connection?.effectiveType;
-//       const typeNetwork = isNetwork ? effectiveType ? effectiveType : "4g"  : "none";
-//       return { isNetwork, typeNetwork }
-//     },
-//     getinfoPromise: () => new Promise((resolve) => {
-//       // networkControl.checkStatus( () => {}, {})
-//       // const { stop } = networkControl.monitorNetwork(
-//       //   (state) => {
-//       //     if(isNetwork !== state.isOnline){
-
-//       //       resolve({ isNetwork, typeNetwork })
-//       //     }
-//       //   },
-//       //   { interval: 3000 }
-//       // );
-
-//     })
-//   });
-// }
-
-// class NetworkCordova {
-//   private getIsNetwork = (status:string) => !["none", "unknown", undefined].includes(status);
-//   getControls:INetworkItemControls['getControls'] = () => ({
-//     keyNameSystem: 'cordova',
-//     getInfo: () => {
-//        const effectiveType = (navigator as any)?.connection?.type;
-//        const isNetwork = this.getIsNetwork(effectiveType);
-//        const typeNetwork = effectiveType ? effectiveType  : "none";
-//       return { isNetwork, typeNetwork }
-//     }
-//   })
-// }
 
 interface ConnectInfoProps {
   status: boolean;
@@ -70,7 +25,6 @@ export class SocketApi {
     isDisconnect: true,
     isActiveReConnect: false,
     isOfflineSocket: true,
-
     isGotWasFirstConnection: false,
     isStartCheckNetwork: false, //не используеться
   };
@@ -81,8 +35,6 @@ export class SocketApi {
 
   private static wsApi = new WsApi();
   private static delay = new DelaysPromise();
-
-  // private static internetControl:NetworkControls | null = null
   private static networkTicker: NetworkStatusTracker | null = null;
   private static events = new EventSubscribers<SocketApi_Events>(["timeOffReConnect", "reConnect", "network"]);
   private static saveID: Partial<Record<"idReConnect" | "checkConnect", number | null>> = {
