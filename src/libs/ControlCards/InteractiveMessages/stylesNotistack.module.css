@@ -1,0 +1,7 @@
+.notistack-SnackbarContainer{
+  /* max-width: 100% !important; */
+  width: 100% !important;
+  z-index: 1000 !important;
+  top: calc(env(safe-area-inset-top) + 15px) !important;
+  bottom: calc(env(safe-area-inset-bottom) + 14px) !important;
+}
