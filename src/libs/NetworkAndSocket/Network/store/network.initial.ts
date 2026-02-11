@@ -1,7 +1,7 @@
 
-import { type InitialStatePropsNetwork } from "./network.types";
+import { type NetworkInitialStateProps } from "./network.types";
 
-const initialState:InitialStatePropsNetwork = {
+const initialState:NetworkInitialStateProps = {
   isNetwork: null as null | boolean,
   typeNetwork: '',
   infoNetwork: {
@@ -17,7 +17,7 @@ const initialState:InitialStatePropsNetwork = {
 const defaultInitialState:typeof initialState = JSON.parse(JSON.stringify(initialState));
 
 export {
-  defaultInitialState,
-  initialState
+    defaultInitialState,
+    initialState
 };
 

@@ -1,11 +1,11 @@
 import { create } from 'zustand';
 import { defaultInitialState, initialState } from './network.initial';
-import { InitialStatePropsNetwork, type NetworkActions } from './network.types';
+import { NetworkInitialStateProps, type NetworkActionsProps } from './network.types';
 
 
-export const storeNetwork = create<InitialStatePropsNetwork>(() => (initialState));
+export const storeNetwork = create<NetworkInitialStateProps>(() => (initialState));
 
-export const networkActions:NetworkActions = {
+export const networkActions:NetworkActionsProps = {
   resetState: () => storeNetwork.setState(defaultInitialState),
   setTypeNetwork: ({typeNetwork}) => storeNetwork.setState({typeNetwork}),
   setNetworkStatus: ({isNetwork}) => storeNetwork.setState({isNetwork}),
@@ -13,11 +13,11 @@ export const networkActions:NetworkActions = {
 };
 
 export const networkSelectors = {
-  getNetworkStatus: (state:InitialStatePropsNetwork) => state.isNetwork,
-  getTypeNetwork: (state:InitialStatePropsNetwork) => state.typeNetwork,
-  getInfoNetworkStatus: (state:InitialStatePropsNetwork) => state.infoNetwork,
+  getNetworkStatus: (state:NetworkInitialStateProps) => state.isNetwork,
+  getTypeNetwork: (state:NetworkInitialStateProps) => state.typeNetwork,
+  getInfoNetworkStatus: (state:NetworkInitialStateProps) => state.infoNetwork,
 };
 
 
 
-export const useNetworkSelector = <TSelected>(selector: (state: InitialStatePropsNetwork) => TSelected ): TSelected => storeNetwork(selector);
+export const useNetworkSelector = <TSelected>(selector: (state: NetworkInitialStateProps) => TSelected ): TSelected => storeNetwork(selector);

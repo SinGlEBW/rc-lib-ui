@@ -1,7 +1,7 @@
 type NetworkActive_OR = '' | 'active';
 type NetworkKey_OR = '' | 'online' | 'offline';
 
-interface InitialStatePropsNetwork {
+interface NetworkInitialStateProps {
   isNetwork: boolean | null;
   typeNetwork: string;
   infoNetwork: {
@@ -14,12 +14,13 @@ interface InitialStatePropsNetwork {
   }
 }
 
-interface NetworkActions {
+interface NetworkActionsProps {
   resetState: () => void;
-  setTypeNetwork: (payload: Pick<InitialStatePropsNetwork,'typeNetwork'>) => void;  
-  setNetworkStatus: (payload: Pick<InitialStatePropsNetwork,'isNetwork'>) => void;      
-  setInfoNetworkStatus: (payload: Pick<InitialStatePropsNetwork, 'infoNetwork'>) => void;      
+  setTypeNetwork: (payload: Pick<NetworkInitialStateProps,'typeNetwork'>) => void;  
+  setNetworkStatus: (payload: Pick<NetworkInitialStateProps,'isNetwork'>) => void;      
+  setInfoNetworkStatus: (payload: Pick<NetworkInitialStateProps, 'infoNetwork'>) => void;      
 }
 
 
-export { type InitialStatePropsNetwork, type NetworkActions };
+export { type NetworkActionsProps, type NetworkInitialStateProps };
+

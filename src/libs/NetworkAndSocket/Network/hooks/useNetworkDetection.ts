@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useRef } from "react";
-import type { InitialStatePropsNetwork } from "../store/network.types";
+import { useCallback, useEffect, useRef } from "react";
 import { networkActions } from "../store/network.store";
+import type { NetworkInitialStateProps } from "../store/network.types";
 
 export interface UseNetworkDetectionProps {
   isNetwork: boolean;
-  getStatus?: (payload: InitialStatePropsNetwork["infoNetwork"]) => void;
+  getStatus?: (payload: NetworkInitialStateProps["infoNetwork"]) => void;
 }
 
 export const useNetworkDetection = (props: UseNetworkDetectionProps) => {
@@ -29,7 +29,7 @@ export const useNetworkDetection = (props: UseNetworkDetectionProps) => {
   /*############------------<{ Helpers }>------------############ */
 
   const setInfo = useCallback(
-    (payload: InitialStatePropsNetwork["infoNetwork"]) => {
+    (payload: NetworkInitialStateProps["infoNetwork"]) => {
       networkActions.setInfoNetworkStatus({ infoNetwork: payload });
       typeof getStatus === "function" && getStatus(payload);
     },
@@ -50,7 +50,7 @@ export const useNetworkDetection = (props: UseNetworkDetectionProps) => {
         keyActive === "online" && (resetPayload.action = "");
 
         // setStateHelpers(resetPayload)
-        const payload: InitialStatePropsNetwork["infoNetwork"] = { offline: "", online: "", status: isNetwork, action: "", titleOnline: "", titleOffline: "" };
+        const payload: NetworkInitialStateProps["infoNetwork"] = { offline: "", online: "", status: isNetwork, action: "", titleOnline: "", titleOffline: "" };
         setInfo(payload);
         clearTimeout(idTimeout);
       }, 3000);
