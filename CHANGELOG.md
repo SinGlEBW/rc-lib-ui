@@ -110,3 +110,6 @@
 ## [1.2.01] - 2026-02-02
 ### Added
 - Доабавлена зависимость dev-classes. Перенесён NetworkStatusTracker
+## [1.2.10] - 2026-02-11
+### Added
+- Доабавлен раздел rc-lib-ui/network

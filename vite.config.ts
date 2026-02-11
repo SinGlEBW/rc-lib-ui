@@ -36,8 +36,8 @@ export default defineConfig({
     lib: {
       entry: {
         index: entryPathLib + '/index.ts',
-        // network: entryPathLib +'/NetworkAndSocket/Socket/index.ts',
         socket: entryPathLib +'/NetworkAndSocket/Socket/index.ts',
+        network: entryPathLib +'/NetworkAndSocket/Network/index.ts',
         preloaders: entryPathLib +'/Preloaders/index.ts',
         dashboard: entryPathLib +'/Dashboard/index.ts',
       },

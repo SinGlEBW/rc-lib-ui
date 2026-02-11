@@ -6,6 +6,7 @@ import { socketActions, socketSelectors, socketStore } from '@libs/NetworkAndSoc
 // import { Preloaders } from 'rc-lib-ui'
 import { Archive } from '@mui/icons-material';
 import { Chip } from '@mui/material';
+import { Network } from '@libs/NetworkAndSocket/Network';
 
 // import { SocketApi } from 'lib-socket-api';
 
@@ -99,7 +100,8 @@ export const App = () => {
       }}/>
       <Socket.ConnectDetection />
       <Socket.ReConnectButton children={(actions) => <span>asdsadassa</span>} />
-      <Network.Detection /> */}
+      */}
+      {/* <Network.Render   />  */}
 
       <Dashboard
         ref={dashboardControlRef}
@@ -147,7 +149,7 @@ export const App = () => {
             Maiores magnam, placeat, ullam et magni nam ipsa voluptates ratione cupiditate dignissimos, porro hic a eligendi autem consequuntur nemo ut quaerat dolor sint? Molestias, incidunt distinctio magni facere magnam soluta!
             <div style={{position: 'relative'}}>
 
-            <Socket.OfflineDetection isNetwork={false} sx={{  }} />
+            {/* <Socket.OfflineDetection isNetwork={false} sx={{  }} /> */}
             </div>
           </div>
         )}

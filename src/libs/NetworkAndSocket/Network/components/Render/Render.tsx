@@ -4,9 +4,10 @@ import type { SxProps } from '@mui/material';
 import { useNetworkSelector, networkSelectors } from '../../store/network.store';
 import { Box } from '@mui/system';
 import s from './Render.module.css';
+import { useNetworkDetection, type UseNetworkDetectionProps } from '../../hooks/useNetworkDetection';
 
 
-export interface NetworkWatcherRenderProps {
+export interface NetworkWatcherRenderProps extends UseNetworkDetectionProps{
   isTitle?: boolean;
   // position?: 'bottom' | 'top';
   className?: string;
@@ -18,12 +19,10 @@ export interface NetworkWatcherRenderProps {
 
 
 
-const NetworkWatcherRenderMemo: FC<NetworkWatcherRenderProps> = ({ className = '', isTitle = true, sxTitle, sx, sxItem, ...props }) => {
+const NetworkWatcherRenderMemo: FC<NetworkWatcherRenderProps> = ({ className = '', isTitle = true, sxTitle, sx, sxItem, isNetwork, getStatus, ...props }) => {
+  useNetworkDetection({ isNetwork,  getStatus});
   const { online, offline, action, titleOnline = 'В сети', titleOffline = 'Нет сети' } = useNetworkSelector(networkSelectors.getInfoNetworkStatus);
-  // const watchClassName = {
-  //   [`${s.minBottom}`]: position === 'bottom'
-  // }
-
+ 
   return (
     <Box className={cn(s.watcher, className)} sx={sx} >
       <Box className={cn(s.watcherItem, `bg-gradient bg-danger text-white`, { [`${s.active}`]: offline })} sx={sxItem}>
@@ -38,6 +37,7 @@ const NetworkWatcherRenderMemo: FC<NetworkWatcherRenderProps> = ({ className = '
 
 export const Render = React.memo(NetworkWatcherRenderMemo);
 
+
 const RenderTitle = ({ isTitle, title, sxTitle }) => {
   return (
     <>
@@ -46,7 +46,6 @@ const RenderTitle = ({ isTitle, title, sxTitle }) => {
           <Box component={'span'} className={s.watcherItemTitleSpan}>
             {title}
           </Box>
-
         </Box>
       )}
     </>

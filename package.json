@@ -17,6 +17,10 @@
       "import": "./dist/socket.js",
       "types": "./dist/NetworkAndSocket/Socket/index.d.ts"
     },
+    "./network": {
+      "import": "./dist/network.js",
+      "types": "./dist/NetworkAndSocket/Network/index.d.ts"
+    },
     "./preloaders": {
       "import": "./dist/preloaders.js",
       "types": "./dist/Preloaders/index.d.ts"
