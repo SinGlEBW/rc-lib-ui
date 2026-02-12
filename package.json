@@ -30,7 +30,7 @@
       "types": "./dist/Dashboard/index.d.ts"
     },
     "./control-cards": {
-      "import": "./dist/dashboard.js",
+      "import": "./dist/control-cards.js",
       "types": "./dist/ControlCards/index.d.ts"
     }
   },

@@ -116,3 +116,6 @@
 ## [1.2.12] - 2026-02-11
 ### Added
 - Доабавлен раздел rc-lib-ui/control-cards
+## [1.2.13] - 2026-02-11
+### Fixed
+- Исправлен импорт rc-lib-ui/control-cards
