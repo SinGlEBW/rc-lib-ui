@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef, type Dispatch, type SetStateAction } from 'react';
 import type { NetworkState, UseNetworkStatusConfig } from './useNetworkStatus.types';
+import { setStateDecorator } from '@libs/_helpers';
 
 const urls = [ 'https://www.gstatic.com/generate_204', 'https://connectivitycheck.gstatic.com/generate_204','/favicon.ico' ];
 const getFetchOptions = (controller: AbortController) => ({
@@ -14,9 +15,6 @@ const getFetchOptions = (controller: AbortController) => ({
 } as const);
 
 
-export function setStateDecorator<T, D> (state:T, setState:Dispatch<SetStateAction<D>>){
-  return (payload: Partial<typeof state>) => setState((prev) => ({...prev, ...payload}))
-}; 
 
 
 export const useNetworkStatus = ({ watch = true, timeout = 5000, checkInterval = 10000, ...props } : UseNetworkStatusConfig) => {  

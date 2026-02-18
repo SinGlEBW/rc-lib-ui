@@ -32,6 +32,10 @@
     "./control-cards": {
       "import": "./dist/control-cards.js",
       "types": "./dist/ControlCards/index.d.ts"
+    },
+    "./hooks": {
+      "import": "./dist/hooks.js",
+      "types": "./dist/hooks/index.d.ts"
     }
   },
   "files": [
@@ -54,7 +58,7 @@
     "send": "node publishVersion.js"
   },
   "dependencies": {
-    "dev-classes": "^1.4.39",
+    "dev-classes": "^1.5.2",
     "notistack": "^3.0.2",
     "react-transition-group": "^4.4.5",
     "uuid4": "^2.0.3",

@@ -11,10 +11,6 @@ export interface InitializationSocketProps {
   onUnmount?: () => void
 }
 
-// function setStateDecorator<S, T>(state: S, setState: Dispatch<SetStateAction<T>>) {
-//   return (payload: Partial<S>) => setState((prev) => ({ ...prev, ...payload }));
-// }
-
 
 
 const InitializationMemo:FC<InitializationSocketProps> = (props) => {

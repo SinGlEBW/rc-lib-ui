@@ -41,6 +41,7 @@ export default defineConfig({
         preloaders: entryPathLib +'/Preloaders/index.ts',
         dashboard: entryPathLib +'/Dashboard/index.ts',
         'control-cards': entryPathLib +'/ControlCards/index.ts',
+        'hooks': entryPathLib +'/hooks/index.ts',
       },
       formats: ["es"],
       name: fullNameComponent,
