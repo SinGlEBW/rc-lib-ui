@@ -31,10 +31,6 @@ const InitializationMemo:FC<InitializationSocketProps> = (props) => {
     typeNetwork: '',
   });
 
-  console.group('InitializationSocket (Проверка внутреннего и внешнего статуса network)')
-    console.log('props:>>', props );
-    console.log('networkState:>>', networkState);
-  console.groupEnd()
 
   
 
