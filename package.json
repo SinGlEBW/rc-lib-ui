@@ -1,7 +1,7 @@
 {
   "name": "rc-lib-ui",
   "private": false,
-  "version": "1.2.15",
+  "version": "1.2.16-beta.0",
   "author": "SinGlEBW",
   "license": "MIT",
   "type": "module",
@@ -55,7 +55,8 @@
     "build": "tsc --project tsconfig.prod.json && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "send": "node publishVersion.js"
+    "send": "node publishVersion.js",
+    "build:dev": "node buildEditVersion.js"
   },
   "dependencies": {
     "dev-classes": "^1.5.2",

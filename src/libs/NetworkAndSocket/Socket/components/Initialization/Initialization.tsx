@@ -1,6 +1,7 @@
-import React, { useEffect, type FC } from "react";
+import React, { useEffect, useState, type FC } from "react";
 import { SocketApi } from '../../api';
 import { socketActions, socketSelectors, socketStore, useSocketSelector } from '../../store/socket.store';
+
 // import { networkActions, networkSelectors, useNetworkSelector } from '../Network/store/network.store';
 
 export interface InitializationSocketProps {
@@ -13,6 +14,7 @@ export interface InitializationSocketProps {
 
 
 
+//TODO: На Будущее сделать слушатели Network чтоб не передавть из вне эти статусы
 const InitializationMemo:FC<InitializationSocketProps> = (props) => {
   const { isNetwork, typeNetwork } = props;
 
@@ -24,19 +26,15 @@ const InitializationMemo:FC<InitializationSocketProps> = (props) => {
 
   const isDisableConnectSocket = useSocketSelector(socketSelectors.getIsDisableConnectSocket);
   const statusWS = useSocketSelector(socketSelectors.getStatusConnectSocket);
-  // const [state, setState] = useState({
-  //   isNetwork: false,
-  //   typeNetwork: '',
-  // });
+  const [networkState, setNetworkState] = useState({
+    isNetwork: false,
+    typeNetwork: '',
+  });
 
-  // console.group('Обновлнеие InitializationSocket')
-  //   console.log('isModalNoConnectServer:>>',isModalNoConnectServer );
-  //   console.log('isReConnectSocket:>>',isReConnectSocket );
-  //   console.log('typeNetwork:>>',typeNetwork );
-  //   console.log('isNetwork:>>',isNetwork );
-  //   console.log('isDisableConnectSocket:>>',isDisableConnectSocket );
-  //   console.log('statusWS:>>',statusWS );
-  // console.groupEnd()
+  console.group('InitializationSocket (Проверка внутреннего и внешнего статуса network)')
+    console.log('props:>>', props );
+    console.log('networkState:>>', networkState);
+  console.groupEnd()
 
   
 
@@ -47,10 +45,9 @@ const InitializationMemo:FC<InitializationSocketProps> = (props) => {
 
     SocketApi.init(props.init);        
     typeof props.onMount == 'function' &&  props.onMount();
-    // SocketApi.on("network", (info) => { console.log('network: ', info);
-      
-
-    // });
+    SocketApi.on("network", (info) => { console.log('network: ', info);
+      setNetworkState({ isNetwork: info.isNetwork, typeNetwork: info.typeNetwork });
+    });
     SocketApi.on("status", (status) => {
       const stateSocket = socketStore.getState();
       const { isReadySocket, infoNoConnectServer: { isModal:isModalNoConnectServer }, isOfflineSocket } = stateSocket;
