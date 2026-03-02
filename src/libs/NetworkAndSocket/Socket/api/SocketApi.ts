@@ -30,7 +30,7 @@ export class SocketApi {
   };
   private static options: SocketApi_Options_P = {
     isReConnectNetworkOnline: false,
-    listUrlsCheckConnectNetwork: ["https://www.google.com/favicon.ico"],
+    listUrlsCheckConnectNetwork: [],
   };
 
   private static wsApi = new WsApi();

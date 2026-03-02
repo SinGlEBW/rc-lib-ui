@@ -5,7 +5,7 @@ import { socketActions, socketSelectors, socketStore, useSocketSelector } from '
 // import { networkActions, networkSelectors, useNetworkSelector } from '../Network/store/network.store';
 
 export interface InitializationSocketProps {
-  init: Omit<Parameters< typeof SocketApi.init>[0], 'listUrlsCheckConnectNetwork'>//Пока исключил. Запросов на сервер не делаю
+  init: Parameters< typeof SocketApi.init>[0]
   isNetwork: boolean;
   typeNetwork: string;
   onMount?: () => void
