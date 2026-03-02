@@ -142,7 +142,7 @@ export class SocketApi {
   };
   static init = (options: WsApi_Options_P & SocketApi_Options_P) => {
     const { WsOptions, SocketApiOptions } = SocketApi.splitOptions(options);
-    // SocketApi.internetControl = new NetworkControls(SocketApiOptions.listUrlsCheckConnectNetwork ?? []);
+
     //TODO: Возможно пересмотреть подход
     //INFO: Убрал для проверки internetControlDelay
     /*#################-----------<{ Убрал 21.08.2025 }>------------############# */
@@ -154,7 +154,9 @@ export class SocketApi {
     this.networkTicker = new NetworkStatusTracker(SocketApiOptions.listUrlsCheckConnectNetwork ?? []);
     this.networkTicker.startEvents((info) => {
       SocketApi.setNetworkStatus(info);
+      console.log('инициализация startEvents')
     });
+    console.log('после инициализации startEvents')
     // this.networkTicker.fetchingNetwork
     //INFO: Через networkTicker можно реализовать отслеживание интернета через запросы на сервера
     /*-----------------------------------------------------------------------------------------*/
@@ -171,54 +173,7 @@ export class SocketApi {
     if (!SocketApi.wsApi.getIsInitWS()) {
       return;
     }
-    //INFO: Добавлено вместо internet
-    // const infoNetwork = SocketApi.internetControlDelay.getNetworkInfo();
-    // SocketApi.setNetworkStatus(infoNetwork)
 
-    /*#################-----------<{ Добавил 21.08.2025 }>------------############# */
-    // const { isStartCheckNetwork, isActiveReConnect, isGotWasFirstConnection } = SocketApi.getState();
-    // if(!isGotWasFirstConnection){
-    //   debugger
-    //   (SocketApi.internetControl as NetworkControls)?.getNetworkStatus((info) => {
-    //     debugger
-    //     SocketApi.setNetworkStatus(info);
-    //     SocketApi.setState({ isGotWasFirstConnection: true });//Важно её положение
-    //   })
-
-    // }
-    // debugger
-    // if(isActiveReConnect && !isStartCheckNetwork){
-    //   SocketApi.setState({ isStartCheckNetwork: true })
-    //       debugger
-
-    //   const activeInterval:NetworkMonitorCallbackInterval = ({reset, sendNetworkInfo}) => {
-    //     //INFO: На случай если переданные listUrlsCheckConnectNetwork не отвечают или cors, но сокет есть
-    //     //Можно отключить по каким либо условиям сокета
-    //     //TODO: Если отобразил модалку
-
-    //     //TODO: Не забыть сделать isStartCheckNetwork = false
-
-    //     debugger
-    //     const { isOfflineSocket, isActiveReConnect } = SocketApi.getState();
-    //     if(SocketApi.getStatusSocket() === 'ready'){
-    //       reset();
-    //       sendNetworkInfo({isNetwork: true, typeNetwork: '4g'});
-    //     }
-
-    //     if(isOfflineSocket && !isActiveReConnect){
-    //       reset();
-    //     }
-    //   }
-
-    //   const watchInternetStatus:NetworkMonitorCallback = (info) => {
-    //     SocketApi.setNetworkStatus(info);
-    //     if(!SocketApi.state.isGotWasFirstConnection){
-    //       SocketApi.setState({ isGotWasFirstConnection: true })
-    //     }
-    //   }
-
-    //    SocketApi.internetControl?.motitorNetwirk(activeInterval, watchInternetStatus, { interval: 1000, isAutoStop: true })
-    // }
 
     /*-----------------------------------------------------------------------------------------*/
     console.log("CONNECT WS");
