@@ -122,3 +122,6 @@
 ## [1.2.14] - 2026-02-18
 ### Added
 - Добавлен импорт rc-lib-ui/hooks
+## [1.2.15] - 2026-03-02
+### Fixed
+- Socket.ConnectDetection теперь реагирует и на statusIsReConnectSocket

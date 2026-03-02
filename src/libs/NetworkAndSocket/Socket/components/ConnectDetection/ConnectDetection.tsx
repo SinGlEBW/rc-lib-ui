@@ -29,7 +29,8 @@ export interface SocketConnectDetectionProps extends Omit<StyledSocketDirectionP
 }
 const ConnectDetectionMemo: FC<SocketConnectDetectionProps> = ({ text = 'Происходит подключение к серверу', className, ...props }) => {
   const statusConnectSocket = useSocketSelector(socketSelectors.getStatusConnectSocket);
-  const is = statusConnectSocket === 'pending'
+  const statusIsReConnectSocket = useSocketSelector(socketSelectors.getStatusIsReConnectSocket);
+  const is = (statusConnectSocket === 'pending') || statusIsReConnectSocket; 
   return (
     <StyledSocketDirection
       in={is}
