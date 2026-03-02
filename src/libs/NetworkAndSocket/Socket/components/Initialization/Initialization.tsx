@@ -43,11 +43,11 @@ const InitializationMemo:FC<InitializationSocketProps> = (props) => {
 
   useEffect(() => {
 
-    SocketApi.init(props.init);        
-    typeof props.onMount == 'function' &&  props.onMount();
     SocketApi.on("network", (info) => { console.log('network: ', info);
       setNetworkState({ isNetwork: info.isNetwork, typeNetwork: info.typeNetwork });
     });
+    SocketApi.init(props.init);        
+    typeof props.onMount == 'function' &&  props.onMount();
     SocketApi.on("status", (status) => {
       const stateSocket = socketStore.getState();
       const { isReadySocket, infoNoConnectServer: { isModal:isModalNoConnectServer }, isOfflineSocket } = stateSocket;
