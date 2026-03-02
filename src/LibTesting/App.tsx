@@ -7,6 +7,7 @@ import { socketActions, socketSelectors, socketStore } from '@libs/NetworkAndSoc
 import { Archive } from '@mui/icons-material';
 import { Chip } from '@mui/material';
 import { Network } from '@libs/NetworkAndSocket/Network';
+import { Socket } from '@libs/NetworkAndSocket/Socket';
 
 // import { SocketApi } from 'lib-socket-api';
 
@@ -94,7 +95,20 @@ export const App = () => {
 
   return (
     <>
-      {/* <Socket.Initialization init={{
+      {/* <Socket.Initialization
+        onMount={() => {
+          // dispatch(InitSocketEvents())
+        }}
+        // isNetwork={true}
+        // typeNetwork={'4g'}
+        init={{
+          url: "wss://tmk.ivmis.ru/tm/",
+          timeReConnect: 5000,
+          isReConnectNetworkOnline: true,
+        }}
+      /> */}
+      {/*
+      <Socket.Initialization init={{
         url: 'wss://tmk.ivmis.ru/tm/',
         timeReConnect: 5000
       }}/>

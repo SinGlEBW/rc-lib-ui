@@ -6,8 +6,8 @@ import { socketActions, socketSelectors, socketStore, useSocketSelector } from '
 
 export interface InitializationSocketProps {
   init: Parameters< typeof SocketApi.init>[0]
-  isNetwork: boolean;
-  typeNetwork: string;
+  // isNetwork: boolean;
+  // typeNetwork: string;
   onMount?: () => void
   onUnmount?: () => void
 }
@@ -16,7 +16,7 @@ export interface InitializationSocketProps {
 
 //TODO: На Будущее сделать слушатели Network чтоб не передавть из вне эти статусы
 const InitializationMemo:FC<InitializationSocketProps> = (props) => {
-  const { isNetwork, typeNetwork } = props;
+  // const { isNetwork, typeNetwork } = props;
 
   const { isModal: isModalNoConnectServer  } = useSocketSelector(socketSelectors.getInfoNoConnectServer);
   const isReConnectSocket = useSocketSelector(socketSelectors.getStatusIsReConnectSocket)
@@ -40,7 +40,7 @@ const InitializationMemo:FC<InitializationSocketProps> = (props) => {
   useEffect(() => {
 
     SocketApi.on("network", (info) => { console.log('network: ', info);
-      setNetworkState({ isNetwork: info.isNetwork, typeNetwork: info.typeNetwork });
+      setNetworkState((prev) => ({...prev, isNetwork: info.isNetwork, typeNetwork: info.typeNetwork }));
     });
     SocketApi.init(props.init);        
     typeof props.onMount == 'function' &&  props.onMount();
@@ -97,23 +97,23 @@ const InitializationMemo:FC<InitializationSocketProps> = (props) => {
 
 
   useEffect(() => {
-    if(isNetwork && !isDisableConnectSocket) {
+    if(networkState.isNetwork && !isDisableConnectSocket) {
       
-      if (!isModalNoConnectServer && !isReConnectSocket && ['close'].includes(statusWS as any) && typeNetwork !== 'none') {
+      if (!isModalNoConnectServer && !isReConnectSocket && ['close'].includes(statusWS as any) && networkState.typeNetwork !== 'none') {
         console.log('Запущен socketReConnect');
         //TODO: При смене сети можно добавить снова открытие модалки даже если выбрали оффлайн
         SocketApi.socketReConnect();
       }
     }
-  }, [isDisableConnectSocket, isModalNoConnectServer, isReConnectSocket, statusWS, typeNetwork, isNetwork]);
+  }, [isDisableConnectSocket, isModalNoConnectServer, isReConnectSocket, statusWS, networkState.typeNetwork, networkState.isNetwork]);
 
   
   useEffect(() => {
-    if((isReConnectSocket && (!isNetwork || statusWS === 'ready'))){
+    if((isReConnectSocket && (!networkState.isNetwork || statusWS === 'ready'))){
       console.log('Запущен stopReConnect');
       SocketApi.stopReConnect();
     }
-  },[isReConnectSocket, isNetwork, statusWS]);
+  },[isReConnectSocket, networkState.isNetwork, statusWS]);
 
 
   useEffect(() => {

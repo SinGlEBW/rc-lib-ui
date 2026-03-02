@@ -225,7 +225,7 @@ export class SocketApi {
       return;
     }
 
-    console.log("reConnect");
+ 
     if (!SocketApi.saveID.idReConnect) {
       SocketApi.setStatusReConnect(true);
 

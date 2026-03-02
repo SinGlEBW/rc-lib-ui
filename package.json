@@ -1,7 +1,7 @@
 {
   "name": "rc-lib-ui",
   "private": false,
-  "version": "1.2.16-beta.5",
+  "version": "1.2.16-beta.6",
   "author": "SinGlEBW",
   "license": "MIT",
   "type": "module",
@@ -59,7 +59,7 @@
     "build:dev": "node buildEditVersion.js"
   },
   "dependencies": {
-    "dev-classes": "^1.5.3",
+    "dev-classes": "^1.5.5",
     "notistack": "^3.0.2",
     "react-transition-group": "^4.4.5",
     "uuid4": "^2.0.3",
