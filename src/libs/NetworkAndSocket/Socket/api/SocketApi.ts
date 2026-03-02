@@ -30,7 +30,7 @@ export class SocketApi {
   };
   private static options: SocketApi_Options_P = {
     isReConnectNetworkOnline: false,
-    listUrlsCheckConnectNetwork: ["https://jsonplaceholder.typicode.com/posts/1"],
+    listUrlsCheckConnectNetwork: ["https://www.google.com/favicon.ico"],
   };
 
   private static wsApi = new WsApi();
@@ -154,9 +154,9 @@ export class SocketApi {
     this.networkTicker = new NetworkStatusTracker(SocketApiOptions.listUrlsCheckConnectNetwork ?? []);
     this.networkTicker.startEvents((info) => {
       SocketApi.setNetworkStatus(info);
-      console.log('инициализация startEvents')
     });
-    console.log('после инициализации startEvents')
+    
+    
     // this.networkTicker.fetchingNetwork
     //INFO: Через networkTicker можно реализовать отслеживание интернета через запросы на сервера
     /*-----------------------------------------------------------------------------------------*/
@@ -188,6 +188,7 @@ export class SocketApi {
       SocketApi.wsApi.disconnect();
       SocketApi.resetState();
       SocketApi.events.resetSubscribers();
+      this.networkTicker?.destroy();
     }
   }
 
