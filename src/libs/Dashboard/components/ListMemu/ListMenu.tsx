@@ -127,7 +127,7 @@ const ListMenuMemo = forwardRef<HTMLUListElement, ListMenuProps>(({ styleList = 
                               >
                                 {
                                   icon && (
-                                    <RenderIcon icon={icon} sx={{...minWidthColumn, marginLeft: '0 !important'}}/>
+                                    <RenderIcon icon={icon} sx={{...minWidthColumn, marginLeft: '8px !important'}}/>
                                   )
                                 }
                                 <ListText

@@ -79,16 +79,19 @@ const listMenu = [
     action: <Chip label={7} color="primary" size="small" />,
   },
   {
-    // icon: <ListSharp />,
+    icon: <ListSharp />,
     title: <Typography sx={{color: 'red', fontWeight: 'bold'}}>Lists</Typography>,
     sx: {mx: 0}, 
     
     // action: popoverMenuAction,
     children: [
       { title: "List 1",
-        //  icon: <StarBorder /> 
+         icon: <StarBorder /> 
         },
-      { title: "List 2", icon: <StarBorder /> },
+      { 
+        title: "List 2", 
+        icon: <StarBorder /> 
+      },
     ],
   }
 
@@ -148,7 +151,7 @@ export const App = () => {
           minWidthColumn: {
             width: 53, //min 40
           },
-          position: "left",
+          position: "right",
         }}
         // HeaderContent={
         //   <header style={{ position: "fixed", zIndex: 1, width: "100%", backgroundColor: "#456789" }}>
