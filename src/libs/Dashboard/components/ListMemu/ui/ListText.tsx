@@ -6,7 +6,7 @@ import { Tooltips } from '@libs/Tooltips';
 
 export interface ListTextProps {
   isWrapText: boolean;
-  title: string;
+  title: React.ReactNode;
   sx?: SxProps<Theme>;
   unmount: boolean;
 }
@@ -21,7 +21,7 @@ const ListTextMemo: FC<ListTextProps> = ({ unmount, isWrapText, title, sx = {} }
         const textEl = textRef.current as HTMLParagraphElement;
         const id = setTimeout(() => {
           if (textEl?.offsetWidth && textEl?.scrollWidth > textEl?.offsetWidth) {
-            setTooltipText(title)
+            typeof title === 'string' && setTooltipText(title)
           }
           clearTimeout(id);
         }, 200)
