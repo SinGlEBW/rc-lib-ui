@@ -8,6 +8,7 @@ export interface ListButtonProps extends ListItemButtonProps {
   isWrapText: boolean;
 }
 
+
 export const ListButton = <C extends React.ElementType>({ sx = {}, isWrapText, isOpen, ...props }: ListItemButtonProps<C, { component?: C; }> & ListButtonProps) => {
   const buttonRef = useRef<HTMLElement>(null);
   const [state, setState] = useState(defaultState);
@@ -32,6 +33,7 @@ export const ListButton = <C extends React.ElementType>({ sx = {}, isWrapText, i
       minHeight={state.minHeight}
       ref={buttonRef}
       sx={sx}
-      {...props} />
+      {...props} 
+      />
   );
 };

@@ -1,13 +1,12 @@
-// import { Dashboard, DashboardProps, type DashboardControlProps } from '@lib/index';
-import { useRef } from 'react';
+
+import { Fragment, useRef } from 'react';
 import { Dashboard, DashboardProps, type DashboardControlProps } from '@libs/Dashboard';
 import { socketActions, socketSelectors, socketStore } from '@libs/NetworkAndSocket/Socket/store/socket.store';
 // import { Preloaders } from '../dist'
 // import { Preloaders } from 'rc-lib-ui'
-import { Archive } from '@mui/icons-material';
-import { Chip } from '@mui/material';
-import { Network } from '@libs/NetworkAndSocket/Network';
-import { Socket } from '@libs/NetworkAndSocket/Socket';
+import { Archive, ListSharp, MoreHoriz, StarBorder } from '@mui/icons-material';
+import { Chip, IconButton, Menu, MenuItem, Typography } from '@mui/material';
+
 
 // import { SocketApi } from 'lib-socket-api';
 
@@ -20,39 +19,39 @@ import { Socket } from '@libs/NetworkAndSocket/Socket';
 // const handlePopoverButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 //   event.stopPropagation();
 // };
-// const popoverMenuAction = (
-//   <Fragment>
-//     <IconButton onClick={handlePopoverButtonClick}>
-//       <MoreHorizIcon />
-//     </IconButton>
-//     <Menu
-//       open={false}
-//       anchorEl={null}
-//       onClose={() => { }}
-//       anchorOrigin={{
-//         vertical: 'bottom',
-//         horizontal: 'right',
-//       }}
-//       disableAutoFocus
-//       disableAutoFocusItem
-//     >
-//       <MenuItem onClick={() => { }}>New call</MenuItem>
-//       <MenuItem onClick={() => { }}>Mark all as read</MenuItem>
-//     </Menu>
-//   </Fragment>
-// );
+const popoverMenuAction = (
+  <Fragment>
+    <IconButton onClick={() => {}}>
+      <MoreHoriz />
+    </IconButton>
+    <Menu
+      open={false}
+      anchorEl={null}
+      onClose={() => { }}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right',
+      }}
+      disableAutoFocus
+      disableAutoFocusItem
+    >
+      <MenuItem onClick={() => { }}>New call</MenuItem>
+      <MenuItem onClick={() => { }}>Mark all as read</MenuItem>
+    </Menu>
+  </Fragment>
+);
 
 const listMenu = [
   {
-    icon: <Archive sx={{ width: 25 }} />,
+    // icon: <Archive sx={{ width: 25 }} />,
     title: 'Архив ddddddddddddddddddddddddddddddddsssssssssssssssssss',
-    to: '/test',
+    // to: '/test',
     action: <Chip label={7} color="primary" size="small" />,
   },
   {
     icon: <Archive sx={{ width: 25 }} />,
     title: 'Архив ddddddddddddddddddddddddddddddddsssssssssssssssssss',
-    to: '/test2',
+    // to: '/test2',
     action: <Chip label={7} color="primary" size="small" />,
   },
   {
@@ -64,21 +63,34 @@ const listMenu = [
   {
     icon: <Archive sx={{ width: 25 }} />,
     title: 'Архив ddddddddddddddddddddddddddddddddsssssssssssssssssss',
-    to: '/test4',
+    // to: '/test4',
     action: <Chip label={7} color="primary" size="small" />,
   },
   {
     icon: <Archive sx={{ width: 25 }} />,
     title: 'Архив ddddddddddddddddddddddddddddddddsssssssssssssssssss',
-    to: '/test5',
+    // to: '/test5',
     action: <Chip label={7} color="primary" size="small" />,
   },
   {
     icon: <Archive sx={{ width: 25 }} />,
     title: 'Архив ddddddddddddddddddddddddddddddddsssssssssssssssssss',
-    to: '/test6',
+    // to: '/test6',
     action: <Chip label={7} color="primary" size="small" />,
   },
+  {
+    // icon: <ListSharp />,
+    title: <Typography sx={{color: 'red', fontWeight: 'bold'}}>Lists</Typography>,
+    sx: {mx: 0}, 
+    
+    // action: popoverMenuAction,
+    children: [
+      { title: "List 1",
+        //  icon: <StarBorder /> 
+        },
+      { title: "List 2", icon: <StarBorder /> },
+    ],
+  }
 
 ] as DashboardProps['listMenu']
 
@@ -119,7 +131,7 @@ export const App = () => {
 
       <Dashboard
         ref={dashboardControlRef}
-        styleList='variant2'
+        styleList='variant1'
         listMenu={listMenu}
         Footer={
           <div style={{
@@ -136,7 +148,7 @@ export const App = () => {
           minWidthColumn: {
             width: 53, //min 40
           },
-          // position: "right",
+          position: "left",
         }}
         // HeaderContent={
         //   <header style={{ position: "fixed", zIndex: 1, width: "100%", backgroundColor: "#456789" }}>
@@ -148,6 +160,7 @@ export const App = () => {
         // }
         itemsProps={{MuiHeader: {AfterComponent: <div>Заголовок</div>}, }}
         statuses={{
+          isDefaultOpen: true,
           isHeaderDefault: true,
           isButtonCenterMenu: true,
           isMenu: true

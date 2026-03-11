@@ -28,7 +28,7 @@ export const RenderList = styled(List, {
       position: 'absolute',
       left: 0,
       right: 0,
-      
+
       borderRadius: 100,
       background: 'rgba(148,87,235, 0.4)',
       // border: 'none',
@@ -42,24 +42,26 @@ export const RenderList = styled(List, {
     },
     minWidth: styleList === 'variant1' ? '40px' : '53px',
 
-    '& .MuiCollapse-root .MuiButtonBase-root': {
-      marginLeft: theme.spacing(1.5),
-    },
-    ...(styleList === 'variant1') && {
+    // '& .MuiCollapse-root .MuiButtonBase-root': {
+    //   // marginLeft: theme.spacing(1.5),
+    // },
+    // ...(styleList === 'variant1') && {
+    //   '& .MuiCollapse-root .MuiButtonBase-root': {
+    //     paddingLeft: theme.spacing(1.5),
+    //   },
+    // },
+    // ...(styleList === 'variant2') && {
+    //   '& .MuiListItem-root': {
+    //     padding: `0 ${theme.spacing(1)}`,
+    //   },
+    //   '& .MuiButtonBase-root': {
+    //     borderRadius: '5px',
+    //     '&.Mui-selected': {
+    //       backgroundColor: 'rgba(33,150,243, 0.16)'
+    //     }
+    //   },
 
-    },
-    ...(styleList === 'variant2') && {
-      '& .MuiListItem-root': {
-        padding: `0 ${theme.spacing(1)}`,
-      },
-      '& .MuiButtonBase-root': {
-        borderRadius: '5px',
-        '&.Mui-selected': {
-          backgroundColor: 'rgba(33,150,243, 0.16)'
-        }
-      },
-
-    }
+    // }
   }
 })
 

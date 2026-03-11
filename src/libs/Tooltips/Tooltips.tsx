@@ -50,7 +50,7 @@ const variants = {
 }
 
 const TooltipsMemo:FC<TooltipsProps> = ({variant = 'default', ...props}) => {
-  const Component = variants[variant];
+  const Component = variants[variant] || variants['default'];
   return <Component {...props}/>
 };
 

@@ -1,16 +1,16 @@
-import React, { forwardRef, Fragment, useMemo, type ReactNode } from "react";
+import React, { forwardRef, Fragment, useMemo, useState, type ReactNode } from "react";
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import type { CSSObject } from '@mui/material';
 import { Collapse, List, ListItem, type SxProps, type Theme } from '@mui/material';
 import { ControlStatusItem } from '../../../common/ControlStatusItem';
-import { convertWidthToLeftPM } from './helpers';
 
 import { ListButton, ListButtonProps } from './ui/ListButton';
 import { ListText, type ListTextProps } from './ui/ListText';
 import { MuiNavLink } from './ui/MuiNavLink';
 import { RenderIcon, RenderIconProps } from './ui/RenderIcon';
 import { RenderList, type RenderListProps } from './ui/RenderList';
-
+import cn from 'classnames';
+import { StyledListItem } from './ui/styled';
 
 interface ItemListMenuCommonProps extends
   Pick<RenderIconProps, 'icon'>,
@@ -39,45 +39,61 @@ export interface ListMenuProps extends RenderListProps {
   className?: string;
   isWrapText?: boolean;
   size?: 'normal' | 'small';
+  isRight?: boolean;
   columnMenu: {
     initWidth: number;
+
     minWidthColumn: Pick<CSSObject, 'width'>;
   };
 }
 
 
+const getDefaultPadding = ({isIcon}) => {
+  return {['paddingRight']: 1.2, ...(!isIcon && { ['paddingLeft']: 1.2 })}
+}
 
-const ListMenuMemo = forwardRef<HTMLUListElement, ListMenuProps>(({ styleList = 'variant1', columnMenu, isWrapText = false, listMenu, isOpen, sx, className }, ref) => {
+
+const ListMenuMemo = forwardRef<HTMLUListElement, ListMenuProps>(({ styleList = 'variant1', isRight, columnMenu, isWrapText = false, listMenu, isOpen, sx, className }, ref) => {
   const { minWidthColumn } = columnMenu;
-  const mlSx = useMemo(() => convertWidthToLeftPM(minWidthColumn, { newProp: 'marginLeft'}), [minWidthColumn])
+  const [muiSelected, setID] = useState('')
 
-
+ 
   const childrenList = useMemo(() => {
     return (listMenu).map(({ action, icon, title, sx = {}, onClick, children, to, }, index) => {
-
+      const key = `${index}`;
+      const handleClick1 = (e) => {
+        setID(key);
+        onClick && onClick(e);
+      }
       if (children && Array.isArray(children)) {
         return (
           <Fragment key={index}>
             <ControlStatusItem
+              defaultStatus={isOpen}
               render={(config) => (
                 <>
-                  <ListItem disablePadding sx={sx}>
-                    <RenderIcon
-                      icon={icon}
-                      sx={minWidthColumn}
-                    />
+                  <StyledListItem disablePadding sx={sx} visual={styleList}>
                     <ListButton
-                      isOpen={isOpen}
+                      isOpen={config.is}
                       isWrapText={isWrapText}
                       onClick={(e) => {
                         config.handleToggle();
                         typeof onClick === 'function' && onClick(e);
                       }}
+                      sx={{...getDefaultPadding({isIcon: icon}) }}
                     >
+                      {
+                        icon && (
+                          <RenderIcon
+                            icon={icon}
+                            sx={minWidthColumn}
+                          />
+                        )
+                      }
                       <ListText
                         unmount={!isOpen}
                         title={title}
-                        sx={{ flexGrow: 1, ...mlSx, }}
+                        sx={{ flexGrow: 1}}
                         isWrapText={isWrapText}
                       />
                       {
@@ -89,36 +105,39 @@ const ListMenuMemo = forwardRef<HTMLUListElement, ListMenuProps>(({ styleList = 
                         )
                       }
                     </ListButton>
-                  </ListItem>
+                  </StyledListItem>
                   <Collapse in={config.is && isOpen} timeout="auto" unmountOnExit>
                     <List disablePadding >
                       {
                         children.map(({ action, icon, title, to, sx = {}, onClick }, inx) => {
-                   
+                          const key = `${index}-${inx}`;
+                          const handleClick2 = (e) => {
+                            setID(key);
+                            onClick && onClick(e);
+                          }
                           return (
-                            <ListItem key={`${index}-${inx}`} disablePadding sx={sx}>
+                            <StyledListItem key={key} disablePadding sx={sx} visual={styleList}>
                               <ListButton
-                                to={to}
-                                component={MuiNavLink}
-                                sx={({ spacing }) => ({ ...(!icon && { paddingLeft: spacing(2) } )})}
+                                sx={{ ['paddingRight']: 1.2, ...(!icon && { ['paddingLeft']: 2.5 }) }}
                                 isOpen
-                                onClick={onClick as any}
+                                onClick={handleClick2}
                                 isWrapText={isWrapText}
+                                {...(to ? { to, component: MuiNavLink } : { to: '', className: cn({ 'Mui-selected': muiSelected === key }) })}
+
                               >
-                                <RenderIcon
-                                  icon={icon}
-                                  sx={minWidthColumn}
-                                />
+                                {
+                                  icon && (
+                                    <RenderIcon icon={icon} sx={{...minWidthColumn, marginLeft: '0 !important'}}/>
+                                  )
+                                }
                                 <ListText
-                                  sx={() => ({ ...(icon && mlSx) })}
                                   unmount={!isOpen}
                                   title={title}
                                   isWrapText={isWrapText}
                                 />
                                 {isOpen && action}
-
                               </ListButton>
-                            </ListItem>
+                            </StyledListItem>
                           )
                         })
                       }
@@ -129,17 +148,29 @@ const ListMenuMemo = forwardRef<HTMLUListElement, ListMenuProps>(({ styleList = 
           </Fragment>
         )
       }
+
       return (
-        <ListItem key={index} disablePadding sx={sx}>
-          <RenderIcon icon={icon} sx={minWidthColumn}  />
-          <ListButton component={MuiNavLink} to={to as string} isOpen={isOpen} onClick={onClick as any} isWrapText={isWrapText} >
-            <ListText sx={mlSx} unmount={!isOpen} title={title} isWrapText={isWrapText} />
+        <StyledListItem key={index} disablePadding sx={sx} visual={styleList} >
+          <ListButton
+            isOpen={isOpen}
+            onClick={handleClick1}
+            isWrapText={isWrapText}
+            {...(to ? { to, component: MuiNavLink } : { to: '', className: cn({ 'Mui-selected': muiSelected === key }) })}
+            sx={{...getDefaultPadding({isIcon: icon}) }}
+
+          >
+            {icon && <RenderIcon icon={icon} sx={minWidthColumn} />}
+            <ListText
+              unmount={!isOpen}
+              title={title}
+              isWrapText={isWrapText}
+            />
             {isOpen && action}
           </ListButton >
-        </ListItem>
+        </StyledListItem>
       )
     })
-  }, [listMenu, isOpen, mlSx])
+  }, [listMenu, isOpen, muiSelected, isRight, getDefaultPadding])
 
   return (
     <RenderList
@@ -153,6 +184,7 @@ const ListMenuMemo = forwardRef<HTMLUListElement, ListMenuProps>(({ styleList = 
 });
 
 export const ListMenu = React.memo(ListMenuMemo);
+
 
 
 

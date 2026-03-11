@@ -190,8 +190,10 @@ const DashboardMemo = forwardRef<DashboardControlProps, DashboardProps>(({ Foote
       }}>
         <ListMenu
           ref={listRef}
+          isRight={isRight}
           columnMenu={{
             initWidth,
+         
             ...(isScrollIndentation
               ? { minWidthColumn: convertWidthToLeftPM(minWidthColumn, { newProp: 'width', positionCorrect: `- ${state.widthScroll}px` }) }
               : { minWidthColumn })

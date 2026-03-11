@@ -25,7 +25,6 @@ const ListTextMemo: FC<ListTextProps> = ({ unmount, isWrapText, title, sx = {} }
           }
           clearTimeout(id);
         }, 200)
-      
     }
   },[title, unmount])
 
@@ -48,8 +47,8 @@ export const ListText = React.memo(ListTextMemo);
 
 const TextWithTooltips = forwardRef<HTMLParagraphElement, Pick<ListTextProps, 'title' | 'sx'> & { tooltipText: string }>(({ tooltipText, title, sx }, ref) => {
   return (
-    <Tooltips variant='default' title={tooltipText}>
-      <Typography ref={ref} children={title} noWrap={true} sx={sx} />
+    <Tooltips variant='default' title={tooltipText} >
+      <Typography component="span" ref={ref} children={title} noWrap={true} sx={sx} />
     </Tooltips>
   )
 });
