@@ -37,7 +37,7 @@ const ListTextMemo: FC<ListTextProps> = ({ unmount, isWrapText, title, sx = {} }
  
   return (
     !unmount && (
-      <Typography children={title} sx={{ textWrap: 'wrap', overflowWrap: 'break-word', ...sx }} />
+      <Typography  children={title} sx={{ textWrap: 'wrap', overflowWrap: 'break-word', ...sx }} />
     )
   )
 };
@@ -48,7 +48,7 @@ export const ListText = React.memo(ListTextMemo);
 const TextWithTooltips = forwardRef<HTMLParagraphElement, Pick<ListTextProps, 'title' | 'sx'> & { tooltipText: string }>(({ tooltipText, title, sx }, ref) => {
   return (
     <Tooltips variant='default' title={tooltipText} >
-      <Typography component="span" ref={ref} children={title} noWrap={true} sx={sx} />
+      <Typography component="div" ref={ref} children={title} noWrap={true} sx={{...sx, width: '100%'}} />
     </Tooltips>
   )
 });

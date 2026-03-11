@@ -5,7 +5,7 @@ import { socketActions, socketSelectors, socketStore } from '@libs/NetworkAndSoc
 // import { Preloaders } from '../dist'
 // import { Preloaders } from 'rc-lib-ui'
 import { Archive, ListSharp, MoreHoriz, StarBorder } from '@mui/icons-material';
-import { Chip, IconButton, Menu, MenuItem, Typography } from '@mui/material';
+import { Box, Chip, IconButton, Menu, MenuItem, Skeleton, Typography } from '@mui/material';
 
 
 // import { SocketApi } from 'lib-socket-api';
@@ -98,6 +98,32 @@ const listMenu = [
 ] as DashboardProps['listMenu']
 
 
+// const listMenu = [
+//   // {
+//   //   icon: <Archive sx={{ width: 25 }} />,
+//   //   title: "Archive loooooooooooooooooooooooooooong text",
+//   //   action: <Chip label={7} color="primary" size="small" />,
+//   // },
+//   {
+//     // icon: <Skeleton variant="circular" width={40} height={40} />,
+//     title: <Skeleton animation="wave" height={30} width="80%" />,
+//     // sx: { mx: 0 },
+
+//     // action: popoverMenuAction,
+//     children: Array.from({ length: 10 }).map((_, index) => {
+//       return {
+//         icon: <Skeleton variant="circular" width={50} height={50} />,
+//         title: (
+//           <Box className="Box-Skeleton" >
+//             <Skeleton animation="wave" height={30} />
+//             <Skeleton animation="wave" height={20} width={'100%'} />
+//           </Box>
+//         )
+//       }
+//     })
+
+//   },
+// ] as DashboardProps["listMenu"];
 
 
 export const App = () => {
@@ -153,6 +179,7 @@ export const App = () => {
           },
           position: "right",
         }}
+        
         // HeaderContent={
         //   <header style={{ position: "fixed", zIndex: 1, width: "100%", backgroundColor: "#456789" }}>
         //     <Toolbar>
@@ -161,7 +188,7 @@ export const App = () => {
         //     </Toolbar>
         //   </header>
         // }
-        itemsProps={{MuiHeader: {AfterComponent: <div>Заголовок</div>}, }}
+        itemsProps={{MuiHeader: {AfterComponent: <div>Заголовок</div>}}}
         statuses={{
           isDefaultOpen: true,
           isHeaderDefault: true,
