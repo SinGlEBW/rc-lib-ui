@@ -1,4 +1,4 @@
-.container {
+/* .container {
   position: relative;
 }
 
@@ -25,7 +25,53 @@
 .fadeEnterActive,
 .fadeExitActive{
   transition: opacity 300ms, transform 300ms;
+} */
+
+
+.container {
+  position: relative;
 }
+.preloader {
+  position: absolute;
+}
+.fadeEnter{
+  opacity: 0;
+}
+
+.fadeExit{
+  opacity: 1;
+}
+
+.fadeEnterActive{
+  opacity: 1;
+}
+
+.fadeExitActive{
+  opacity: 0;
+}
+.fadeEnterActive,
+.fadeExitActive{
+  transition: opacity 300ms;
+}
+
+.scaleEnter{
+  transform: scale(1.1);
+}
+.scaleExit{
+  transform: scale(1);
+}
+.scaleEnterActive{
+  transform: scale(1);
+}
+.scaleExitActive{
+  transform: scale(0.9);
+}
+.scaleEnterActive,
+.scaleExitActive{
+  transition: transform 300ms;
+}
+
+
 
 
 

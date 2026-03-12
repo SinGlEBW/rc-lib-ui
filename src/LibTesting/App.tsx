@@ -1,11 +1,12 @@
 
 import { Fragment, useRef } from 'react';
 import { Dashboard, DashboardProps, type DashboardControlProps } from '@libs/Dashboard';
+import { Preloaders } from '@libs/Preloaders';
 import { socketActions, socketSelectors, socketStore } from '@libs/NetworkAndSocket/Socket/store/socket.store';
-// import { Preloaders } from '../dist'
-// import { Preloaders } from 'rc-lib-ui'
+
 import { Archive, ListSharp, MoreHoriz, StarBorder } from '@mui/icons-material';
-import { Box, Chip, IconButton, Menu, MenuItem, Skeleton, Typography } from '@mui/material';
+import { Box, Button, Chip, IconButton, Menu, MenuItem, Skeleton, Typography } from '@mui/material';
+import { useBoolStatus } from '@libs/hooks/useBoolStatus';
 
 
 // import { SocketApi } from 'lib-socket-api';
@@ -21,7 +22,7 @@ import { Box, Chip, IconButton, Menu, MenuItem, Skeleton, Typography } from '@mu
 // };
 const popoverMenuAction = (
   <Fragment>
-    <IconButton onClick={() => {}}>
+    <IconButton onClick={() => { }}>
       <MoreHoriz />
     </IconButton>
     <Menu
@@ -80,17 +81,18 @@ const listMenu = [
   },
   {
     icon: <ListSharp />,
-    title: <Typography sx={{color: 'red', fontWeight: 'bold'}}>Lists</Typography>,
-    sx: {mx: 0}, 
-    
+    title: <Typography sx={{ color: 'red', fontWeight: 'bold' }}>Lists</Typography>,
+    sx: { mx: 0 },
+
     // action: popoverMenuAction,
     children: [
-      { title: "List 1",
-         icon: <StarBorder /> 
-        },
-      { 
-        title: "List 2", 
-        icon: <StarBorder /> 
+      {
+        title: "List 1",
+        icon: <StarBorder />
+      },
+      {
+        title: "List 2",
+        icon: <StarBorder />
       },
     ],
   }
@@ -133,9 +135,10 @@ export const App = () => {
   // const handleMenuToggle = () => {
   //   dashboardControlRef.current?.handleMenuToggle()
   // }
-
+  const [isPreloader, setIsPreloaderActive, setIsPreloaderDeactive] = useBoolStatus()
   return (
     <>
+
       {/* <Socket.Initialization
         onMount={() => {
           // dispatch(InitSocketEvents())
@@ -179,7 +182,7 @@ export const App = () => {
           },
           position: "right",
         }}
-        
+
         // HeaderContent={
         //   <header style={{ position: "fixed", zIndex: 1, width: "100%", backgroundColor: "#456789" }}>
         //     <Toolbar>
@@ -188,7 +191,7 @@ export const App = () => {
         //     </Toolbar>
         //   </header>
         // }
-        itemsProps={{MuiHeader: {AfterComponent: <div>Заголовок</div>}}}
+        itemsProps={{ MuiHeader: { AfterComponent: <div>Заголовок</div> } }}
         statuses={{
           isDefaultOpen: true,
           isHeaderDefault: true,
@@ -198,20 +201,23 @@ export const App = () => {
           //isHeader: false, full off header
         }}
         children={(
-          <div className={'content'} style={{ position: 'relative',  }} >
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam veniam explicabo, eveniet aliquid enim repellat harum impedit eos voluptatum consequatur non sit id, rerum, voluptatibus quasi natus! Repudiandae, voluptate culpa.
-            Mollitia vitae culpa doloribus! Commodi ratione natus iusto itaque cumque, neque modi delectus cupiditate dolorem quasi at tempora quidem rerum numquam consequatur quos aliquam quas eum ullam obcaecati rem blanditiis?
-            Sunt at, vero repudiandae ratione perspiciatis, hic explicabo accusamus qui maiores ipsum numquam, natus doloremque odit quas pariatur unde magnam reprehenderit excepturi voluptas eum maxime nulla eius ex! Nobis, doloribus.
-            Adipisci sint aliquid corporis consectetur. Vitae modi minima officiis autem tempore vel dolore dolorum dolorem iure earum non, quia voluptates dolor nesciunt nihil ipsa corrupti atque? Error iure tenetur ea!
-            Maiores magnam, placeat, ullam et magni nam ipsa voluptates ratione cupiditate dignissimos, porro hic a eligendi autem consequuntur nemo ut quaerat dolor sint? Molestias, incidunt distinctio magni facere magnam soluta!
-            <div style={{position: 'relative'}}>
-
-            {/* <Socket.OfflineDetection isNetwork={false} sx={{  }} /> */}
+          <div className={'content'} style={{ position: 'relative', }} >
+            <div style={{ position: 'relative', height: '80vh'}} >
+              <Preloaders show={isPreloader} name='Ball' sx={{ width: '100%', height: '100%', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)'}} timeout={600} />
+                <div>
+                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam veniam explicabo, eveniet aliquid enim repellat harum impedit eos voluptatum consequatur non sit id, rerum, voluptatibus quasi natus! Repudiandae, voluptate culpa.
+                  Mollitia vitae culpa doloribus! Commodi ratione natus iusto itaque cumque, neque modi delectus cupiditate dolorem quasi at tempora quidem rerum numquam consequatur quos aliquam quas eum ullam obcaecati rem blanditiis?
+                  Sunt at, vero repudiandae ratione perspiciatis, hic explicabo accusamus qui maiores ipsum numquam, natus doloremque odit quas pariatur unde magnam reprehenderit excepturi voluptas eum maxime nulla eius ex! Nobis, doloribus.
+                  Adipisci sint aliquid corporis consectetur. Vitae modi minima officiis autem tempore vel dolore dolorum dolorem iure earum non, quia voluptates dolor nesciunt nihil ipsa corrupti atque? Error iure tenetur ea!
+                  Maiores magnam, placeat, ullam et magni nam ipsa voluptates ratione cupiditate dignissimos, porro hic a eligendi autem consequuntur nemo ut quaerat dolor sint? Molestias, incidunt distinctio magni facere magnam soluta!
+                </div>
             </div>
+            <Button onClick={setIsPreloaderActive}>вкл</Button>
+            <Button onClick={setIsPreloaderDeactive}>выкл</Button>
           </div>
         )}
-        />
-     
+      />
+
 
       {/* <div className={'content'} style={{ position: 'relative', overflow: 'hidden', height: '100%' }} >
         <Socket.OfflineDetection sx={{ position: 'absolute', bottom: 0, right: 0 }} children={({ isDisableConnectSocket }) => isDisableConnectSocket ? 'Режим оффлайн' : 'оффлайн'} />
