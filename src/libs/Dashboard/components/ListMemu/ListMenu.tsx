@@ -18,6 +18,7 @@ interface ItemListMenuCommonProps extends
   Pick<ListButtonProps, 'onClick'> {
   action?: ReactNode;
   sx?: SxProps<Theme>;
+  id?: string;
 }
 
 type OneVariantMenuList = {
@@ -59,15 +60,15 @@ const ListMenuMemo = forwardRef<HTMLUListElement, ListMenuProps>(({ styleList = 
 
  
   const childrenList = useMemo(() => {
-    return (listMenu).map(({ action, icon, title, sx = {}, onClick, children, to, }, index) => {
-      const key = `${index}`;
+    return (listMenu).map(({ action, icon, title, sx = {}, onClick, children, to, id }, index) => {
+      const key = `${id ? id : index}`;
       const handleClick1 = (e) => {
         setID(key);
         onClick && onClick(e);
       }
       if (children && Array.isArray(children)) {
         return (
-          <Fragment key={index}>
+          <Fragment key={id ? id : index}>
             <ControlStatusItem
               defaultStatus={isOpen}
               render={(config) => (
@@ -109,8 +110,8 @@ const ListMenuMemo = forwardRef<HTMLUListElement, ListMenuProps>(({ styleList = 
                   <Collapse in={config.is && isOpen} timeout="auto" unmountOnExit>
                     <List disablePadding >
                       {
-                        children.map(({ action, icon, title, to, sx = {}, onClick }, inx) => {
-                          const key = `${index}-${inx}`;
+                        children.map(({ action, icon, title, to, sx = {}, id, onClick }, inx) => {
+                          const key = `${index}-${id ? id : inx}`;
                           const handleClick2 = (e) => {
                             setID(key);
                             onClick && onClick(e);
@@ -150,7 +151,7 @@ const ListMenuMemo = forwardRef<HTMLUListElement, ListMenuProps>(({ styleList = 
       }
 
       return (
-        <StyledListItem key={index} disablePadding sx={sx} visual={styleList} >
+        <StyledListItem key={key} disablePadding sx={sx} visual={styleList} >
           <ListButton
             isOpen={isOpen}
             onClick={handleClick1}
