@@ -10,7 +10,7 @@ import { MuiNavLink } from './ui/MuiNavLink';
 import { RenderIcon, RenderIconProps } from './ui/RenderIcon';
 import { RenderList, type RenderListProps } from './ui/RenderList';
 import cn from 'classnames';
-import { StyledListItem } from './ui/styled';
+import { StyledListItem, type StyledListItemProps } from './ui/styled';
 
 interface ItemListMenuCommonProps extends
   Pick<RenderIconProps, 'icon'>,
@@ -36,7 +36,7 @@ type VariantsMenuListProps = | OneVariantMenuList | TwoVariantMenuList;
 export interface ListMenuProps extends RenderListProps {
   listMenu: Array<VariantsMenuListProps & ItemListMenuCommonProps>;
   isOpen: boolean;
-  sx?: SxProps<Theme>;
+  sx?: StyledListItemProps['sx'];
   className?: string;
   isWrapText?: boolean;
   size?: 'normal' | 'small';
@@ -73,7 +73,7 @@ const ListMenuMemo = forwardRef<HTMLUListElement, ListMenuProps>(({ styleList = 
               defaultStatus={isOpen}
               render={(config) => (
                 <>
-                  <StyledListItem disablePadding sx={sx} visual={styleList}>
+                  <StyledListItem disablePadding sx={sx} visual={styleList} >
                     <ListButton
                       isOpen={config.is}
                       isWrapText={isWrapText}
@@ -82,6 +82,7 @@ const ListMenuMemo = forwardRef<HTMLUListElement, ListMenuProps>(({ styleList = 
                         typeof onClick === 'function' && onClick(e);
                       }}
                       sx={{ ...getDefaultPadding({ isIcon: icon }) }}
+                      className='MuiButtonControlCollapse'
                     >
                       {
                         icon && (
@@ -107,7 +108,7 @@ const ListMenuMemo = forwardRef<HTMLUListElement, ListMenuProps>(({ styleList = 
                       }
                     </ListButton>
                     <Collapse in={config.is && isOpen} timeout="auto" unmountOnExit>
-                      <List disablePadding >
+                      <List disablePadding className={className}>
                         {
                           children.map(({ action, icon, title, to, sx = {}, id, onClick }, inx) => {
                             const key = `${index}-${id ? id : inx}`;

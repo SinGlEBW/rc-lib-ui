@@ -1,6 +1,6 @@
-import { ListItem, styled } from "@mui/material";
+import { ListItem, styled, type ListItemProps } from "@mui/material";
 
-interface StyledListItemProps {
+export interface StyledListItemProps extends ListItemProps {
   visual: "variant1" | "variant2";
 }
 
