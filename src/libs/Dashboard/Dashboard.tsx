@@ -22,7 +22,7 @@ import cn from 'classnames';
 
 
 export type DashboardControlProps = Record<'handleMenuOpen' | 'handleMenuClose' | 'handleMenuToggle', () => void>
-  & { isOpen: boolean }
+  & { isOpen: boolean, listRef:React.RefObject<HTMLUListElement> }
 
 type Statuses_OR = 'isDefaultOpen' | 'isHeader' | 'isMenu' | 'isMenuHeader' | 'isHeaderResize' | 'isButtonCenterMenu' | 'isHeaderDefault';
 
@@ -140,7 +140,8 @@ const DashboardMemo = forwardRef<DashboardControlProps, DashboardProps>(({ Foote
     isOpen: state.isOpen,
     handleMenuOpen,
     handleMenuClose,
-    handleMenuToggle
+    handleMenuToggle,
+    listRef
   }
   useImperativeHandle(ref, () => config);
   return (
