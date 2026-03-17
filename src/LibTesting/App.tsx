@@ -81,11 +81,76 @@ const listMenu = [
   },
   {
     icon: <ListSharp />,
-    title: <Typography sx={{ color: 'red', fontWeight: 'bold' }}>Lists</Typography>,
+    title: <Typography sx={{ color: 'red', fontWeight: 'bold' }}>Lists A</Typography>,
     sx: { mx: 0 },
 
     // action: popoverMenuAction,
     children: [
+      {
+        title: "List 1",
+        icon: <StarBorder />
+      },
+      {
+        title: "List 2",
+        icon: <StarBorder />
+      },
+    ],
+  },
+  {
+    icon: <ListSharp />,
+    title: <Typography sx={{ color: 'red', fontWeight: 'bold' }}>Lists B</Typography>,
+    sx: { mx: 0 },
+
+    // action: popoverMenuAction,
+    children: [
+      {
+        title: "List 1",
+        icon: <StarBorder />
+      },
+      {
+        title: "List 2",
+        icon: <StarBorder />
+      },
+      {
+        title: "List 1",
+        icon: <StarBorder />
+      },
+      {
+        title: "List 2",
+        icon: <StarBorder />
+      },
+      {
+        title: "List 1",
+        icon: <StarBorder />
+      },
+      {
+        title: "List 2",
+        icon: <StarBorder />
+      },
+      {
+        title: "List 1",
+        icon: <StarBorder />
+      },
+      {
+        title: "List 2",
+        icon: <StarBorder />
+      },
+      {
+        title: "List 1",
+        icon: <StarBorder />
+      },
+      {
+        title: "List 2",
+        icon: <StarBorder />
+      },
+      {
+        title: "List 1",
+        icon: <StarBorder />
+      },
+      {
+        title: "List 2",
+        icon: <StarBorder />
+      },
       {
         title: "List 1",
         icon: <StarBorder />
@@ -182,7 +247,15 @@ export const App = () => {
           },
           position: "right",
         }}
-
+        itemsProps={{
+          MuiListMenu: {
+            sx: { '& .MuiListItem-root': { marginTop: 1 }, '& .MuiCollapse-root .MuiList-root': { paddingBottom: 1 } }
+          },
+          MuiHeader: {
+            AfterComponent: <div>Заголовок</div>,
+            bgColor: '#345'
+          }
+        }}
         // HeaderContent={
         //   <header style={{ position: "fixed", zIndex: 1, width: "100%", backgroundColor: "#456789" }}>
         //     <Toolbar>
@@ -191,26 +264,26 @@ export const App = () => {
         //     </Toolbar>
         //   </header>
         // }
-        itemsProps={{ MuiHeader: { AfterComponent: <div>Заголовок</div> } }}
+      
         statuses={{
           isDefaultOpen: true,
           isHeaderDefault: true,
-          isButtonCenterMenu: true,
+          isButtonCenterMenu: false,
           isMenu: true
           // isScrollIndentation: true
           //isHeader: false, full off header
         }}
         children={(
           <div className={'content'} style={{ position: 'relative', }} >
-            <div style={{ position: 'relative', height: '80vh'}} >
-              <Preloaders show={isPreloader} name='Ball' sx={{ width: '100%', height: '100%', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)'}} timeout={600} />
-                <div>
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam veniam explicabo, eveniet aliquid enim repellat harum impedit eos voluptatum consequatur non sit id, rerum, voluptatibus quasi natus! Repudiandae, voluptate culpa.
-                  Mollitia vitae culpa doloribus! Commodi ratione natus iusto itaque cumque, neque modi delectus cupiditate dolorem quasi at tempora quidem rerum numquam consequatur quos aliquam quas eum ullam obcaecati rem blanditiis?
-                  Sunt at, vero repudiandae ratione perspiciatis, hic explicabo accusamus qui maiores ipsum numquam, natus doloremque odit quas pariatur unde magnam reprehenderit excepturi voluptas eum maxime nulla eius ex! Nobis, doloribus.
-                  Adipisci sint aliquid corporis consectetur. Vitae modi minima officiis autem tempore vel dolore dolorum dolorem iure earum non, quia voluptates dolor nesciunt nihil ipsa corrupti atque? Error iure tenetur ea!
-                  Maiores magnam, placeat, ullam et magni nam ipsa voluptates ratione cupiditate dignissimos, porro hic a eligendi autem consequuntur nemo ut quaerat dolor sint? Molestias, incidunt distinctio magni facere magnam soluta!
-                </div>
+            <div style={{ position: 'relative', height: '80vh' }} >
+              <Preloaders show={isPreloader} name='Ball' sx={{ width: '100%', height: '100%', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)' }} timeout={600} />
+              <div>
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam veniam explicabo, eveniet aliquid enim repellat harum impedit eos voluptatum consequatur non sit id, rerum, voluptatibus quasi natus! Repudiandae, voluptate culpa.
+                Mollitia vitae culpa doloribus! Commodi ratione natus iusto itaque cumque, neque modi delectus cupiditate dolorem quasi at tempora quidem rerum numquam consequatur quos aliquam quas eum ullam obcaecati rem blanditiis?
+                Sunt at, vero repudiandae ratione perspiciatis, hic explicabo accusamus qui maiores ipsum numquam, natus doloremque odit quas pariatur unde magnam reprehenderit excepturi voluptas eum maxime nulla eius ex! Nobis, doloribus.
+                Adipisci sint aliquid corporis consectetur. Vitae modi minima officiis autem tempore vel dolore dolorum dolorem iure earum non, quia voluptates dolor nesciunt nihil ipsa corrupti atque? Error iure tenetur ea!
+                Maiores magnam, placeat, ullam et magni nam ipsa voluptates ratione cupiditate dignissimos, porro hic a eligendi autem consequuntur nemo ut quaerat dolor sint? Molestias, incidunt distinctio magni facere magnam soluta!
+              </div>
             </div>
             <Button onClick={setIsPreloaderActive}>вкл</Button>
             <Button onClick={setIsPreloaderDeactive}>выкл</Button>

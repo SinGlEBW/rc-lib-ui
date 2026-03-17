@@ -7,12 +7,13 @@ interface StyledListItemProps {
 export const StyledListItem = styled(ListItem, {
   shouldForwardProp: (propName) => !["visual"].includes(propName as string),
 })<StyledListItemProps>(({ theme, visual }) => ({
+    display: "block",
   ...(visual === "variant2" && {
     "&": {
-      padding: `0 ${theme.spacing(1)}`,
+      // padding: `0 ${theme.spacing(1)}`,
     },
     '& .MuiListItemIcon-root': {
-      marginLeft: `-${theme.spacing(1)}`,
+      // marginLeft: `-${theme.spacing(1)}`,
     },
     "& .MuiButtonBase-root": {
       borderRadius: "5px",

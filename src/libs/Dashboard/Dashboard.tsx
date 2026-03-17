@@ -197,6 +197,7 @@ const DashboardMemo = forwardRef<DashboardControlProps, DashboardProps>(({ Foote
             ...(isScrollIndentation
               ? { minWidthColumn: convertWidthToLeftPM(minWidthColumn, { newProp: 'width', positionCorrect: `- ${state.widthScroll}px` }) }
               : { minWidthColumn })
+           
           }}
           listMenu={listMenu}
           isOpen={state.isOpen}

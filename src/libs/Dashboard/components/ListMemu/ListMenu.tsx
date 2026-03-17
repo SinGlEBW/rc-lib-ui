@@ -49,8 +49,8 @@ export interface ListMenuProps extends RenderListProps {
 }
 
 
-const getDefaultPadding = ({isIcon}) => {
-  return {['paddingRight']: 1.2, ...(!isIcon && { ['paddingLeft']: 1.2 })}
+const getDefaultPadding = ({ isIcon }) => {
+  return { ['paddingRight']: 1.2, ...(!isIcon && { ['paddingLeft']: 1.2 }) }
 }
 
 
@@ -58,7 +58,7 @@ const ListMenuMemo = forwardRef<HTMLUListElement, ListMenuProps>(({ styleList = 
   const { minWidthColumn } = columnMenu;
   const [muiSelected, setID] = useState('')
 
- 
+
   const childrenList = useMemo(() => {
     return (listMenu).map(({ action, icon, title, sx = {}, onClick, children, to, id }, index) => {
       const key = `${id ? id : index}`;
@@ -81,7 +81,7 @@ const ListMenuMemo = forwardRef<HTMLUListElement, ListMenuProps>(({ styleList = 
                         config.handleToggle();
                         typeof onClick === 'function' && onClick(e);
                       }}
-                      sx={{...getDefaultPadding({isIcon: icon}) }}
+                      sx={{ ...getDefaultPadding({ isIcon: icon }) }}
                     >
                       {
                         icon && (
@@ -94,7 +94,7 @@ const ListMenuMemo = forwardRef<HTMLUListElement, ListMenuProps>(({ styleList = 
                       <ListText
                         unmount={!isOpen}
                         title={title}
-                        sx={{ flexGrow: 1}}
+                        sx={{ flexGrow: 1 }}
                         isWrapText={isWrapText}
                       />
                       {
@@ -106,44 +106,44 @@ const ListMenuMemo = forwardRef<HTMLUListElement, ListMenuProps>(({ styleList = 
                         )
                       }
                     </ListButton>
-                  </StyledListItem>
-                  <Collapse in={config.is && isOpen} timeout="auto" unmountOnExit>
-                    <List disablePadding >
-                      {
-                        children.map(({ action, icon, title, to, sx = {}, id, onClick }, inx) => {
-                          const key = `${index}-${id ? id : inx}`;
-                          const handleClick2 = (e) => {
-                            setID(key);
-                            onClick && onClick(e);
-                          }
-                          return (
-                            <StyledListItem key={key} disablePadding sx={sx} visual={styleList}>
-                              <ListButton
-                                sx={{ ['paddingRight']: 1.2, ...(!icon && { ['paddingLeft']: 2.5 }) }}
-                                isOpen
-                                onClick={handleClick2}
-                                isWrapText={isWrapText}
-                                {...(to ? { to, component: MuiNavLink } : { to: '', className: cn({ 'Mui-selected': muiSelected === key }) })}
-
-                              >
-                                {
-                                  icon && (
-                                    <RenderIcon icon={icon} sx={{...minWidthColumn, marginLeft: '8px !important'}}/>
-                                  )
-                                }
-                                <ListText
-                                  unmount={!isOpen}
-                                  title={title}
+                    <Collapse in={config.is && isOpen} timeout="auto" unmountOnExit>
+                      <List disablePadding >
+                        {
+                          children.map(({ action, icon, title, to, sx = {}, id, onClick }, inx) => {
+                            const key = `${index}-${id ? id : inx}`;
+                            const handleClick2 = (e) => {
+                              setID(key);
+                              onClick && onClick(e);
+                            }
+                            return (
+                              <StyledListItem key={key} disablePadding sx={sx} visual={styleList}>
+                                <ListButton
+                                  sx={{ ['paddingRight']: 1.2, ...(!icon && { ['paddingLeft']: 2.5 }) }}
+                                  isOpen
+                                  onClick={handleClick2}
                                   isWrapText={isWrapText}
-                                />
-                                {isOpen && action}
-                              </ListButton>
-                            </StyledListItem>
-                          )
-                        })
-                      }
-                    </List>
-                  </Collapse>
+                                  {...(to ? { to, component: MuiNavLink } : { to: '', className: cn({ 'Mui-selected': muiSelected === key }) })}
+
+                                >
+                                  {
+                                    icon && (
+                                      <RenderIcon icon={icon} sx={{ ...minWidthColumn, marginLeft: '8px !important' }} />
+                                    )
+                                  }
+                                  <ListText
+                                    unmount={!isOpen}
+                                    title={title}
+                                    isWrapText={isWrapText}
+                                  />
+                                  {isOpen && action}
+                                </ListButton>
+                              </StyledListItem>
+                            )
+                          })
+                        }
+                      </List>
+                    </Collapse>
+                  </StyledListItem>
                 </>
               )} />
           </Fragment>
@@ -157,7 +157,7 @@ const ListMenuMemo = forwardRef<HTMLUListElement, ListMenuProps>(({ styleList = 
             onClick={handleClick1}
             isWrapText={isWrapText}
             {...(to ? { to, component: MuiNavLink } : { to: '', className: cn({ 'Mui-selected': muiSelected === key }) })}
-            sx={{...getDefaultPadding({isIcon: icon}) }}
+            sx={{ ...getDefaultPadding({ isIcon: icon }) }}
 
           >
             {icon && <RenderIcon icon={icon} sx={minWidthColumn} />}
@@ -171,7 +171,7 @@ const ListMenuMemo = forwardRef<HTMLUListElement, ListMenuProps>(({ styleList = 
         </StyledListItem>
       )
     })
-  }, [listMenu, isOpen, muiSelected, isRight, getDefaultPadding])
+  }, [listMenu, isOpen, muiSelected, isRight, getDefaultPadding, minWidthColumn])
 
   return (
     <RenderList
