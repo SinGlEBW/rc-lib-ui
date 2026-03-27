@@ -18,28 +18,10 @@ import { MuiHeader, MuiHeaderProps } from './components/MuiHeader';
 import { MuiMenu, MuiMenuProps } from './components/MuiMenu';
 import { MuiMenuHeader } from './components/MuiMenuHeader';
 import cn from 'classnames';
+import type { DashboardControlProps, DashboardProps } from './Dashboard.types';
 
 
 
-export type DashboardControlProps = Record<'handleMenuOpen' | 'handleMenuClose' | 'handleMenuToggle', () => void>
-  & { isOpen: boolean, listRef:React.RefObject<HTMLUListElement> }
-
-type Statuses_OR = 'isDefaultOpen' | 'isHeader' | 'isMenu' | 'isMenuHeader' | 'isHeaderResize' | 'isButtonCenterMenu' | 'isHeaderDefault';
-
-export interface DashboardProps extends Pick<ListMenuProps, 'listMenu' | 'styleList'> {
-  Footer?: ReactNode;
-  columnMenu?: Partial<MuiMenuProps['columnMenu'] & { position?: 'right' | 'left' }>;
-  children?: ReactNode;
-  // colors?: Partial<Record<'scroll', string>>
-  HeaderContent?: ReactNode | ((config: DashboardControlProps) => React.ReactNode);
-  statuses?: Partial<Record<Statuses_OR, boolean>>;
-  sx?: SxProps<Theme>,
-  itemsProps?: {
-    MuiHeader?: Pick<MuiHeaderProps, 'sx' | 'bgColor' | 'AfterComponent'>;
-    MuiListMenu?: Pick<ListMenuProps, 'sx'>;
-  }
-  classes?: Partial<Record<'listMenu' | 'header' | 'dashboard' | 'main', string>>;
-}
 
 const getSizeScroll = (el: HTMLElement) => {
   const { clientWidth, offsetWidth } = el;

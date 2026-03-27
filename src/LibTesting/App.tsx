@@ -47,7 +47,18 @@ const listMenu = [
     // icon: <Archive sx={{ width: 25 }} />,
     title: <p>asdsadsad</p>,
     // to: '/test',
-    action: <Chip label={7} color="primary" size="small" />,
+    onClick: (e) => {
+      e.preventDefault()
+      console.dir(1);
+    },
+    action: (
+      <Chip label={7} color="primary" size="small"
+        onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault()
+          console.dir(2);
+        }} />
+    ),
   },
   {
     icon: <Archive sx={{ width: 25 }} />,
@@ -264,7 +275,7 @@ export const App = () => {
         //     </Toolbar>
         //   </header>
         // }
-      
+
         statuses={{
           isDefaultOpen: true,
           isHeaderDefault: true,

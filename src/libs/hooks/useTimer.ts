@@ -3,17 +3,18 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Timer } from "dev-classes";
 import { setStateDecorator } from '@libs/_helpers';
 
-interface UseShowPanelProps {
-  timerShowPanel?: number;
+interface UseTimerProps {
+  timer?: number;
+  defaultIsActive?: boolean;
 }
 
-interface UseShowPanelState {
-  showPanel: boolean;
+interface UseTimerState {
+  isActive: boolean;
 }
 
-export const useShowPanel = (props: UseShowPanelProps = { timerShowPanel: 5000 }) => {
-  const [state, setState] = useState<UseShowPanelState>({
-    showPanel: true,
+export const useTimer = ({defaultIsActive = true, timer = 5000}: UseTimerProps) => {
+  const [state, setState] = useState<UseTimerState>({
+    isActive: defaultIsActive,
   });
   const setStateHelpers = setStateDecorator<typeof state>(state, setState);
 
@@ -21,9 +22,9 @@ export const useShowPanel = (props: UseShowPanelProps = { timerShowPanel: 5000 }
 
   // Инициализация таймера
   useEffect(() => {
-    timerRef.current = new Timer(props.timerShowPanel!, () => {
+    timerRef.current = new Timer(timer!, () => {
       console.log("Время истекло, скрываем панель");
-      setStateHelpers({ showPanel: false });
+      setStateHelpers({ isActive: false });
     });
 
     // Автоматически запускаем таймер при монтировании
@@ -36,12 +37,12 @@ export const useShowPanel = (props: UseShowPanelProps = { timerShowPanel: 5000 }
         timerRef.current.resetTime();
       }
     };
-  }, [props.timerShowPanel]);
+  }, [timer]);
 
   // Показать панель и запустить таймер
-  const handleShowPanel = useCallback(() => {
-    if (!state.showPanel) {
-      setStateHelpers({ showPanel: true });
+  const handleActive = useCallback(() => {
+    if (!state.isActive) {
+      setStateHelpers({ isActive: true });
       
       // Важно: сбрасываем и запускаем таймер заново
       if (timerRef.current) {
@@ -49,44 +50,44 @@ export const useShowPanel = (props: UseShowPanelProps = { timerShowPanel: 5000 }
         timerRef.current.startTime();
       }
     }
-  }, [state.showPanel]);
+  }, [state.isActive]);
 
   // Сбросить время (продлить показ панели)
   const handleResetTimePanel = useCallback(() => {
-    if (timerRef.current && state.showPanel) {
+    if (timerRef.current && state.isActive) {
       timerRef.current.resetTime();
       timerRef.current.startTime();
     }
-  }, [state.showPanel]);
+  }, [state.isActive]);
 
   // Поставить на паузу (например, при открытии select)
   const handlePauseTimer = useCallback(() => {
-    if (timerRef.current && state.showPanel) {
+    if (timerRef.current && state.isActive) {
       timerRef.current.pauseTime();
     }
-  }, [state.showPanel]);
+  }, [state.isActive]);
 
   // Возобновить таймер (например, при закрытии select)
   const handleResumeTimer = useCallback(() => {
-    if (timerRef.current && state.showPanel) {
+    if (timerRef.current && state.isActive) {
       timerRef.current.startTime();
     }
-  }, [state.showPanel]);
+  }, [state.isActive]);
 
   // Скрыть панель принудительно
-  const handleHidePanel = useCallback(() => {
-    setStateHelpers({ showPanel: false });
+  const handleDeActive = useCallback(() => {
+    setStateHelpers({ isActive: false });
     if (timerRef.current) {
       timerRef.current.resetTime();
     }
   }, []);
 
   return {
-    showPanel: state.showPanel,
-    handleShowPanel,
+    isActive: state.isActive,
+    handleActive,
     handleResetTimePanel,
     handlePauseTimer,
     handleResumeTimer,
-    handleHidePanel,
+    handleDeActive,
   };
 };
