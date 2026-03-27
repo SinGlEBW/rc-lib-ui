@@ -23,12 +23,13 @@ export const useTimer = ({defaultIsActive = true, timer = 5000}: UseTimerProps) 
   // Инициализация таймера
   useEffect(() => {
     timerRef.current = new Timer(timer!, () => {
-      console.log("Время истекло, скрываем панель");
       setStateHelpers({ isActive: false });
     });
 
     // Автоматически запускаем таймер при монтировании
-    timerRef.current.startTime();
+    if(defaultIsActive){
+      timerRef.current.startTime();
+    }
 
     // Очистка при размонтировании
     return () => {
