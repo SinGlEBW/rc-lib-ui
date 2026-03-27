@@ -53,7 +53,7 @@ export const useTimer = ({defaultIsActive = true, timer = 5000}: UseTimerProps) 
   }, [state.isActive]);
 
   // Сбросить время (продлить показ панели)
-  const handleResetTime = useCallback(() => {
+  const handleResetTimer = useCallback(() => {
     if (timerRef.current && state.isActive) {
       timerRef.current.resetTime();
       timerRef.current.startTime();
@@ -85,7 +85,7 @@ export const useTimer = ({defaultIsActive = true, timer = 5000}: UseTimerProps) 
   return {
     isActive: state.isActive,
     handleActive,
-    handleResetTime,
+    handleResetTimer,
     handlePauseTimer,
     handleResumeTimer,
     handleDeActive,
