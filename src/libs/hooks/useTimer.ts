@@ -6,13 +6,14 @@ import { setStateDecorator } from '@libs/_helpers';
 interface UseTimerProps {
   timer?: number;
   defaultIsActive?: boolean;
+  onDeActive?: () => void
 }
 
 interface UseTimerState {
   isActive: boolean;
 }
 
-export const useTimer = ({defaultIsActive = true, timer = 5000}: UseTimerProps) => {
+export const useTimer = ({defaultIsActive = true, timer = 5000, onDeActive}: UseTimerProps) => {
   const [state, setState] = useState<UseTimerState>({
     isActive: defaultIsActive,
   });
@@ -23,6 +24,7 @@ export const useTimer = ({defaultIsActive = true, timer = 5000}: UseTimerProps) 
   // Инициализация таймера
   useEffect(() => {
     timerRef.current = new Timer(timer!, () => {
+      onDeActive && onDeActive();
       setStateHelpers({ isActive: false });
     });
 
