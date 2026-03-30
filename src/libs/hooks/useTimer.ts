@@ -40,7 +40,7 @@ export const useTimer = ({defaultIsActive = true, timer = 5000, onDeActive}: Use
         timerRef.current.resetTime();
       }
     };
-  }, [timer, onDeActive]);
+  }, [timer]);
 
   // Показать панель и запустить таймер
   const handleActive = useCallback(() => {
