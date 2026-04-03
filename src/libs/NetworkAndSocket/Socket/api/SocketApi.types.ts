@@ -1,3 +1,4 @@
+import type { NetworkStatusInfoTracker } from 'dev-classes';
 import type { WsApiE_StatusConnect_OR } from './deps/WsApi';
 import type { WsApi_Response } from './deps/WsApi/WsApi.types';
 
@@ -7,7 +8,9 @@ export interface SocketApi_Options_P {
 }
 
 type SocketApi_StateProps_OR = 'isDisconnect' | 'isActiveReConnect' | 'isOfflineSocket' | 'isGotWasFirstConnection' | 'isStartCheckNetwork';
-export type SocketApi_StateProps_P = Record<SocketApi_StateProps_OR, boolean>;
+export type SocketApi_StateProps_P = Record<SocketApi_StateProps_OR, boolean> & {
+  infoNetwork: NetworkStatusInfoTracker
+}
 export type SocketApi_StatusConnect_OR = WsApiE_StatusConnect_OR;
 
 

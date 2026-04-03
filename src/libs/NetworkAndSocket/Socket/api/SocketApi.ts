@@ -27,6 +27,10 @@ export class SocketApi {
     isOfflineSocket: true,
     isGotWasFirstConnection: false,
     isStartCheckNetwork: false, //не используеться
+    infoNetwork: {
+      isNetwork: false,
+      typeNetwork: "",
+    }
   };
   private static options: SocketApi_Options_P = {
     isReConnectNetworkOnline: false,
@@ -136,6 +140,7 @@ export class SocketApi {
 
   //INFO: Проверить как часто вызываеться
   private static setNetworkStatus = (info: NetworkStatusInfoTracker) => {
+ 
     SocketApi.events.publish("network", info);
 
     info.isNetwork ? SocketApi.online() : SocketApi.offline();
@@ -152,8 +157,12 @@ export class SocketApi {
     // });
 
     this.networkTicker = new NetworkStatusTracker(SocketApiOptions.listUrlsCheckConnectNetwork ?? []);
+    
     this.networkTicker.startEvents((info) => {
+      const state = SocketApi.getState()
+      if(info.typeNetwork == state.infoNetwork.typeNetwork && info.isNetwork == state.infoNetwork.isNetwork) return;
       SocketApi.setNetworkStatus(info);
+      SocketApi.setState({ infoNetwork: info });
     });
     
     
