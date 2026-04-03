@@ -160,7 +160,7 @@ export class SocketApi {
     
     this.networkTicker.startEvents((info) => {
       const state = SocketApi.getState()
-      if(info.typeNetwork == state.infoNetwork.typeNetwork && info.isNetwork == state.infoNetwork.isNetwork) return;
+      // if(info.typeNetwork == state.infoNetwork.typeNetwork && info.isNetwork == state.infoNetwork.isNetwork) return;
       SocketApi.setNetworkStatus(info);
       SocketApi.setState({ infoNetwork: info });
     });
