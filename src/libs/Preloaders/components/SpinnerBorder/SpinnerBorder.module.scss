@@ -22,6 +22,14 @@ $spinner-border-width-sm: .2em !default;
   z-index: 100;
 }
 
+// .inner{
+//   position: relative;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   // flex-direction: column;
+// }
+
 .spinner {
   display: inline-block;
   width: $spinner-width;
@@ -39,9 +47,7 @@ $spinner-border-width-sm: .2em !default;
   height: $spinner-height-sm;
   border-width: $spinner-border-width-sm;
 }
-.text{
-  margin-left: 8px;
-}
+
 
 @keyframes SpinnerBorderAnim {
   to { transform: rotate(360deg) #{"/* rtl:ignore */"}; }

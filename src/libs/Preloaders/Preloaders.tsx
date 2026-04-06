@@ -44,7 +44,7 @@ const PreloadersMemo: FC<PreloadersProps> = ({ timeout = 300, show, name, childr
   // debugger
   const preloaderRef = useRef(null);
   const switchData = show
-    ? { key: 'preloader', element: <PreloaderComponent ref={preloaderRef} {...props} /> }
+    ? { key: 'preloader', element: <PreloaderComponent ref={preloaderRef} {...props as any} /> }
     : { key: 'content', element: <>{children}</> };
 
   return (
