@@ -30,10 +30,12 @@ export const useTimer = ({defaultIsActive = true, timer = 5000, onDeActive, isDe
     });
 
     // Автоматически запускаем таймер при монтировании
-    if(defaultIsActive && !isDefaultPause){
+    if(defaultIsActive){
       timerRef.current.startTime();
     }
-
+    if(isDefaultPause){
+      timerRef.current.pauseTime();
+    }
     // Очистка при размонтировании
     return () => {
       if (timerRef.current) {
@@ -74,7 +76,7 @@ export const useTimer = ({defaultIsActive = true, timer = 5000, onDeActive, isDe
   // Возобновить таймер (например, при закрытии select)
   const handleResume = useCallback(() => {
     if (timerRef.current && state.isActive) {
-      timerRef.current.startTime();
+      timerRef.current.resumeTime();
     }
   }, [state.isActive]);
 

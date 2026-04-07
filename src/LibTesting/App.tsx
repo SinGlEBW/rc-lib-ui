@@ -208,13 +208,20 @@ const listMenu = [
 export const App = () => {
 
   const dashboardControlRef = useRef<DashboardControlProps>(null)
-  const { isActive, handleResume, handleActive } = useTimer({timer: 5000, isDefaultPause: true})
+ 
   // const handleMenuToggle = () => {
   //   dashboardControlRef.current?.handleMenuToggle()
   // }
+    const controlTimer = useTimer({ timer: 5000, isDefaultPause: true });
+
+
+    console.dir(controlTimer);
+
+
+  console.dir(controlTimer);
   const [isPreloader, setIsPreloaderActive, setIsPreloaderDeactive] = useBoolStatus();
-  const resetPause = () => { handleResume() }
-  const setActive = () => { handleActive() }
+  const resetPause = () => { controlTimer.handleResume() }
+  const setActive = () => { controlTimer.handleActive() }
   return (
     <>
 
@@ -299,7 +306,7 @@ export const App = () => {
                 Maiores magnam, placeat, ullam et magni nam ipsa voluptates ratione cupiditate dignissimos, porro hic a eligendi autem consequuntur nemo ut quaerat dolor sint? Molestias, incidunt distinctio magni facere magnam soluta!
               </div>
             </div>
-            <div>{JSON.stringify({ isActive })}</div>
+            <div>{JSON.stringify(controlTimer.isActive)}</div>
             <Button onClick={setActive}>active</Button>
             <Button onClick={resetPause}>off pause</Button>
             <Button onClick={setIsPreloaderActive}>вкл</Button>

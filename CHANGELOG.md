@@ -146,6 +146,6 @@
 ## [1.3.9] - 2026-04-06
 ### Added
 - Preloader name SpinnerBorder. Добавлено свойство textPosition
-## [1.4.0] - 2026-04-07
+## [1.4.1] - 2026-04-07
 ### Change
 - useTimer изменены имена методов и добавлено isDefaultPause. Ориентировано если defaultIsActive: true
