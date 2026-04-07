@@ -7,6 +7,7 @@ import { socketActions, socketSelectors, socketStore } from '@libs/NetworkAndSoc
 import { Archive, ListSharp, MoreHoriz, StarBorder } from '@mui/icons-material';
 import { Box, Button, Chip, IconButton, Menu, MenuItem, Skeleton, Typography } from '@mui/material';
 import { useBoolStatus } from '@libs/hooks/useBoolStatus';
+import { useTimer } from '@libs/hooks';
 
 
 // import { SocketApi } from 'lib-socket-api';
@@ -207,11 +208,13 @@ const listMenu = [
 export const App = () => {
 
   const dashboardControlRef = useRef<DashboardControlProps>(null)
-
+  const { isActive, handleResume, handleActive } = useTimer({timer: 5000, isDefaultPause: true})
   // const handleMenuToggle = () => {
   //   dashboardControlRef.current?.handleMenuToggle()
   // }
-  const [isPreloader, setIsPreloaderActive, setIsPreloaderDeactive] = useBoolStatus()
+  const [isPreloader, setIsPreloaderActive, setIsPreloaderDeactive] = useBoolStatus();
+  const resetPause = () => { handleResume() }
+  const setActive = () => { handleActive() }
   return (
     <>
 
@@ -296,6 +299,9 @@ export const App = () => {
                 Maiores magnam, placeat, ullam et magni nam ipsa voluptates ratione cupiditate dignissimos, porro hic a eligendi autem consequuntur nemo ut quaerat dolor sint? Molestias, incidunt distinctio magni facere magnam soluta!
               </div>
             </div>
+            <div>{JSON.stringify({ isActive })}</div>
+            <Button onClick={setActive}>active</Button>
+            <Button onClick={resetPause}>off pause</Button>
             <Button onClick={setIsPreloaderActive}>вкл</Button>
             <Button onClick={setIsPreloaderDeactive}>выкл</Button>
           </div>

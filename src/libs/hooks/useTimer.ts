@@ -6,14 +6,15 @@ import { setStateDecorator } from '@libs/_helpers';
 interface UseTimerProps {
   timer?: number;
   defaultIsActive?: boolean;
-  onDeActive?: () => void
+  onDeActive?: () => void;
+  isDefaultPause?: boolean
 }
 
 interface UseTimerState {
   isActive: boolean;
 }
 
-export const useTimer = ({defaultIsActive = true, timer = 5000, onDeActive}: UseTimerProps) => {
+export const useTimer = ({defaultIsActive = true, timer = 5000, onDeActive, isDefaultPause = false}: UseTimerProps) => {
   const [state, setState] = useState<UseTimerState>({
     isActive: defaultIsActive,
   });
@@ -29,7 +30,7 @@ export const useTimer = ({defaultIsActive = true, timer = 5000, onDeActive}: Use
     });
 
     // Автоматически запускаем таймер при монтировании
-    if(defaultIsActive){
+    if(defaultIsActive && !isDefaultPause){
       timerRef.current.startTime();
     }
 
@@ -56,7 +57,7 @@ export const useTimer = ({defaultIsActive = true, timer = 5000, onDeActive}: Use
   }, [state.isActive]);
 
   // Сбросить время (продлить показ панели)
-  const handleResetTimer = useCallback(() => {
+  const handleReset = useCallback(() => {
     if (timerRef.current && state.isActive) {
       timerRef.current.resetTime();
       timerRef.current.startTime();
@@ -64,14 +65,14 @@ export const useTimer = ({defaultIsActive = true, timer = 5000, onDeActive}: Use
   }, [state.isActive]);
 
   // Поставить на паузу (например, при открытии select)
-  const handlePauseTimer = useCallback(() => {
+  const handlePause = useCallback(() => {
     if (timerRef.current && state.isActive) {
       timerRef.current.pauseTime();
     }
   }, [state.isActive]);
 
   // Возобновить таймер (например, при закрытии select)
-  const handleResumeTimer = useCallback(() => {
+  const handleResume = useCallback(() => {
     if (timerRef.current && state.isActive) {
       timerRef.current.startTime();
     }
@@ -88,9 +89,9 @@ export const useTimer = ({defaultIsActive = true, timer = 5000, onDeActive}: Use
   return {
     isActive: state.isActive,
     handleActive,
-    handleResetTimer,
-    handlePauseTimer,
-    handleResumeTimer,
+    handleReset,
+    handlePause,
+    handleResume,
     handleDeActive,
   };
 };
