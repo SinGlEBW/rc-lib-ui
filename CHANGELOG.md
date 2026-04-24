@@ -149,3 +149,6 @@
 ## [1.4.1] - 2026-04-07
 ### Change
 - useTimer изменены имена методов и добавлено isDefaultPause. Ориентировано если defaultIsActive: true
+## [1.4.2] - 2026-04-24
+### Added
+- export InteractiveMessageContextProps в control-cards
