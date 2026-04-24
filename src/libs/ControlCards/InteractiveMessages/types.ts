@@ -16,7 +16,7 @@ export interface InteractiveMessageItemCommon {
 
 type DefaultShowAlertsVariant = Exclude<VariantType, 'deleteCountdown'>;
 export type InteractiveMessageAlertProps = InteractiveMessageItemCommon 
-& Pick<OptionsObject<DefaultShowAlertsVariant>, 'onClose' | 'onEnter' | 'onEntered' | 'anchorOrigin'> & 
+& OptionsObject<DefaultShowAlertsVariant> & 
 {
   animation?: 'Fade' | 'Grow' | 'Zoom' | 'Slide';
   variant?: "filled" | "standard" | "outlined";
@@ -90,7 +90,7 @@ export type InteractiveMessageControl = {
 
 export type InteractiveMessageStateProps =  
   & InteractiveMessageControl 
-  & Omit<InteractiveMessageAlertProps, 'view'> 
+ 
   & Omit<InteractiveMessageModalsProps, 'view'>
   & {view: ViewMessage};
 

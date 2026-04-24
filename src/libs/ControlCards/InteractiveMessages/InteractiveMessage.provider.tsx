@@ -79,7 +79,7 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children }) => {
     })
   }, []);
 
-
+  
   const showAlertDeleteCountdown: InteractiveMessageContextProps['showAlertDeleteCountdown'] = useCallback(
     ({ message, ...props }) => {
       enqueueSnackbar(message, {
@@ -176,7 +176,7 @@ const useInteractiveModalControls = (addMessage: AddMessageFn) => {
 
   const showModal: InteractiveMessageContextProps['showModal'] = useCallback(({ view, ...config }) => {
     addMessage({
-      variant: 'outlined',
+     
       view: view || 'modal',
       dismissible: config.mode !== 'success',
       ...config

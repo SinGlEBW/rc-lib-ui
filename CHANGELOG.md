@@ -155,3 +155,6 @@
 ## [1.4.3] - 2026-04-24
 ### Added
 - export type InteractiveMessageAlertProps, type InteractiveMessageModalsProps в control-cards
+## [1.4.4] - 2026-04-24
+### Added
+- Добавлены дополнительные пропсы для showAlert из useInteractiveMessage в control-cards
