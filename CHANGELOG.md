@@ -152,3 +152,6 @@
 ## [1.4.2] - 2026-04-24
 ### Added
 - export InteractiveMessageContextProps в control-cards
+## [1.4.3] - 2026-04-24
+### Added
+- export type InteractiveMessageAlertProps, type InteractiveMessageModalsProps в control-cards
