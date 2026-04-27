@@ -7,6 +7,8 @@ export interface AlertsProps {
   children?: ReactNode;
 }
 
+
+
 const AlertsMemo: FC<AlertsProps> = ({ children }) => {
   const { showAlert, removeMessage } = useInteractiveMessage();
   const setAlert = () => {
@@ -14,6 +16,7 @@ const AlertsMemo: FC<AlertsProps> = ({ children }) => {
 
       message: 'asdsadsads',
       // variant: 'success',
+      variant: 'success',
       animation: 'Fade' //| 'Grow' | 'Zoom' | 'Slide';
     })
   }

@@ -1,5 +1,5 @@
 import { Portal } from '@mui/material';
-import { SnackbarProvider, useSnackbar } from 'notistack';
+import { SnackbarProvider, useSnackbar, type SnackbarProviderProps } from 'notistack';
 import React, { useCallback, useState, type FC } from 'react';
 
 import uuid4 from "uuid4";
@@ -14,6 +14,7 @@ import { ModalsUpdate } from './modals/ModalsUpdate/ModalsUpdate';
 import {
   InteractiveMessageModalsProps,
   type AddMessageFn,
+  type DefaultShowAlertsVariant,
   type InteractiveMessageAlertProps,
   type InteractiveMessageContextProps,
   type InteractiveMessageControl,
@@ -80,6 +81,7 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children }) => {
     })
   }, []);
 
+  
   
   const showAlertDeleteCountdown: InteractiveMessageContextProps['showAlertDeleteCountdown'] = useCallback(
     ({ message, ...props }) => {
@@ -154,13 +156,16 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children }) => {
 
 interface InteractiveMessageProviderProps {
   children: React.ReactNode;
+  Components?: Partial<SnackbarProviderProps['Components']>
 }
 
-export const InteractiveMessageProvider: FC<InteractiveMessageProviderProps> = (params) => {
+export const InteractiveMessageProvider: FC<InteractiveMessageProviderProps> = ({Components = {}, ...params}) => {
   return (
     <SnackbarProvider
       maxSnack={4}
-      Components={customAlerts}
+      Components={{
+        ...customAlerts, ...Components,
+      }}
       classes={{
         containerRoot: s['notistack-SnackbarContainer']
       }}

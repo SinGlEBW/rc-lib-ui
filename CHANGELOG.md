@@ -161,3 +161,6 @@
 ## [1.4.5] - 2026-04-27
 ### Fixed
 - Исправлено работа анимации при передаче animation в showAlert из useInteractiveMessage в control-cards
+## [1.4.7] - 2026-04-27
+### Added
+- InteractiveMessageProvider добавлен проброс кастомных алетров через Components control-cards

@@ -14,7 +14,7 @@ export interface InteractiveMessageItemCommon {
 }
 
 
-type DefaultShowAlertsVariant = Exclude<VariantType, 'deleteCountdown'>;
+export type DefaultShowAlertsVariant = Exclude<VariantType, 'deleteCountdown'>;
 
 export type InteractiveMessageAlertProps = InteractiveMessageItemCommon 
 & OptionsObject<DefaultShowAlertsVariant> & 
@@ -97,7 +97,7 @@ export type InteractiveMessageStateProps =
   & {view: ViewMessage};
 
 
-  let a: Omit<InteractiveMessageModalsProps, 'mode'>
+
   
 export type GetExtendsTypeModal<T> = Omit<T, 'mode' > & Omit<InteractiveMessageModalsProps, 'mode'> & Omit<InteractiveMessageControl, 'isAlert'>
 

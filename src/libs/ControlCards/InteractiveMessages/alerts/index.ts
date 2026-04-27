@@ -1,0 +1,1 @@
+export { type CustomSnackbarProps } from './Alerts.styled';

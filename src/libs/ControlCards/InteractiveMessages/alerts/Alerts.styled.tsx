@@ -5,7 +5,7 @@ import { SnackbarContent, CustomContentProps, useSnackbar } from 'notistack';
 import { NotificationDeleteSelection } from './NotificationDeleteSelection';
 
 
-interface CustomSnackbarProps extends CustomContentProps {
+export interface CustomSnackbarProps extends CustomContentProps {
 
 }
 

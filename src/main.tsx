@@ -11,7 +11,7 @@ const start = () => {
     <BrowserRouter>
       {/* <MaterialDarkMode isDarkTheme={false}> */}
       {/* <Preloaders name='SpinnerBorder' show={true} text='asdas' size={30} bgColor='#456789'> */}
-      <InteractiveMessageProvider>
+      <InteractiveMessageProvider >
         <Alerts>
           {/* <App /> */}
         </Alerts>
