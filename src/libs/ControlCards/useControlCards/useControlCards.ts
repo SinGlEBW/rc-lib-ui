@@ -49,7 +49,7 @@ export const useControlCards = ({ list, keyAction, setMessage, onExpire, duratio
 
             clearDeletingActive();
             showAlert({
-              severity: "success",
+              variant: "success",
               message: "Успешное удаление",
               timeout: timeoutSuccess,
               anchorOrigin: {

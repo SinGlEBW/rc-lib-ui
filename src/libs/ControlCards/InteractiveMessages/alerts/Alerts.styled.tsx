@@ -25,8 +25,9 @@ declare module 'notistack' {
 
 
 export const customAlerts = {
-  success: forwardRef<HTMLDivElement, CustomSnackbarProps>(({ id, message, ...props }, ref) => {
+  success: forwardRef<HTMLDivElement, CustomSnackbarProps>(({ id, message, style, className, ...props }, ref) => {
     const { closeSnackbar } = useSnackbar();
+
     return (
       <Alert
         elevation={2}
@@ -43,6 +44,8 @@ export const customAlerts = {
           alignItems: 'center',
           backgroundColor: 'success.light',
         }}
+        style={style}
+        className={className}
       >
         <Box display="flex" alignItems="center" gap={1}>
           {/* <CheckCircle /> */}
@@ -51,7 +54,7 @@ export const customAlerts = {
       </Alert>
     )
   }),
-  error: forwardRef<HTMLDivElement, CustomSnackbarProps>(({ id, message, ...props }, ref) => {
+  error: forwardRef<HTMLDivElement, CustomSnackbarProps>(({ id, message, style, className, ...props }, ref) => {
     const { closeSnackbar } = useSnackbar();
     return (
       <Alert
@@ -64,6 +67,8 @@ export const customAlerts = {
           </IconButton>
         }
         sx={{ width: '100%', alignItems: 'center', color: 'common.white', backgroundColor: 'error.light' }}
+        style={style}
+        className={className}
       >
         <Box display="flex" alignItems="center" gap={1}>
           {/* <Error /> */}
@@ -72,7 +77,7 @@ export const customAlerts = {
       </Alert>
     )
   }),
-  warning: forwardRef<HTMLDivElement, CustomSnackbarProps>(({ id, message, ...props }, ref) => {
+  warning: forwardRef<HTMLDivElement, CustomSnackbarProps>(({ id, message, style, className, ...props }, ref) => {
     const { closeSnackbar } = useSnackbar();
     return (
       <Alert
@@ -85,6 +90,8 @@ export const customAlerts = {
           </IconButton>
         }
         sx={{ width: '100%', alignItems: 'center', backgroundColor: 'warning.light' }}
+        style={style}
+        className={className}
       >
         <Box display="flex" alignItems="center" gap={1}>
           {/* <Warning /> */}
@@ -93,7 +100,7 @@ export const customAlerts = {
       </Alert>
     )
   }),
-  info: forwardRef<HTMLDivElement, CustomSnackbarProps>(({ id, message, ...props }, ref) => {
+  info: forwardRef<HTMLDivElement, CustomSnackbarProps>(({ id, message, style, className, ...props }, ref) => {
     const { closeSnackbar } = useSnackbar();
     return (
       <Alert
@@ -106,6 +113,8 @@ export const customAlerts = {
           </IconButton>
         }
         sx={{ width: '100%', alignItems: 'center', backgroundColor: 'info.light' }}
+        style={style}
+        className={className}
       >
         <Box display="flex" alignItems="center" gap={1}>
           {/* <Info /> */}
@@ -115,7 +124,7 @@ export const customAlerts = {
     )
   }),
   deleteCountdown: forwardRef<HTMLDivElement, DeleteCountdownAlertProps & CustomContentProps>((props, ref) => {
-    const { message, duration = 10000, onUndo, onExpire, id, anchorOrigin, } = props;
+    const { message, duration = 10000, onUndo, onExpire, id, anchorOrigin, className  } = props;
 
     const [time, setTime] = useState(duration / 1000);
     const { closeSnackbar } = useSnackbar();
@@ -136,7 +145,7 @@ export const customAlerts = {
           };
           return newValue;
         });
-       
+
       }, 1000);
 
       return () => clearInterval(interval);
@@ -144,22 +153,22 @@ export const customAlerts = {
 
 
 
-    
-    
+
+
     const handleUndo = () => {
       onUndo && onUndo();
       closeSnackbar(id)
     }
-    
-    
+
+
     const progress = (time / Math.ceil(duration / 1000)) * 100;
     const style = {
       ...(anchorOrigin?.horizontal === 'center' && { justifyContent: 'center' }),
       ...props.style || {},
     }
-    
+
     return (
-      <SnackbarContent ref={ref} role="alert" style={style} >
+      <SnackbarContent ref={ref} role="alert" style={style} className={className} >
         <NotificationDeleteSelection
           time={time}
           progress={progress}

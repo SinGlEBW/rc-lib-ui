@@ -25,6 +25,7 @@ import { AnimationAlertNotistack } from './animation';
 
 
 
+
 interface InteractiveMessageProps {
   children: React.ReactNode;
 }
@@ -69,13 +70,13 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children }) => {
   const showAlert = useCallback(({ variant, message, ...config }: InteractiveMessageAlertProps) => {
     enqueueSnackbar(message, {
       TransitionComponent: AnimationAlertNotistack[config.animation || 'Slide'],
-      variant: config.severity,
-      ...(config.timeout && { autoHideDuration: config.timeout }),
-      anchorOrigin: {
-        vertical: 'bottom',
-        horizontal: 'left'
-      },
-      ...config
+      variant: variant || 'info',
+      // ...(config.timeout && { autoHideDuration: config.timeout }),
+      // anchorOrigin: {
+      //   vertical: 'bottom',
+      //   horizontal: 'left'
+      // },
+      // ...config
     })
   }, []);
 

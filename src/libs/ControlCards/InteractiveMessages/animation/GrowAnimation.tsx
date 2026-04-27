@@ -1,4 +1,6 @@
-
+/**
+ * Credit to MUI team @ https://mui.com
+ */
 import * as React from 'react';
 import { TransitionProps, Transition, TransitionStatus } from 'notistack';
 import {
@@ -23,7 +25,7 @@ const styles: Partial<Record<TransitionStatus, React.CSSProperties>> = {
   },
 };
 
-export const GrowAnimation = React.forwardRef<unknown, TransitionProps>((props, ref) => {
+const GrowAnimation = React.forwardRef<unknown, TransitionProps>((props, ref) => {
   const {
     children,
     in: inProp,
@@ -41,7 +43,6 @@ export const GrowAnimation = React.forwardRef<unknown, TransitionProps>((props, 
   const handleRef = useForkRef(handleRefIntermediary, ref);
 
   const handleEnter: TransitionProps['onEnter'] = (node, isAppearing) => {
-    
     reflow(node);
 
     const { duration, delay, easing } = getTransitionProps({
@@ -65,7 +66,6 @@ export const GrowAnimation = React.forwardRef<unknown, TransitionProps>((props, 
   };
 
   const handleExit: TransitionProps['onExit'] = (node) => {
-    
     const { duration, delay, easing } = getTransitionProps({
       style,
       timeout,
@@ -119,5 +119,6 @@ export const GrowAnimation = React.forwardRef<unknown, TransitionProps>((props, 
   );
 });
 
-GrowAnimation.displayName = 'GrowAnimation';
+GrowAnimation.displayName = 'Grow';
 
+export { GrowAnimation };

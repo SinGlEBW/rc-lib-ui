@@ -15,12 +15,14 @@ export interface InteractiveMessageItemCommon {
 
 
 type DefaultShowAlertsVariant = Exclude<VariantType, 'deleteCountdown'>;
+
 export type InteractiveMessageAlertProps = InteractiveMessageItemCommon 
 & OptionsObject<DefaultShowAlertsVariant> & 
 {
   animation?: 'Fade' | 'Grow' | 'Zoom' | 'Slide';
-  variant?: "filled" | "standard" | "outlined";
-  severity?: DefaultShowAlertsVariant
+  variant?: DefaultShowAlertsVariant;
+  // variant?: "filled" | "standard" | "outlined";
+  // severity?: DefaultShowAlertsVariant
 }
 
 

@@ -158,3 +158,6 @@
 ## [1.4.4] - 2026-04-24
 ### Added
 - Добавлены дополнительные пропсы для showAlert из useInteractiveMessage в control-cards
+## [1.4.5] - 2026-04-27
+### Fixed
+- Исправлено работа анимации при передаче animation в showAlert из useInteractiveMessage в control-cards

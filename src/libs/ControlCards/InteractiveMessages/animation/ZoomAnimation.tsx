@@ -84,6 +84,7 @@ const ZoomMemo = React.forwardRef<HTMLDivElement, TransitionProps>((props, ref) 
     >
       {(state, childProps) =>
         React.cloneElement(children as any, {
+          className: 'zoom',
           style: {
             transform: 'scale(0)',
             visibility: state === 'exited' && !inProp ? 'hidden' : undefined,
