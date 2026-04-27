@@ -71,12 +71,12 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children }) => {
     enqueueSnackbar(message, {
       TransitionComponent: AnimationAlertNotistack[config.animation || 'Slide'],
       variant: variant || 'info',
-      // ...(config.timeout && { autoHideDuration: config.timeout }),
-      // anchorOrigin: {
-      //   vertical: 'bottom',
-      //   horizontal: 'left'
-      // },
-      // ...config
+      ...(config.timeout && { autoHideDuration: config.timeout }),
+      anchorOrigin: {
+        vertical: 'bottom',
+        horizontal: 'left'
+      },
+      ...config
     })
   }, []);
 
