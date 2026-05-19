@@ -1,10 +1,10 @@
 import React, { FC, useRef } from "react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
-import { Ball, BallProps } from './components/Ball/Ball';
 import { SpinnerGrow, SpinnerGrowProps } from './components/SpinnerGrow/SpinnerGrow';
 import { SpinnerBorder, SpinnerBorderProps } from './components/SpinnerBorder/SpinnerBorder';
 import { Spinner3D, Spinner3DProps } from './components/Spinner3D/Spinner3D';
+import { Ball, BallProps } from './components/Ball/Ball';
 import { Time, type TimeProps, } from './components/Time/Time';
 import { Cube, CubeProps } from './components/Cube/Cube';
 import { RotateCube, RotateCubeProps } from './components/RotateCube/RotateCube';

@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useMemo } from "react";
 import { Box, styled, type SxProps, type Theme } from '@mui/material';
 import s from './Spinner3D.module.scss';
 
@@ -40,8 +40,15 @@ const Spinner3DMemo = forwardRef<HTMLDivElement, Spinner3DProps>(({ sx = {}, isB
   const _bgColor = bgColor.startsWith('#') ? bgColor : `${bgColor}.main`
   const _color = color.startsWith('#') ? color : `${color}.main`
 
+   const mergedSx = useMemo(() => {
+    if (typeof sx === 'function') {
+      return (theme: Theme) => ({ color: _color, ...sx(theme) });
+    }
+    return { color: _color, ...sx };
+  }, [_color, sx]);
+
   return (
-    <BgBox bgcolor={_bgColor} sx={{ color: _color, ...sx }} ref={ref} isBgGradient={isBgGradient}>
+    <BgBox bgcolor={_bgColor} sx={mergedSx} ref={ref} isBgGradient={isBgGradient}>
       <div className={s.pl}>
         <div className={s['pl__dot']}></div>
         <div className={s['pl__dot']}></div>

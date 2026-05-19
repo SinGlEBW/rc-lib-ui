@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Box, type BoxProps, type SxProps, type Theme } from '@mui/material';
 import cn from 'classnames';
 import { forwardRef, memo } from 'react';
@@ -52,10 +52,22 @@ const StyledInner = styled(
   }))
 
 
+
+  
+
+
 const SpinnerBorderMemo = forwardRef<HTMLDivElement, SpinnerBorderProps>(({ sx = {}, textPosition = "right", bgColor = 'primary', size = 16, className, classNameBody, text = '' }, ref) => {
   const color = bgColor.startsWith('#') ? bgColor : `${bgColor}.main`;
+
+ const mergedSx = useMemo(() => {
+    if (typeof sx === 'function') {
+      return (theme: Theme) => ({ color, ...sx(theme) });
+    }
+    return { color, ...sx };
+  }, [color, sx]);
+
   return (
-    <Box className={cn(s.wrap, className)} sx={{ color, ...sx }} ref={ref} >
+    <Box className={cn(s.wrap, className)} sx={mergedSx} ref={ref} >
       <StyledInner textPosition={textPosition}>
         <Box className={cn('SpinnerBorder', `${s.spinner} ${s.spinnerSm}`, classNameBody)}
           sx={{ width: size, height: size }}
