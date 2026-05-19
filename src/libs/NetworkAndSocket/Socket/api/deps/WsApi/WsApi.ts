@@ -3,8 +3,6 @@ import type { WsApi_Events, WsApi_Options_P, WsApi_StateProps, WsApiE_StatusConn
 
 //INFO: Назначать функции стрелочными иначе this не читаем
 
-
-
 export class WsApi {
   private options: WsApi_Options_P = {
     timeReConnect: 5000,
@@ -29,13 +27,13 @@ export class WsApi {
     this.state = { ...this.state, ...state };
   }
   private eventListener = (action: "add" | "remove") => {
- 
     const entriesSocketEvents = [
       ["open", this.openHandler],
       ["close", this.closeHandler],
       ["message", this.msgHandler],
       ["error", this.errHandler],
     ] as const;
+    
     for (let i = 0; i < entriesSocketEvents.length; i++) {
       const [keyEvent, watchEvent] = entriesSocketEvents[i];
       if (action === "add") {
@@ -46,30 +44,33 @@ export class WsApi {
     }
   };
 
-  private openHandler = () => { this.setStatus("ready"); };
-  private closeHandler = () => { this.setStatus("close"); };
+  private openHandler = () => {
+    this.setStatus("ready");
+  };
+  private closeHandler = () => {
+    this.setStatus("close");
+  };
 
   private msgHandler = (e) => {
     const data = JSON.parse(e.data ? e.data : "{}");
     try {
       const { action } = data;
       const itemReq = this.findDataRequestByAction(action);
-      if(itemReq){
-        const { cb, ...other } = itemReq
-        const { payload, ...otherData } = other
-        this.events.publish("msg",  {...data, request: {...otherData, ...payload}} );
-      }else{
-        this.events.publish("msg",  data);
+      if (itemReq) {
+        const { cb, ...other } = itemReq;
+        const { payload, ...otherData } = other;
+        this.events.publish("msg", { ...data, request: { ...otherData, ...payload } });
+      } else {
+        this.events.publish("msg", data);
       }
       //Отправляем в cb
       action && this.filterSaveItemsByResponse(data);
-
     } catch (error) {
       this.events.publish("msg", {});
     }
   };
 
-  private errHandler = (err: WebSocketEventMap['error']) => {
+  private errHandler = (err: WebSocketEventMap["error"]) => {
     this.events.publish("error", {
       readyState: this.state.ws?.readyState as number,
       arrSaveReq: this.getRequestSave(),
@@ -96,7 +97,6 @@ export class WsApi {
     this.state.arrSaveReq = filterArrSaveReq;
   }
 
-
   private errorInitSocket = () => {
     console.error("Вы не установили опции");
   };
@@ -112,14 +112,14 @@ export class WsApi {
   getStatusSocket = () => this.state.statusConnect;
   getRequestSave = () => this.state.arrSaveReq;
   getOptions = () => this.options;
+  setOptions = (options: Partial<WsApi_Options_P>) => this.options = { ...this.options, ...options };
   // getRegisteredEvents = this.events.getListNameEvents;
   // on = this.events.subscribe;
   // off = this.events.unsubscribe;
 
-
   init = (options: typeof this.options) => {
     this.initOptions = true;
-    this.options = { ...this.options, ...options };
+    this.setOptions(options);
   };
 
   getIsInitWS = () => {
@@ -129,7 +129,7 @@ export class WsApi {
     }
     return status;
   };
- 
+
   connect() {
     if (this.initOptions) {
       this.close();
@@ -151,6 +151,13 @@ export class WsApi {
     this.close();
     this.setStatus("disconnect");
     this.resetState();
+  }
+  destroy() {
+    const { statusConnect } = this.getState();
+    if (statusConnect !== "disconnect") {
+      this.disconnect();
+    }
+
     this.events.resetSubscribers();
   }
 
@@ -170,14 +177,13 @@ export class WsApi {
     }
   }
   //INFO: Запросов может быть несколько. И время запроса разное
-  private getItemsRequestSaveByAction(action:string){
+  private getItemsRequestSaveByAction(action: string) {
     return this.getRequestSave().filter((item) => item?.payload?.action === action);
   }
-  findDataRequestByAction = (action:string, ) => {
+  findDataRequestByAction = (action: string) => {
     const itemsRequestByAction = this.getItemsRequestSaveByAction(action);
     const itemsRequestByActionSort = itemsRequestByAction.sort((a, b) => b.requestTime - a.requestTime);
     //INFO: Пока предполагаем что 1 запрос одного action происходит
     return itemsRequestByActionSort[0];
-  }
-
+  };
 }

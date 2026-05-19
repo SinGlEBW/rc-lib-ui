@@ -40,9 +40,8 @@ const OfflineDetectionMemo: FC<SocketOfflineDetectionProps> = ({ children, class
   // const isNetworkStatus = useNetworkSelector(networkSelectors.getNetworkStatus);
   const isDisableConnectSocket = useSocketSelector(socketSelectors.getIsDisableConnectSocket);
 
-  const is = isOfflineSocket || !Boolean(isNetwork);
+  const is = isOfflineSocket || !Boolean(isNetwork) || isDisableConnectSocket;
   const titleOffline = 'Оффлайн';
-  // debugger
   return (
     <StyledOfflineCollapse
       in={is}

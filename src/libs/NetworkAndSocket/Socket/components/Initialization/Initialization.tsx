@@ -13,7 +13,6 @@ export interface InitializationSocketProps {
 }
 
 
-
 //TODO: На Будущее сделать слушатели Network чтоб не передавть из вне эти статусы
 const InitializationMemo:FC<InitializationSocketProps> = (props) => {
   // const { isNetwork, typeNetwork } = props;
@@ -31,13 +30,11 @@ const InitializationMemo:FC<InitializationSocketProps> = (props) => {
     typeNetwork: '',
   });
 
-
   
-
-
   // const setStateLocal = setStateDecorator(state, setState);
 
   useEffect(() => {
+
 
     SocketApi.on("network", (info) => { console.log('network: ', info);
       setNetworkState((prev) => ({...prev, isNetwork: info.isNetwork, typeNetwork: info.typeNetwork }));
@@ -45,22 +42,23 @@ const InitializationMemo:FC<InitializationSocketProps> = (props) => {
     SocketApi.init(props.init);        
     typeof props.onMount == 'function' &&  props.onMount();
     SocketApi.on("status", (status) => {
-      const stateSocket = socketStore.getState();
-      const { isReadySocket, infoNoConnectServer: { isModal:isModalNoConnectServer }, isOfflineSocket } = stateSocket;
+      const socketStoreState = socketStore.getState();
+      // const { isReadySocket, infoNoConnectServer: { isModal:isModalNoConnectServer }, isOfflineSocket } = stateSocket;
    
-      (status !== 'ready' && isReadySocket) && socketActions.setStatusReady({ isReadySocket: false });
+      (status !== 'ready' && socketStoreState.isReadySocket) && socketActions.setStatusReady({ isReadySocket: false });
   
-      
-      if(!isReadySocket && status === 'ready'){
+      const socketApiState = SocketApi.getState();
+      socketActions.setIsOfflineSocket({isOfflineSocket: socketApiState.isOfflineSocket});
+
+
+      if(!socketStoreState.isReadySocket && status === 'ready'){
         socketActions.setStatusReady({ isReadySocket: true });
-
-        if(isModalNoConnectServer && isOfflineSocket){
-          console.log('Вырубаем модалку т.к. сокет законектился после окончания timeOffReConnect')
-          socketActions.setInfoNoConnectServer({isModal: false});
-          socketActions.setIsOfflineSocket({isOfflineSocket: false});
-        }
-
-      }
+        socketStoreState.isDisableConnectSocket && socketActions.setIsDisableConnectSocket({ isDisableConnectSocket: false });
+        socketActions.setInfoNoConnectServer({
+          isModal: false,
+          isSelectOffline: false
+        });
+    }
       socketActions.setStatusConnectSocket({ statusConnect: status });
     });
   
@@ -74,6 +72,7 @@ const InitializationMemo:FC<InitializationSocketProps> = (props) => {
 
     });
     SocketApi.on('timeOffReConnect', (info) => {  console.log('timeOffReConnect: ', info);
+     
       socketActions.setIsOfflineSocket({isOfflineSocket: !info.status})
       if (!info.status) {
         const stateSocket = socketStore.getState();
@@ -91,7 +90,7 @@ const InitializationMemo:FC<InitializationSocketProps> = (props) => {
       typeof props.onUnmount == 'function' &&  props.onUnmount();
       console.dir('disconnect');
       SocketApi.disconnect() 
-      // SocketApi.destroy();
+      SocketApi.destroy();
     };
   },[])
 

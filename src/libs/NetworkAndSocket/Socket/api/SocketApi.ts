@@ -1,12 +1,11 @@
 import uuid4 from "uuid4";
-import { DelaysPromise } from "./deps/DelaysPromise";
+import { DelaysPromise, type DelaysPromiseProps } from "./deps/DelaysPromise";
 import { EventSubscribers } from "./deps/EventSubscribers/EventSubscribers";
 import { WsApi, WsApi_Options_P } from "./deps/WsApi";
 import type { WsApi_Events } from "./deps/WsApi/WsApi.types";
 
 import type { BasePayloadSocket, SocketApi_Options_P, SocketApi_StateProps_P, SocketApiOptionsRequest, SocketResponse } from "./SocketApi.types";
-import { NetworkStatusTracker, NetworkStatusInfoTracker } from 'dev-classes'
-
+import { NetworkStatusTracker, NetworkStatusInfoTracker } from "dev-classes";
 
 interface ConnectInfoProps {
   status: boolean;
@@ -16,31 +15,33 @@ interface SocketApi_Events {
   timeOffReConnect(info: ConnectInfoProps): void;
   reConnect(status: boolean): void;
   network(info: NetworkStatusInfoTracker): void;
+  destroy(): void;
 }
 
 type CommonEvents = SocketApi_Events & WsApi_Events;
 
 export class SocketApi {
+  private static sessionId: string = '';
   private static state: SocketApi_StateProps_P = {
     isDisconnect: true,
     isActiveReConnect: false,
     isOfflineSocket: true,
-    isGotWasFirstConnection: false,
-    isStartCheckNetwork: false, //не используеться
-    infoNetwork: {
-      isNetwork: false,
-      typeNetwork: "",
-    }
+    // isStartCheckNetwork: false, //не используеться
+  };
+  private static isGotWasFirstConnection: boolean = false;
+  private static infoNetwork: NetworkStatusInfoTracker = {
+    isNetwork: false,
+    typeNetwork: "",
   };
   private static options: SocketApi_Options_P = {
     isReConnectNetworkOnline: false,
     listUrlsCheckConnectNetwork: [],
   };
-
-  private static wsApi = new WsApi();
+  
+   static wsApi = new WsApi();
   private static delay = new DelaysPromise();
   private static networkTicker: NetworkStatusTracker | null = null;
-  private static events = new EventSubscribers<SocketApi_Events>(["timeOffReConnect", "reConnect", "network"]);
+  private static events = new EventSubscribers<SocketApi_Events>(["timeOffReConnect", "reConnect", "network", 'destroy']);
   private static saveID: Partial<Record<"idReConnect" | "checkConnect", number | null>> = {
     idReConnect: null,
     checkConnect: null,
@@ -49,6 +50,12 @@ export class SocketApi {
 
   private static copyState(state) {
     return JSON.parse(JSON.stringify(state));
+  }
+  private static setInfoNetwork(info: NetworkStatusInfoTracker) {
+    SocketApi.infoNetwork = info
+  }
+  static getInfoNetwork() {
+    return SocketApi.infoNetwork;
   }
   private static setState(state: Partial<typeof SocketApi.state>) {
     SocketApi.state = { ...SocketApi.state, ...state };
@@ -79,7 +86,7 @@ export class SocketApi {
       !SocketApi.state.isActiveReConnect &&
       SocketApi.options.isReConnectNetworkOnline &&
       /*#################-----------<{ Убрал 21.08.2025 }>------------############# */
-      SocketApi.state.isGotWasFirstConnection
+      SocketApi.isGotWasFirstConnection
       /*-----------------------------------------------------------------------------------------*/
     ) {
       SocketApi.socketReConnect();
@@ -103,7 +110,7 @@ export class SocketApi {
         }
         return { ...acc, SocketApiOptions: { ...acc.SocketApiOptions, [key]: value } };
       },
-      { WsOptions: {}, SocketApiOptions: {} } as { WsOptions: WsApi_Options_P; SocketApiOptions: SocketApi_Options_P }
+      { WsOptions: {}, SocketApiOptions: {} } as { WsOptions: WsApi_Options_P; SocketApiOptions: SocketApi_Options_P },
     );
   };
   /*---------------------------------------------------------------------------------------------------------------------------*/
@@ -140,14 +147,13 @@ export class SocketApi {
 
   //INFO: Проверить как часто вызываеться
   private static setNetworkStatus = (info: NetworkStatusInfoTracker) => {
- 
     SocketApi.events.publish("network", info);
-
+    SocketApi.setInfoNetwork(info);
     info.isNetwork ? SocketApi.online() : SocketApi.offline();
   };
   static init = (options: WsApi_Options_P & SocketApi_Options_P) => {
     const { WsOptions, SocketApiOptions } = SocketApi.splitOptions(options);
-
+   
     //TODO: Возможно пересмотреть подход
     //INFO: Убрал для проверки internetControlDelay
     /*#################-----------<{ Убрал 21.08.2025 }>------------############# */
@@ -156,21 +162,21 @@ export class SocketApi {
     //   SocketApi.setNetworkStatus({ isNetwork, typeNetwork: textStatus });
     // });
 
-    this.networkTicker = new NetworkStatusTracker(SocketApiOptions.listUrlsCheckConnectNetwork ?? []);
     
+    this.networkTicker = new NetworkStatusTracker(SocketApiOptions.listUrlsCheckConnectNetwork ?? []);
+
     this.networkTicker.startEvents((info) => {
-      const state = SocketApi.getState()
+      const state = SocketApi.getState();
       // if(info.typeNetwork == state.infoNetwork.typeNetwork && info.isNetwork == state.infoNetwork.isNetwork) return;
       SocketApi.setNetworkStatus(info);
-      SocketApi.setState({ infoNetwork: info });
     });
-    
-    
+
     // this.networkTicker.fetchingNetwork
     //INFO: Через networkTicker можно реализовать отслеживание интернета через запросы на сервера
     /*-----------------------------------------------------------------------------------------*/
 
     SocketApi.setOptions(SocketApiOptions);
+    SocketApi.sessionId = uuid4();
     SocketApi.wsApi.init(WsOptions);
 
     SocketApi.wsApi.events.subscribe("status", (status) => {
@@ -183,7 +189,6 @@ export class SocketApi {
       return;
     }
 
-
     /*-----------------------------------------------------------------------------------------*/
     console.log("CONNECT WS");
     SocketApi.setState({ isDisconnect: false });
@@ -191,14 +196,30 @@ export class SocketApi {
   }
 
   static disconnect() {
-    if (!SocketApi.state.isDisconnect) {
+    const { isDisconnect, isActiveReConnect } = SocketApi.getState();
+    if(isActiveReConnect){
+      SocketApi.stopReConnect(false);
+    }
+    if (!isDisconnect) {
       SocketApi.setState({ isDisconnect: true });
       console.log("DISCONNECT WS");
       SocketApi.wsApi.disconnect();
       SocketApi.resetState();
-      SocketApi.events.resetSubscribers();
-      this.networkTicker?.destroy();
+      // SocketApi.events.resetSubscribers();
+      // this.networkTicker?.destroy();
     }
+  }
+  static destroy() {
+    SocketApi.events.publish("destroy", undefined);
+    if (!SocketApi.state.isDisconnect) {
+      SocketApi.setState({ isDisconnect: true });
+      console.log("DISCONNECT WS");
+      SocketApi.wsApi.disconnect();
+    }
+    SocketApi.wsApi.destroy();
+    SocketApi.resetState();
+    SocketApi.events.resetSubscribers();
+    this.networkTicker?.destroy();
   }
 
   static send<P extends BasePayloadSocket, Data extends BasePayloadSocket>(payload: P, cb?: (data: Data) => void) {
@@ -234,7 +255,6 @@ export class SocketApi {
       return;
     }
 
- 
     if (!SocketApi.saveID.idReConnect) {
       SocketApi.setStatusReConnect(true);
 
@@ -266,7 +286,7 @@ export class SocketApi {
           controlAction: ({ stop, getIsActiveEvent }) => {
             SocketApi.stopReConnect = stop;
           },
-        }
+        },
       );
 
       delayControlActionEvery.promise
@@ -278,7 +298,7 @@ export class SocketApi {
         .catch((info) => {
           if (SocketApi.wsApi.getStatusSocket() === "ready") {
             console.log("Сокет успел подключиться, игнорируем ошибку таймаута");
-            SocketApi.setInfoConnect({ status: true, msg: "Подключено (восстановлено)"});
+            SocketApi.setInfoConnect({ status: true, msg: "Подключено (восстановлено)" });
             return;
           }
           SocketApi.setInfoConnect(info);

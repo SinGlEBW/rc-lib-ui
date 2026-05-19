@@ -5,6 +5,7 @@ import { Initialization, InitializationSocketProps } from './Initialization/Init
 import { OfflineDetection, SocketOfflineDetectionPayloadProps, SocketOfflineDetectionProps } from './OfflineDetection/OfflineDetection';
 import { ReConnect } from './Buttons/ReConnect';
 import { OfflineButton } from './Buttons/OfflineButton';
+import { Connect } from './Buttons/Connect';
 
 
 
@@ -13,7 +14,8 @@ export const Socket = {
   OfflineDetection,
   Buttons: {
     OfflineActive: OfflineButton,
-    ReConnect
+    ReConnect,
+    Connect
   },
   Initialization
 }

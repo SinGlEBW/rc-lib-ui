@@ -7,10 +7,8 @@ export interface SocketApi_Options_P {
   listUrlsCheckConnectNetwork?: string[];
 }
 
-type SocketApi_StateProps_OR = 'isDisconnect' | 'isActiveReConnect' | 'isOfflineSocket' | 'isGotWasFirstConnection' | 'isStartCheckNetwork';
-export type SocketApi_StateProps_P = Record<SocketApi_StateProps_OR, boolean> & {
-  infoNetwork: NetworkStatusInfoTracker
-}
+type SocketApi_StateProps_OR = 'isDisconnect' | 'isActiveReConnect' | 'isOfflineSocket';
+export type SocketApi_StateProps_P = Record<SocketApi_StateProps_OR, boolean> 
 export type SocketApi_StatusConnect_OR = WsApiE_StatusConnect_OR;
 
 

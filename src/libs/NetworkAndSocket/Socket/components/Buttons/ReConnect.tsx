@@ -11,6 +11,7 @@ export interface ReConnectButtonProps {
 
 const ReConnectMemo:FC<ReConnectButtonProps> = ({children}) => {
   const reConnect = useCallback(() => {
+    socketActions.setIsDisableConnectSocket({ isDisableConnectSocket: false });
     socketActions.setInfoNoConnectServer({isModal: false, isSelectOffline: false});
   }, [])
 
