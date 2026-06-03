@@ -6,6 +6,7 @@ import { Alerts } from './LibTesting/Alerts.tsx';
 import { useInteractiveMessage, InteractiveMessageProvider } from '@libs/ControlCards';
 import { Preloaders } from '@libs/Preloaders/Preloaders.tsx';
 import { TestSocket } from './LibTesting/socket/TestSocket.tsx';
+import { TestingNetwork } from './LibTesting/network/TestingNetwork.tsx';
 // import {} from '@libs/NetworkAndSocket'
 // import { Preloaders, } from '../dist/Preloaders/index.js';
 const start = () => {
@@ -21,6 +22,7 @@ const start = () => {
       {/* </Preloaders> */}
       {/* </MaterialDarkMode> */}
        <TestSocket/>
+      <TestingNetwork />
     </BrowserRouter>
   )
 

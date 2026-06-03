@@ -5,6 +5,8 @@ import { useNetworkSelector, networkSelectors } from '../../store/network.store'
 import { Box } from '@mui/system';
 import s from './Render.module.css';
 import { useNetworkDetection, type UseNetworkDetectionProps } from '../../hooks/useNetworkDetection';
+import { StyledNetworkOffline, StyledNetworkOnline } from './Render.styled';
+import type { BoxProps } from '@mui/material';
 
 
 export interface NetworkWatcherRenderProps extends UseNetworkDetectionProps{
@@ -12,25 +14,28 @@ export interface NetworkWatcherRenderProps extends UseNetworkDetectionProps{
   // position?: 'bottom' | 'top';
   className?: string;
   sxTitle?:SxProps;
-  sxItem?:SxProps;
+  slotProps?: {
+    offline?: Omit<BoxProps, 'className'>;
+    online?: Omit<BoxProps, 'className'>;
+  };
   sx?:SxProps;
 }
 //INFO: Доработать
 
 
 
-const NetworkWatcherRenderMemo: FC<NetworkWatcherRenderProps> = ({ className = '', isTitle = true, sxTitle, sx, sxItem, isNetwork, getStatus, ...props }) => {
+const NetworkWatcherRenderMemo: FC<NetworkWatcherRenderProps> = ({ className = '', isTitle = true, sxTitle, sx, slotProps, isNetwork, getStatus, ...props }) => {
   useNetworkDetection({ isNetwork,  getStatus});
   const { online, offline, action, titleOnline = 'В сети', titleOffline = 'Нет сети' } = useNetworkSelector(networkSelectors.getInfoNetworkStatus);
- 
+
   return (
     <Box className={cn(s.watcher, className)} sx={sx} >
-      <Box className={cn(s.watcherItem, `bg-gradient bg-danger text-white`, { [`${s.active}`]: offline })} sx={sxItem}>
+      <StyledNetworkOffline className={cn(s.watcherItem, { [`${s.active}`]: offline })} {...slotProps?.offline}>
         <RenderTitle isTitle={isTitle} title={titleOffline} sxTitle={sxTitle}/>
-      </Box>{/*offline-message*/}
-      <Box className={cn(s.watcherItem, `bg-gradient bg-success text-white`, { [`${s.active}`]: online })} sx={sxItem}>
+      </StyledNetworkOffline>{/*offline-message*/}
+      <StyledNetworkOnline className={cn(s.watcherItem, { [`${s.active}`]: online })} {...slotProps?.online}>
         <RenderTitle isTitle={isTitle} title={titleOnline} sxTitle={sxTitle}/>
-      </Box>{/*online-message*/}
+      </StyledNetworkOnline>{/*online-message*/}
     </Box>
   )
 };

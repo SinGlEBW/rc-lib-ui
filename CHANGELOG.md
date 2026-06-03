@@ -170,3 +170,6 @@
 ## [1.4.9] - 2026-05-19
 ### Change
 - Socket.Initialization. Изменена частично логика. Скорректирована синхронизация SocketApi state c socketSelectors
+## [1.5.0] - 2026-05-19
+### Change
+- Network.Render. Изменены некоторые пропсы 

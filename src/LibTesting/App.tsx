@@ -4,10 +4,12 @@ import { Dashboard, DashboardProps, type DashboardControlProps } from '@libs/Das
 import { Preloaders } from '@libs/Preloaders';
 import { socketActions, socketSelectors, socketStore } from '@libs/NetworkAndSocket/Socket/store/socket.store';
 
+
 import { Archive, ListSharp, MoreHoriz, StarBorder } from '@mui/icons-material';
 import { Box, Button, Chip, IconButton, Menu, MenuItem, Skeleton, Typography } from '@mui/material';
 import { useBoolStatus } from '@libs/hooks/useBoolStatus';
 import { useTimer } from '@libs/hooks';
+import { TestingNetwork } from './network/TestingNetwork';
 
 
 // import { SocketApi } from 'lib-socket-api';
@@ -55,8 +57,8 @@ const listMenu = [
     action: (
       <Chip label={7} color="primary" size="small"
         onClick={(e) => {
-            e.stopPropagation();
-            e.preventDefault()
+          e.stopPropagation();
+          e.preventDefault()
           console.dir(2);
         }} />
     ),
@@ -208,14 +210,14 @@ const listMenu = [
 export const App = () => {
 
   const dashboardControlRef = useRef<DashboardControlProps>(null)
- 
+
   // const handleMenuToggle = () => {
   //   dashboardControlRef.current?.handleMenuToggle()
   // }
-    const controlTimer = useTimer({ timer: 5000, isDefaultPause: true });
+  const controlTimer = useTimer({ timer: 5000, isDefaultPause: true });
 
 
-    console.dir(controlTimer);
+  console.dir(controlTimer);
 
 
   console.dir(controlTimer);
@@ -297,7 +299,7 @@ export const App = () => {
         children={(
           <div className={'content'} style={{ position: 'relative', }} >
             <div style={{ position: 'relative', height: '80vh' }} >
-              <Preloaders show={isPreloader} text='asdsadsadasd' textPosition='bottom'  name='Ball' sx={{ width: '100%', height: '100%', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)' }} timeout={600} />
+              <Preloaders show={isPreloader} text='asdsadsadasd' textPosition='bottom' name='Ball' sx={{ width: '100%', height: '100%', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)' }} timeout={600} />
               <div>
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam veniam explicabo, eveniet aliquid enim repellat harum impedit eos voluptatum consequatur non sit id, rerum, voluptatibus quasi natus! Repudiandae, voluptate culpa.
                 Mollitia vitae culpa doloribus! Commodi ratione natus iusto itaque cumque, neque modi delectus cupiditate dolorem quasi at tempora quidem rerum numquam consequatur quos aliquam quas eum ullam obcaecati rem blanditiis?
@@ -315,11 +317,7 @@ export const App = () => {
         )}
       />
 
-
-      {/* <div className={'content'} style={{ position: 'relative', overflow: 'hidden', height: '100%' }} >
-        <Socket.OfflineDetection sx={{ position: 'absolute', bottom: 0, right: 0 }} children={({ isDisableConnectSocket }) => isDisableConnectSocket ? 'Режим оффлайн' : 'оффлайн'} />
-        <Network.Render />
-      </div> */}
+     
 
     </>
   )
