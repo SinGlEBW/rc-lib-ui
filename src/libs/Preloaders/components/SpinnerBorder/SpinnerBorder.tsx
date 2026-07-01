@@ -78,7 +78,8 @@ const SpinnerBorderMemo = forwardRef<HTMLDivElement, SpinnerBorderProps>(({ sx =
             <Box className={cn('SpinnerBorder-Text')} 
               sx={{
                 fontSize: 'inherit',
-                color: 'inherit'
+                color: 'inherit',
+                margin: 0
               }}
             component={'p'} >{text}</Box>
           )
