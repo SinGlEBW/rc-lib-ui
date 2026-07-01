@@ -40,6 +40,7 @@ export default defineConfig({
         network: entryPathLib +'/NetworkAndSocket/Network/index.ts',
         preloaders: entryPathLib +'/Preloaders/index.ts',
         dashboard: entryPathLib +'/Dashboard/index.ts',
+        webrtc: entryPathLib +'/WebRTC/index.ts',
         'control-cards': entryPathLib +'/ControlCards/index.ts',
         'hooks': entryPathLib +'/hooks/index.ts',
       },

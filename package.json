@@ -17,6 +17,10 @@
       "import": "./dist/socket.js",
       "types": "./dist/NetworkAndSocket/Socket/index.d.ts"
     },
+    "./webrtc": {
+      "import": "./dist/webrtc.js",
+      "types": "./dist/WebRTC/index.d.ts"
+    },
     "./network": {
       "import": "./dist/network.js",
       "types": "./dist/NetworkAndSocket/Network/index.d.ts"
@@ -59,7 +63,7 @@
     "build:dev": "node buildEditVersion.js"
   },
   "dependencies": {
-    "dev-classes": "^1.5.8",
+    "dev-classes": "^1.6.10",
     "notistack": "^3.0.2",
     "react-transition-group": "^4.4.5",
     "uuid4": "^2.0.3",
