@@ -68,7 +68,7 @@ export class CanvasVideoRendering {
     this.state = defaultState;
   }
   private resetCallInfoState() {
-    this.state = defaultState;
+    this.callInfo = defaultCallInfoState;
   }
 
   private startedAudio({ audioContext, dest, stream }: { audioContext: AudioContext; dest: AudioNode; stream: MediaStream }, position: "left" | "right") {
@@ -142,16 +142,10 @@ export class CanvasVideoRendering {
     const offsetX = x + (w - newWidth) / 2;
     const offsetY = y + (h - newHeight) / 2;
 
-
-
-
-
-    
     // Очищаем область контейнера (опционально, если нужно)
     // ctx.clearRect(x, y, w, h);
 
     ctx.drawImage(remoteVideo, offsetX, offsetY, newWidth, newHeight);
-
 
     this.drawBackground({ x: 0, y, w, h: 20 });
     this.drawText(name, { fontSize: 12, x: 6, y: 13 });
@@ -178,7 +172,6 @@ export class CanvasVideoRendering {
   private createCanvas = (canvasElement?: HTMLCanvasElement) => {
     let { ctx, canvas } = this.getState();
     if (!ctx) {
-      debugger
       canvas = canvasElement ? canvasElement : document.createElement("canvas");
       ctx = canvas.getContext("2d");
       this.setState({ canvas, ctx });
@@ -188,7 +181,7 @@ export class CanvasVideoRendering {
 
   private drawBackground(config: Record<"x" | "y" | "w" | "h", number> & { color?: string; alpha?: number }) {
     const { ctx } = this.getState();
-    if(!ctx) return;
+    if (!ctx) return;
     const { x, y, w, h } = config;
     ctx.globalAlpha = config.alpha ? config.alpha : 0.3;
     ctx.fillStyle = config?.color ? config.color : "black";
@@ -198,7 +191,7 @@ export class CanvasVideoRendering {
 
   private drawText(text: string, config: Record<"x" | "y", number> & { color?: string; fontSize?: number }) {
     const { ctx } = this.getState();
-    if(!ctx) return;
+    if (!ctx) return;
     const { x, y } = config;
     const defaultSettigns = this.getSettings();
     const fontSize = config.fontSize ? config.fontSize : defaultSettigns.fontSize;
@@ -275,7 +268,7 @@ export class CanvasVideoRendering {
     drawFrame(lastFrameTime);
 
     const { canvas } = this.createCanvas(options?.canvasElement);
-    if(!canvas) return;
+    if (!canvas) return;
 
     const canvasStream = canvas.captureStream(options?.fps || 30);
     //с микширование звука
@@ -286,23 +279,42 @@ export class CanvasVideoRendering {
 
     return canvasStreamWithAudio;
   }
+  private cleanupCanvas() {
+    if (this.state.canvas) {
+      // Останавливаем все треки
+      const stream = this.state.canvas.captureStream();
+      stream.getTracks().forEach((track) => track.stop());
 
-  stopRenderingCanvas = () => {
-    // Очищаем ресурсы
+      // Очищаем canvas
+      const ctx = this.state.canvas.getContext("2d");
+      if (ctx) {
+        ctx.clearRect(0, 0, this.state.canvas.width, this.state.canvas.height);
+      }
+
+      this.state.canvas = null;
+      this.state.ctx = null;
+    }
+  }
+
+  private cleanupAudio() {
+    if (this.state.audioContext) {
+      this.state.audioContext.close().catch((err) => console.warn("Error closing audio context:", err));
+      this.state.audioContext = null;
+    }
+  }
+  private cleanupAnimation() {
     if (this.state.animationFrameId) {
       cancelAnimationFrame(this.state.animationFrameId);
       this.state.animationFrameId = null;
     }
-    if (this.state.audioContext) {
-      this.state.audioContext.close();
-    }
-    if (this.state.canvas) {
-      const stream = this.state.canvas.captureStream();
-      stream.getTracks().forEach((track) => track.stop());
-    }
+  }
+  stopRenderingCanvas = () => {
+    this.cleanupAnimation();
+    this.cleanupAudio();
+    this.cleanupCanvas();
   };
 
-  destroyCanvas = () => {
+  destroy = () => {
     this.stopRenderingCanvas();
     this.resetState();
     this.resetCallInfoState();
@@ -356,7 +368,7 @@ export class CanvasVideoRendering {
 
   private Card(contentCb: () => void, config: SizesItem & { radius?: number; elevation?: number }) {
     const { ctx } = this.getState();
-    if(!ctx) return;
+    if (!ctx) return;
     ctx.save();
 
     // Создаем clipping path для закругления углов

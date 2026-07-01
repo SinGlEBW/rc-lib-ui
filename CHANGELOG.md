@@ -182,3 +182,8 @@
 ## [1.5.5] - 2026-07-01
 ### Added
 - Добавлен CanvasCallRecorder раздел /webrtc 
+## [1.5.6] - 2026-07-01
+### Edit
+- CanvasCallRecorder destroyCanvas на destroy 
+### Fixed
+- Подкорректирован destroy 
