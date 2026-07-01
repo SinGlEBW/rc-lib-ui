@@ -30,6 +30,7 @@ const StyledInner = styled(
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  
     ...(['top', 'bottom'].includes(textPosition) && {
       flexDirection: 'column',
       ...(textPosition === 'top' && {
@@ -74,7 +75,12 @@ const SpinnerBorderMemo = forwardRef<HTMLDivElement, SpinnerBorderProps>(({ sx =
         />
         {
           text && (
-            <Box className={cn('SpinnerBorder-Text')} component={'p'} >{text}</Box>
+            <Box className={cn('SpinnerBorder-Text')} 
+              sx={{
+                fontSize: 'inherit',
+                color: 'inherit'
+              }}
+            component={'p'} >{text}</Box>
           )
         }
       </StyledInner>

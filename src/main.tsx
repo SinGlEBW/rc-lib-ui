@@ -1,12 +1,11 @@
+import { InteractiveMessageProvider } from '@libs/ControlCards';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { App } from './LibTesting/App.tsx';
 import './index.css';
-import { Alerts } from './LibTesting/Alerts.tsx';
-import { useInteractiveMessage, InteractiveMessageProvider } from '@libs/ControlCards';
-import { Preloaders } from '@libs/Preloaders/Preloaders.tsx';
-import { TestSocket } from './LibTesting/socket/TestSocket.tsx';
-import { TestingNetwork } from './LibTesting/network/TestingNetwork.tsx';
+import { Alerts } from './LibTesting/TestingComponents/Alerts.tsx';
+import { TestingNetwork } from './LibTesting/TestingComponents/network/TestingNetwork.tsx';
+import { TestSocket } from './LibTesting/TestingComponents/socket/TestSocket.tsx';
+import { TestingPreloaders } from './LibTesting/TestingComponents/TestingPreloaders.tsx';
 // import {} from '@libs/NetworkAndSocket'
 // import { Preloaders, } from '../dist/Preloaders/index.js';
 const start = () => {
@@ -21,7 +20,8 @@ const start = () => {
       </InteractiveMessageProvider>
       {/* </Preloaders> */}
       {/* </MaterialDarkMode> */}
-       <TestSocket/>
+      <TestingPreloaders />
+      <TestSocket />
       <TestingNetwork />
     </BrowserRouter>
   )
