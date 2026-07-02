@@ -63,7 +63,7 @@
     "build:dev": "node buildEditVersion.js"
   },
   "dependencies": {
-    "dev-classes": "^1.6.10",
+    "dev-classes": "^1.6.11",
     "mediabunny": "^1.50.3",
     "notistack": "^3.0.2",
     "react-transition-group": "^4.4.5",

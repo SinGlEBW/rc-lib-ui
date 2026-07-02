@@ -21,7 +21,6 @@ export class ControlWebRTC {
   private static restartTimeout: NodeJS.Timeout | null = null;
   private static controlState = new ControlState<DefaultStateProps>(defaultState);
   static channels = new ChannelsRTC(ControlWebRTC.events);
-  // static recorder = new CanvasCallRecorder();
   static controlBitrate = new ModernControlBitrate(1000);
   static getPeerConnection() {
     return ControlWebRTC.controlState.getState().pc;

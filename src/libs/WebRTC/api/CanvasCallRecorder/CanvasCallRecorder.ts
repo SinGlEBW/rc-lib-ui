@@ -1,6 +1,5 @@
-import { EventSubscribers } from "dev-classes";
+import { EventSubscribers, ControlTimerFormat } from "dev-classes";
 import { ALL_FORMATS, BlobSource, BufferTarget, Conversion, Input, Mp4OutputFormat, Output, WebMOutputFormat } from "mediabunny";
-import { ControlTimerFormat } from "./ControlTimerFormat";
 import type { CanvasCallRecorder_Events, CanvasCallRecorderState } from "./CanvasCallRecorder.types";
 import { CanvasVideoRendering } from "./CanvasVideoRendering";
 

@@ -202,7 +202,6 @@ export class ModernControlBitrate {
     const networkQuality = this.getPacketLossStatus(packetLossPercent);
 
     const { lastVideoBytes, lastVideoTimestamp, lastAudioBytes, lastAudioTimestamp, audioBitrate, videoBitrate } = this.remoteSaveBitrateInfo;
-    // debugger
 
     const videoCalculateBitrate = this.calculateBitrate(inboundVideo?.bytesReceived, lastVideoBytes, lastVideoTimestamp);
     const audioCalculateBitrate = this.calculateBitrate(inboundAudio?.bytesReceived, lastAudioBytes, lastAudioTimestamp);
