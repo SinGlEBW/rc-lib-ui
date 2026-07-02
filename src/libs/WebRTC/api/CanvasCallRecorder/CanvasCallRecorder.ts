@@ -1,6 +1,6 @@
-import { ControlTimerFormat } from "./ControlTimerFormat";
 import { EventSubscribers } from "dev-classes";
-
+import { ALL_FORMATS, BlobSource, BufferTarget, Conversion, Input, Mp4OutputFormat, Output, WebMOutputFormat } from "mediabunny";
+import { ControlTimerFormat } from "./ControlTimerFormat";
 import type { CanvasCallRecorder_Events, CanvasCallRecorderState } from "./CanvasCallRecorder.types";
 import { CanvasVideoRendering } from "./CanvasVideoRendering";
 
@@ -24,10 +24,7 @@ export interface StartRecordingEvents {
   onStop?(fullChunks: Blob): void;
   onError?(error: any): void;
 }
-export type StartRecording = (
-  a: StartRecordingPayload,
-  b: StartRecordingEvents,
-) => void;
+export type StartRecording = (a: StartRecordingPayload, b: StartRecordingEvents) => void;
 
 export class CanvasCallRecorder {
   private state = defaultState;
@@ -69,6 +66,7 @@ export class CanvasCallRecorder {
       mediaRecorder.onstop = () => {
         const { mimeType, recordedChunks } = this.getState();
         const fullChunks = new Blob(recordedChunks, { type: mimeType });
+
         this.setState({ isRecording: false });
         onStop && onStop(fullChunks);
       };
@@ -106,8 +104,13 @@ export class CanvasCallRecorder {
         const { recordedChunks, mimeType, format } = this.getState();
 
         const fullChunks = new Blob(recordedChunks, { type: mimeType });
-        this.stopTimer();
-        resolve({ fullChunks, format });
+
+        this.fixWithMediabunny(fullChunks, mimeType, format).then((blob) => {
+          this.stopTimer();
+          resolve({ fullChunks: blob, format });
+        });
+
+        // resolve({ fullChunks, format });
       };
 
       mediaRecorder.addEventListener("stop", onStopHandler, { once: true });
@@ -166,7 +169,6 @@ export class CanvasCallRecorder {
     const isTimer = this.controlTimer.getHasTimer();
     if (!isTimer && isRecording) {
       this.controlTimer.startTimer((timer) => {
-        console.dir("timeUpdate");
         this.events.publish("timeUpdate", timer);
       });
     }
@@ -175,5 +177,21 @@ export class CanvasCallRecorder {
   stopTimer() {
     this.controlTimer.stopTimer();
   }
-}
 
+  private async fixWithMediabunny(blob: Blob, mimeType: string, typeRecorder: "webm" | "mp4") {
+    const input = new Input({
+      source: new BlobSource(blob),
+      formats: ALL_FORMATS,
+    });
+
+    const output = new Output({
+      format: typeRecorder === "webm" ? new WebMOutputFormat({}) : new Mp4OutputFormat(), // или
+      target: new BufferTarget(),
+    });
+
+    const conversion = await Conversion.init({ input, output });
+    await conversion.execute();
+
+    return new Blob([output.target.buffer!], { type: mimeType });
+  }
+}

@@ -142,8 +142,6 @@ export class CanvasVideoRendering {
     const offsetX = x + (w - newWidth) / 2;
     const offsetY = y + (h - newHeight) / 2;
 
-    // Очищаем область контейнера (опционально, если нужно)
-    // ctx.clearRect(x, y, w, h);
 
     ctx.drawImage(remoteVideo, offsetX, offsetY, newWidth, newHeight);
 
@@ -161,31 +159,71 @@ export class CanvasVideoRendering {
     const { isMirrorVideo, x, y, w, h } = config;
     const lvlShadow = 2;
     const radius = config?.radius || 5; // радиус закругления (можно регулировать)
-    const videoY = y + panelHeightText;
-
+    const posY = y + panelHeightText;
+   
 
     this.applyShadowByElevation(ctx, lvlShadow);
 
-    this.drawRoundedRectPath(ctx, x, videoY, w, h, radius);
+    this.drawRoundedRectPath(ctx, x, posY, w, h, radius);
     ctx.fillStyle = "#1B1D21"; // Нужно что-то залить, чтобы тень появилась
     ctx.fill();
     ctx.restore();
 
-
     // 2. Теперь делаем clip для видео
     ctx.save();
-    this.drawRoundedRectPath(ctx, x, videoY, w, h, radius);
+    this.drawRoundedRectPath(ctx, x, posY, w, h, radius);
     ctx.clip();
 
     if (isMirrorVideo) {
       ctx.scale(-1, 1);
-      ctx.drawImage(localVideo, -x - w, y + panelHeightText, w, h);
+      // ctx.drawImage(localVideo, -x - w, posY, w, h);
+      this.drawVideoWithAspectFit(ctx, localVideo, -x - w, posY, w, h);
     } else {
-      ctx.drawImage(localVideo, x, y + panelHeightText, w, h);
+      // ctx.drawImage(localVideo, 0, 0, localVideo.videoWidth, localVideo.videoHeight, posX, posY, w, h);
+      this.drawVideoWithAspectFit(ctx, localVideo, x, posY, w, h);
+      // ctx.drawImage(localVideo, x, y + panelHeightText, w, h);
     }
     ctx.restore();
     // this.drawBackground({ x, y: y + panelHeight, w, h: panelHeight });
     this.drawText(name, { fontSize: 10, x: x + 6, y: y + 13 });
+  }
+
+  private drawVideoWithAspectFit(ctx: CanvasRenderingContext2D, video: HTMLVideoElement, targetX: number, targetY: number, targetW: number, targetH: number) {
+    const videoAspect = video.videoWidth / video.videoHeight;
+    const targetAspect = targetW / targetH;
+
+    let drawW, drawH, offsetX, offsetY;
+
+    if (videoAspect > targetAspect) {
+      // Видео шире - подгоняем по ширине, сверху/снизу полосы
+      drawW = targetW;
+      drawH = targetW / videoAspect;
+      offsetX = 0;
+      offsetY = (targetH - drawH) / 2;
+    } else {
+      // Видео выше - подгоняем по высоте, слева/справа полосы
+      drawH = targetH;
+      drawW = targetH * videoAspect;
+      offsetX = (targetW - drawW) / 2;
+      offsetY = 0;
+    }
+
+    // Очищаем область (чтобы были чёрные полосы)
+    ctx.fillStyle = "#1B1D21";
+    ctx.fillRect(targetX, targetY, targetW, targetH);
+
+    // Рисуем видео с сохранением пропорций
+    ctx.drawImage(
+      video,
+      0,
+      0,
+      video.videoWidth,
+      video.videoHeight, // весь кадр
+      targetX + offsetX,
+      targetY + offsetY,
+      drawW,
+      drawH,
+    );
   }
 
   private drawRoundedRectPath(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
