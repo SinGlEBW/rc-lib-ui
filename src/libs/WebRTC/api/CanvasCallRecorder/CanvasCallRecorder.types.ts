@@ -1,7 +1,6 @@
 export interface CanvasCallRecorder_Events {
   recordingStart: () => void;
   recordingStop: (blob: Blob) => void;
-
   watchRecording: (blob: Blob) => void;
   timeUpdate: (time: string) => void;
 }
@@ -14,15 +13,14 @@ export interface CanvasCallRecorderState {
   mimeType: string;
 }
 
-export type SizesItem = Record<"w" | "h" | "x" | "y", number>;
+export type SizesItem = Record<"w" | "h" | "x" | "y" , number>;
 type BasePropsItemCallInfo = {
   name: string;
-  sizes: SizesItem;
   isMirrorVideo?: boolean;
 };
 export interface CanvasCallInfo {
-  local: BasePropsItemCallInfo;
-  remote: BasePropsItemCallInfo;
+  local: BasePropsItemCallInfo & { sizes: SizesItem & { radius?: number, lvlShadow?: number } };
+  remote: BasePropsItemCallInfo & { sizes: SizesItem };
   // fps?: number,
   // canvasElement?: HTMLCanvasElement
   showTimestamp?: boolean;

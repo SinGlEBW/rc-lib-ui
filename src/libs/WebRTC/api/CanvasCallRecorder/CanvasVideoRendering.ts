@@ -151,22 +151,55 @@ export class CanvasVideoRendering {
     this.drawText(name, { fontSize: 12, x: 6, y: 13 });
   }
 
-  private drawLocalVideo(localVideo: HTMLVideoElement, config: SizesItem & { isMirrorVideo?: boolean }) {
+  private drawLocalVideo(localVideo: HTMLVideoElement, config: SizesItem & { isMirrorVideo?: boolean; radius?: number }) {
     const { ctx } = this.getState();
     if (!ctx) return;
     const { name } = this.getCallInfo().local;
-    const panelHeight = 20;
+    const panelHeightText = 20;
     ctx.save();
+
     const { isMirrorVideo, x, y, w, h } = config;
+    const lvlShadow = 2;
+    const radius = config?.radius || 5; // радиус закругления (можно регулировать)
+    const videoY = y + panelHeightText;
+
+
+    this.applyShadowByElevation(ctx, lvlShadow);
+
+    this.drawRoundedRectPath(ctx, x, videoY, w, h, radius);
+    ctx.fillStyle = "#1B1D21"; // Нужно что-то залить, чтобы тень появилась
+    ctx.fill();
+    ctx.restore();
+
+
+    // 2. Теперь делаем clip для видео
+    ctx.save();
+    this.drawRoundedRectPath(ctx, x, videoY, w, h, radius);
+    ctx.clip();
+
     if (isMirrorVideo) {
       ctx.scale(-1, 1);
-      ctx.drawImage(localVideo, -x - w, y + panelHeight, w, h);
+      ctx.drawImage(localVideo, -x - w, y + panelHeightText, w, h);
     } else {
-      ctx.drawImage(localVideo, x, y + panelHeight, w, h);
+      ctx.drawImage(localVideo, x, y + panelHeightText, w, h);
     }
     ctx.restore();
     // this.drawBackground({ x, y: y + panelHeight, w, h: panelHeight });
     this.drawText(name, { fontSize: 10, x: x + 6, y: y + 13 });
+  }
+
+  private drawRoundedRectPath(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
   }
 
   private createCanvas = (canvasElement?: HTMLCanvasElement) => {
@@ -252,8 +285,8 @@ export class CanvasVideoRendering {
         this.drawRemoteVideo(remoteVideo, remote.sizes);
 
         if (localVideo) {
-          // this.drawLocalVideo(localVideo, { ...local.sizes, isMirrorVideo: local.isMirrorVideo });
-          this.Card(() => this.drawLocalVideo(localVideo, { ...local.sizes, isMirrorVideo: local.isMirrorVideo }), { ...local.sizes, elevation: 7 });
+          this.drawLocalVideo(localVideo, { ...local.sizes, isMirrorVideo: local.isMirrorVideo });
+          // this.Card(() => this.drawLocalVideo(localVideo, { ...local.sizes, isMirrorVideo: local.isMirrorVideo }), { ...local.sizes, elevation: 7 });
         }
 
         if (showTimestamp) {
@@ -284,8 +317,6 @@ export class CanvasVideoRendering {
       // Останавливаем все треки
       const stream = this.state.canvas.captureStream();
       stream.getTracks().forEach((track) => track.stop());
-
-      // Очищаем canvas
       const ctx = this.state.canvas.getContext("2d");
       if (ctx) {
         ctx.clearRect(0, 0, this.state.canvas.width, this.state.canvas.height);
@@ -342,56 +373,27 @@ export class CanvasVideoRendering {
     };
   }
 
-  private applyShadowByElevation(ctx: CanvasRenderingContext2D, elevation: number) {
+  private applyShadowByElevation(ctx: CanvasRenderingContext2D, lvlShadow: number) {
     // Таблица теней для разных elevation (как в Material Design)
     const shadows = {
       0: { blur: 0, offsetY: 0, color: "rgba(0,0,0,0)" },
-      1: { blur: 2, offsetY: 1, color: "rgba(0,0,0,0.2)" },
-      2: { blur: 4, offsetY: 2, color: "rgba(0,0,0,0.2)" },
-      3: { blur: 5, offsetY: 3, color: "rgba(0,0,0,0.2)" },
-      4: { blur: 6, offsetY: 4, color: "rgba(0,0,0,0.2)" },
-      5: { blur: 8, offsetY: 5, color: "rgba(0,0,0,0.2)" },
-      6: { blur: 10, offsetY: 6, color: "rgba(0,0,0,0.2)" },
-      7: { blur: 12, offsetY: 7, color: "rgba(0,0,0,0.2)" },
-      8: { blur: 14, offsetY: 8, color: "rgba(0,0,0,0.2)" },
+      1: { blur: 2, offsetY: 1, color: "rgba(0,0,0,0.5)" },
+      2: { blur: 4, offsetY: 2, color: "rgba(0,0,0,0.5)" },
+      3: { blur: 5, offsetY: 3, color: "rgba(0,0,0,0.5)" },
+      4: { blur: 6, offsetY: 4, color: "rgba(0,0,0,0.5)" },
+      5: { blur: 8, offsetY: 5, color: "rgba(0,0,0,0.5)" },
+      6: { blur: 10, offsetY: 6, color: "rgba(0,0,0,0.5)" },
+      7: { blur: 12, offsetY: 7, color: "rgba(0,0,0,0.5)" },
+      8: { blur: 14, offsetY: 8, color: "rgba(0,0,0,0.5)" },
     };
 
     // Ограничиваем elevation от 0 до 8
-    const level = Math.min(Math.max(elevation, 0), 8);
+    const level = Math.min(Math.max(lvlShadow, 0), 8);
     const shadow = shadows[level];
 
     ctx.shadowColor = shadow.color;
     ctx.shadowBlur = shadow.blur;
-    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetX = 2;
     ctx.shadowOffsetY = shadow.offsetY;
-  }
-
-  private Card(contentCb: () => void, config: SizesItem & { radius?: number; elevation?: number }) {
-    const { ctx } = this.getState();
-    if (!ctx) return;
-    ctx.save();
-
-    // Создаем clipping path для закругления углов
-    const { x, y, w, h } = config;
-    const radius = config.radius ?? 7; // Радиус закругления (по умолчанию 7)
-    const elevation = config.elevation ?? 2;
-
-    ctx.fill();
-    ctx.beginPath();
-    ctx.moveTo(x + radius, y);
-    ctx.lineTo(x + w - radius, y);
-    ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
-    ctx.lineTo(x + w, y + h - radius);
-    ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
-    ctx.lineTo(x + radius, y + h);
-    ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
-    ctx.lineTo(x, y + radius);
-    ctx.quadraticCurveTo(x, y, x + radius, y);
-    ctx.closePath();
-    ctx.clip();
-    this.applyShadowByElevation(ctx, elevation);
-
-    contentCb();
-    ctx.restore();
   }
 }

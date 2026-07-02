@@ -187,3 +187,6 @@
 - CanvasCallRecorder destroyCanvas на destroy 
 ### Fixed
 - Подкорректирован destroy 
+## [1.5.7] - 2026-07-02
+### Edit
+- Подкорректирован CanvasCallRecorder для localVideo отрисовка теней 
