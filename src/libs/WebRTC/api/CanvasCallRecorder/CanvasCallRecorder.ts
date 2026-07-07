@@ -1,4 +1,4 @@
-import { EventSubscribers, ControlTimerFormat } from "dev-classes";
+import { ControlTimerFormat, EventSubscribers } from "dev-classes";
 import { ALL_FORMATS, BlobSource, BufferTarget, Conversion, Input, Mp4OutputFormat, Output, WebMOutputFormat } from "mediabunny";
 import type { CanvasCallRecorder_Events, CanvasCallRecorderState } from "./CanvasCallRecorder.types";
 import { CanvasVideoRendering } from "./CanvasVideoRendering";
@@ -13,8 +13,8 @@ const defaultState: CanvasCallRecorderState = {
 
 interface StartRecordingPayload {
   stream: MediaStream;
-  videoBitsPerSecond?: number;
-  audioBitsPerSecond?: number;
+  videoBitrate?: number;
+  audioBitrate?: number;
   timeslice?: number;
   format: "webm" | "mp4";
 }
@@ -38,7 +38,8 @@ export class CanvasCallRecorder {
     this.state = { ...this.state, ...payload };
   };
   getStatusRecording = () => this.state.isRecording;
-  startRecording: StartRecording = ({ stream, videoBitsPerSecond, audioBitsPerSecond, timeslice = 1000, format = "webm" }, { onRecording, onStop, onError }) => {
+  //INFO: Если понадобиться необходимость менять битрейт динамически то нужно останавливать запись и по новой стартовать
+  startRecording: StartRecording = ({ stream, videoBitrate, audioBitrate, timeslice = 1000, format = "webm" }, { onRecording, onStop, onError }) => {
     const { isRecording } = this.getState();
     if (isRecording) {
       console.warn("Запись уже идет");
@@ -50,9 +51,10 @@ export class CanvasCallRecorder {
 
       const mediaRecorder = new MediaRecorder(stream, {
         mimeType,
-        // videoBitsPerSecond: options?.videoBitsPerSecond || 2500000, //2.5 Mbps
-        // audioBitsPerSecond: options?.audioBitsPerSecond || 128000, // 128 Kbps
+        videoBitsPerSecond: videoBitrate || 2500000, //2.5 Mbps
+        audioBitsPerSecond: audioBitrate || 128000, // 128 Kbps
       });
+     
       this.setState({ recordedChunks: [], mediaRecorder, isRecording: true, format, mimeType });
 
       mediaRecorder.ondataavailable = (event) => {

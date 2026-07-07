@@ -194,3 +194,6 @@
 ### Edit
 - Подкорректирована drawLocalVideo в CanvasCallRecorder 
 - Так же теперь видео имеет возможность перематывать 
+## [1.5.9] - 2026-07-07
+### Edit
+- setCallInfo для local теперь реагирует на isMirrorVideo 

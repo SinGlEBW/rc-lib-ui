@@ -6,6 +6,7 @@ type MediaStreams_P = Record<"localStream" | "remoteStream", MediaStream>;
 export interface CanvasVideoRenderingState {
   canvas: HTMLCanvasElement | null;
   ctx: CanvasRenderingContext2D | null;
+  canvasStream: MediaStream | null;
   animationFrameId: number | null;
   audioContext: AudioContext | null;
   fps?: number;
@@ -15,6 +16,7 @@ const defaultState: CanvasVideoRenderingState = {
   fps: 60,
   canvas: null,
   ctx: null,
+  canvasStream: null,
   animationFrameId: null,
   audioContext: null,
 };
@@ -119,12 +121,11 @@ export class CanvasVideoRendering {
     return canvasStream;
   }
 
-  private drawRemoteVideo(remoteVideo: HTMLVideoElement, config: SizesItem) {
+  private drawRemoteVideo(remoteVideo: HTMLVideoElement, config: SizesItem & { isMirrorVideo?: boolean }) {
     const { canvas, ctx } = this.getState();
     if (!canvas || !ctx) return;
     const { name } = this.getCallInfo().remote;
-    const { x, y, w, h } = config;
-    //TODO: Если понадобиться isMirrorVideo то можно пробросить как в drawLocalVideo
+    const { isMirrorVideo, x, y, w, h } = config;
 
     const videoWidth = remoteVideo.videoWidth || 640;
     const videoHeight = remoteVideo.videoHeight || 480;
@@ -141,10 +142,14 @@ export class CanvasVideoRendering {
     // Смещаем, чтобы отцентрировать обрезанную область ВНУТРИ контейнера
     const offsetX = x + (w - newWidth) / 2;
     const offsetY = y + (h - newHeight) / 2;
-
-
-    ctx.drawImage(remoteVideo, offsetX, offsetY, newWidth, newHeight);
-
+    ctx.save();
+    if (isMirrorVideo) {
+      ctx.scale(-1, 1);
+      ctx.drawImage(remoteVideo, -offsetX - newWidth, offsetY, newWidth, newHeight);
+    } else {
+      ctx.drawImage(remoteVideo, offsetX, offsetY, newWidth, newHeight);
+    }
+    ctx.restore();
     this.drawBackground({ x: 0, y, w, h: 20 });
     this.drawText(name, { fontSize: 12, x: 6, y: 13 });
   }
@@ -154,18 +159,17 @@ export class CanvasVideoRendering {
     if (!ctx) return;
     const { name } = this.getCallInfo().local;
     const panelHeightText = 20;
-    ctx.save();
 
     const { isMirrorVideo, x, y, w, h } = config;
     const lvlShadow = 2;
     const radius = config?.radius || 5; // радиус закругления (можно регулировать)
     const posY = y + panelHeightText;
-   
 
+    ctx.save();
     this.applyShadowByElevation(ctx, lvlShadow);
 
     this.drawRoundedRectPath(ctx, x, posY, w, h, radius);
-    ctx.fillStyle = "#1B1D21"; // Нужно что-то залить, чтобы тень появилась
+    ctx.fillStyle = "#1B1D21";
     ctx.fill();
     ctx.restore();
 
@@ -176,15 +180,11 @@ export class CanvasVideoRendering {
 
     if (isMirrorVideo) {
       ctx.scale(-1, 1);
-      // ctx.drawImage(localVideo, -x - w, posY, w, h);
       this.drawVideoWithAspectFit(ctx, localVideo, -x - w, posY, w, h);
     } else {
-      // ctx.drawImage(localVideo, 0, 0, localVideo.videoWidth, localVideo.videoHeight, posX, posY, w, h);
       this.drawVideoWithAspectFit(ctx, localVideo, x, posY, w, h);
-      // ctx.drawImage(localVideo, x, y + panelHeightText, w, h);
     }
     ctx.restore();
-    // this.drawBackground({ x, y: y + panelHeight, w, h: panelHeight });
     this.drawText(name, { fontSize: 10, x: x + 6, y: y + 13 });
   }
 
@@ -283,8 +283,14 @@ export class CanvasVideoRendering {
     this.drawBackground({ x: 0, y: canvas.height - 50, w: 135, h: 20 });
     this.drawText(dateTimeStr, { fontSize: 12, x: 10, y: canvas.height - 36 });
   }
+  private setQualityImage(quality: "low" | "medium" | "high") {
+    const { canvas, ctx } = this.getState();
+    if (!ctx) return;
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = quality;
+  }
 
-  startRenderingCanvas(localVideo: HTMLVideoElement, remoteVideo: HTMLVideoElement, options?: { fps?: number; canvasElement?: HTMLCanvasElement }) {
+  startRenderingCanvas(localVideo: HTMLVideoElement, remoteVideo: HTMLVideoElement, options?: { quality: "low" | "medium" | "high", fps?: number; canvasElement?: HTMLCanvasElement,  }) {
     const targetFPS = options?.fps || 30;
     const frameInterval = 1000 / targetFPS;
     let lastFrameTime = 0;
@@ -314,13 +320,13 @@ export class CanvasVideoRendering {
         lastFrameTime = currentTime - (elapsed % frameInterval);
 
         const { remote, local, showTimestamp } = this.getCallInfo();
-
+      
         canvas.width = remote.sizes.w;
         canvas.height = remote.sizes.h;
 
         // Очищаем canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        this.drawRemoteVideo(remoteVideo, remote.sizes);
+        this.drawRemoteVideo(remoteVideo, { ...remote.sizes, isMirrorVideo: remote.isMirrorVideo });
 
         if (localVideo) {
           this.drawLocalVideo(localVideo, { ...local.sizes, isMirrorVideo: local.isMirrorVideo });
@@ -338,10 +344,15 @@ export class CanvasVideoRendering {
     lastFrameTime = performance.now();
     drawFrame(lastFrameTime);
 
-    const { canvas } = this.createCanvas(options?.canvasElement);
+    const { canvas, ctx } = this.createCanvas(options?.canvasElement);
     if (!canvas) return;
 
     const canvasStream = canvas.captureStream(options?.fps || 30);
+    this.setState({ canvasStream });
+  
+
+    this.setQualityImage(options?.quality || "low");
+    
     //с микширование звука
     const canvasStreamWithAudio = this.getAudioChanelsInStream(canvasStream, {
       localStream: localVideo.srcObject,
@@ -389,27 +400,27 @@ export class CanvasVideoRendering {
     this.resetCallInfoState();
   };
 
-  getCorrentLocalVideoSize({ videoHeight, videoWidth, offsetHeight, offsetWidth }: Record<"videoHeight" | "videoWidth" | "offsetHeight" | "offsetWidth", number>) {
-    const containerAspectRatio = offsetWidth / offsetHeight;
-    const videoAspectRatio = videoWidth / videoHeight;
+  // getCorrentLocalVideoSize({ videoHeight, videoWidth, offsetHeight, offsetWidth }: Record<"videoHeight" | "videoWidth" | "offsetHeight" | "offsetWidth", number>) {
+  //   const containerAspectRatio = offsetWidth / offsetHeight;
+  //   const videoAspectRatio = videoWidth / videoHeight;
 
-    let actualWidth, actualHeight;
+  //   let actualWidth, actualHeight;
 
-    if (videoAspectRatio > containerAspectRatio) {
-      // Видео шире контейнера → чёрные полосы сверху/снизу
-      actualWidth = offsetWidth;
-      actualHeight = offsetWidth / videoAspectRatio;
-    } else {
-      // Видео уже контейнера → чёрные полосы слева/справа
-      actualHeight = offsetWidth;
-      actualWidth = offsetWidth * videoAspectRatio;
-    }
+  //   if (videoAspectRatio > containerAspectRatio) {
+  //     // Видео шире контейнера → чёрные полосы сверху/снизу
+  //     actualWidth = offsetWidth;
+  //     actualHeight = offsetWidth / videoAspectRatio;
+  //   } else {
+  //     // Видео уже контейнера → чёрные полосы слева/справа
+  //     actualHeight = offsetWidth;
+  //     actualWidth = offsetWidth * videoAspectRatio;
+  //   }
 
-    return {
-      width: actualWidth,
-      height: actualHeight,
-    };
-  }
+  //   return {
+  //     width: actualWidth,
+  //     height: actualHeight,
+  //   };
+  // }
 
   private applyShadowByElevation(ctx: CanvasRenderingContext2D, lvlShadow: number) {
     // Таблица теней для разных elevation (как в Material Design)
