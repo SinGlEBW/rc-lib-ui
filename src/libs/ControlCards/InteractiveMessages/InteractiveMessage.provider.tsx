@@ -28,9 +28,16 @@ import { AnimationAlertNotistack } from './animation';
 
 
 
+export type CustomModalsPayload = {
+  modal: ModalCustomItem_P
+  control: {
+    hideMessage: (id: string) => void
+  }
+}
+
 interface InteractiveMessageProps {
   children: React.ReactNode;
-  CustomModals?: (modal: ModalCustomItem_P, params: { hideMessage: (id: string, viewMessage: 'modal' | 'alert') => void }) => ({[key in DefaultModals_OR]?: React.ReactNode} & {[key in string]?: React.ReactNode})
+  CustomModals?: (payload: CustomModalsPayload) => ({ [key in DefaultModals_OR]?: React.ReactNode } & { [key in string]?: React.ReactNode })
 }
 
 
@@ -103,14 +110,14 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children, CustomModal
 
 
 
-  const Modal = useCallback((modal: ModalCustomItem_P, params) => {
+  const Modal = useCallback(({ modal, control }: CustomModalsPayload) => {
     const defaultModals = {
       success: <ModalsSuccess modal={modal} />,
       delete: <ModalsDelete modal={modal as any} />,
       update: <ModalsUpdate modal={modal as any} />,
       info: <ModalsInfo modal={modal as any} />,
-      default: <ModalsDefault modal={modal as any} hideMessage={params.hideMessageModal} />,
-      ...(CustomModals && CustomModals(modal, params))
+      default: <ModalsDefault modal={modal as any} hideMessage={control.hideMessage} />,
+      ...(CustomModals && CustomModals({ modal, control }))
     }
     return defaultModals[modal.visual || 'default'];
   }, [CustomModals]);
@@ -153,8 +160,11 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children, CustomModal
               }}
             >
 
-              {Modal(modal, { hideMessageModal })}
-
+              {Modal({
+                modal, control: {
+                  hideMessage: hideMessageModal
+                }
+              })}
             </Dialog>
           </Portal>
         )
@@ -165,7 +175,9 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children, CustomModal
 };
 
 
-export interface InteractiveMessageProviderProps extends Pick<InteractiveMessageProps, 'CustomModals'>{
+
+
+export interface InteractiveMessageProviderProps extends Pick<InteractiveMessageProps, 'CustomModals'> {
   children: React.ReactNode;
   CustomAlerts?: Partial<SnackbarProviderProps['Components']>
 }
