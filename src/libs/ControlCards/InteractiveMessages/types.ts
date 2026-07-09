@@ -84,7 +84,7 @@ export type InteractiveMessageModalsProps =
   | InteractiveMessageItemSuccess 
   | InteractiveMessageItemDefault; 
 
-  let a: InteractiveMessageModalsProps
+  
   
 
 export type InteractiveMessageControl = {

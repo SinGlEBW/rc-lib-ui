@@ -1,6 +1,6 @@
 import { Portal } from '@mui/material';
 import { SnackbarProvider, useSnackbar, type SnackbarProviderProps } from 'notistack';
-import React, { useCallback, useState, type FC } from 'react';
+import React, { useCallback, useMemo, useState, type FC } from 'react';
 
 import uuid4 from "uuid4";
 import { customAlerts } from './alerts/Alerts.styled';
@@ -26,14 +26,16 @@ import { AnimationAlertNotistack } from './animation';
 
 
 
-
+type Modal_P = InteractiveMessageModalsProps & InteractiveMessageControl;
+type DefaultModals_OR = 'success' |'delete' |'update' |'info' |'default';
 interface InteractiveMessageProps {
   children: React.ReactNode;
+  CustomModals?: (modal: Modal_P, params: { hideMessage: (id: string, viewMessage: 'modal' | 'alert') => void }) => ({[key in DefaultModals_OR]?: React.ReactNode} & {[key in string]?: React.ReactNode})
 }
 
 
-const InteractiveMessage: FC<InteractiveMessageProps> = ({ children }) => {
-  const [modals, setModals] = useState<(InteractiveMessageModalsProps & InteractiveMessageControl)[]>([]);
+const InteractiveMessage: FC<InteractiveMessageProps> = ({ children, CustomModals }) => {
+  const [modals, setModals] = useState<Modal_P[]>([]);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const addMessage = (message: InteractiveMessageStateProps) => {
@@ -58,8 +60,7 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children }) => {
 
 
   const hideMessageModal = (id: string) => { hideMessage(id, 'modal'); }
-
-  const handleDeleteModal = (id: string) => { setModals(prev => prev.filter(msg => msg.id !== id)); }
+  const handleDeleteModal = (id: string) => { setModals(prev => prev.filter(msg => msg.key || msg.id !== id)); }
 
   /*------------------------------------------------------------------------------------------------------*/
   const clearAll = useCallback(() => {
@@ -81,8 +82,8 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children }) => {
     })
   }, []);
 
-  
-  
+
+
   const showAlertDeleteCountdown: InteractiveMessageContextProps['showAlertDeleteCountdown'] = useCallback(
     ({ message, ...props }) => {
       enqueueSnackbar(message, {
@@ -102,6 +103,17 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children }) => {
 
 
 
+  const Modal = useCallback((modal: Modal_P, params) => {
+    const defaultModals = {
+      success: <ModalsSuccess modal={modal} />,
+      delete: <ModalsDelete modal={modal as any} />,
+      update: <ModalsUpdate modal={modal as any} />,
+      info: <ModalsInfo modal={modal as any} />,
+      default: <ModalsDefault modal={modal as any} hideMessage={params.hideMessageModal} />,
+      ...(CustomModals && CustomModals(modal, params))
+    }
+    return defaultModals[modal.visual || 'default'];
+  }, [CustomModals]);
 
   const value = {
     removeMessage: hideMessage,
@@ -117,7 +129,7 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children }) => {
     <InteractiveMessageContext.Provider value={value}>
       {children}
       {modals.filter((item) => ['modal', 'fullModal'].includes(item.view!)).map((modal, inx) => {
-        
+
         return (
           <Portal key={modal.key || modal.id}>
             <Dialog
@@ -140,11 +152,8 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children }) => {
               }}
             >
 
-              {modal.mode == 'success' && <ModalsSuccess modal={modal} />}
-              {modal.mode == 'delete' && <ModalsDelete modal={modal} />}
-              {modal.mode == 'update' && <ModalsUpdate modal={modal} />}
-              {modal.mode == 'info' && <ModalsInfo modal={modal} />}
-              {modal.mode == 'default' && <ModalsDefault modal={modal} hideMessage={hideMessageModal} />}
+              {Modal(modal, { hideMessageModal })}
+
             </Dialog>
           </Portal>
         )
@@ -155,17 +164,18 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children }) => {
 };
 
 
-interface InteractiveMessageProviderProps {
+interface InteractiveMessageProviderProps extends Pick<InteractiveMessageProps, 'CustomModals'>{
   children: React.ReactNode;
-  Components?: Partial<SnackbarProviderProps['Components']>
+  CustomAlerts?: Partial<SnackbarProviderProps['Components']>
+
 }
 
-export const InteractiveMessageProvider: FC<InteractiveMessageProviderProps> = ({Components = {}, ...params}) => {
+export const InteractiveMessageProvider: FC<InteractiveMessageProviderProps> = ({ CustomAlerts = {}, ...params }) => {
   return (
     <SnackbarProvider
       maxSnack={4}
       Components={{
-        ...customAlerts, ...Components,
+        ...customAlerts, ...CustomAlerts,
       }}
       classes={{
         containerRoot: s['notistack-SnackbarContainer']
@@ -183,9 +193,9 @@ const useInteractiveModalControls = (addMessage: AddMessageFn) => {
 
   const showModal: InteractiveMessageContextProps['showModal'] = useCallback(({ view, ...config }) => {
     addMessage({
-     
+
       view: view || 'modal',
-      dismissible: config.mode !== 'success',
+      dismissible: !['success', 'update'].includes(config.mode),
       ...config
     });
   }, [addMessage]);

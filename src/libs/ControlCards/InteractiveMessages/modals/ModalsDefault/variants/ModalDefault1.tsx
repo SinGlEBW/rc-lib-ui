@@ -27,8 +27,9 @@ const ModalDefault1Memo: FC<ModalDefault1Props> = ({ modal, hideMessage }) => {
       </DialogContent>
       <DialogActions sx={{ justifyContent: 'space-around' }}>
         {
-          modal?.actions?.map(({ text, onClick, ...props }) => (
+          modal?.actions?.map(({ text, onClick, ...props }, inx) => (
             <StyledButtonDefault
+              key={inx}
               children={text}
               onClick={(e) => {
                 onClick && onClick(e);
