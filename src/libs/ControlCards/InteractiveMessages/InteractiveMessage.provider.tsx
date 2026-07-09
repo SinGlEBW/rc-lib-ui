@@ -38,7 +38,15 @@ export type CustomModalsPayload = {
 type ModalTypesComponent = ComponentType<CustomModalsPayload>
 
 
-export type CustomModalsMap = { [key in DefaultModals_OR]?: ModalTypesComponent } & { [key in string]?: ModalTypesComponent };
+
+export interface CustomModalsMap {
+  [key: string]: ModalTypesComponent | undefined;
+  success?: ModalTypesComponent;
+  delete?: ModalTypesComponent;
+  update?: ModalTypesComponent;
+  info?: ModalTypesComponent;
+  default?: ModalTypesComponent;
+}
 
 interface InteractiveMessageProps {
   children: React.ReactNode;
@@ -63,7 +71,7 @@ const ModalRenderer: FC<{
       case 'info': return ModalsInfo as any;
       default: return ModalsDefault as any;
     }
-  }, [modal.visual, CustomModals]);
+  }, [modal.mode, CustomModals]);
 
   return <ModalComponent modal={modal as any} control={control} />;
 };

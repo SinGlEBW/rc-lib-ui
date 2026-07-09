@@ -129,7 +129,7 @@ type ShowModalProps = InteractiveMessageModalsProps
 
 export interface InteractiveMessageContextProps {
   // addMessage: (config: Omit<InteractiveMessageModalsProps, 'id'>) => void;
-  modals: ModalCustomItem_P[];
+  
   removeMessage: (id: string, viewMessage: "alert" | "modal") => void;
   showAlert: (config: InteractiveMessageAlertProps) => void;
   showAlertDeleteCountdown: (config: DeleteCountdownAlertProps & {message: SnackbarMessage}) => void;
