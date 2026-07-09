@@ -1,6 +1,6 @@
 import { Portal } from '@mui/material';
 import { SnackbarProvider, useSnackbar, type SnackbarProviderProps } from 'notistack';
-import React, { useCallback, useMemo, useState, type FC } from 'react';
+import React, { useCallback, useMemo, useState, type ComponentType, type FC, type MemoExoticComponent } from 'react';
 
 import uuid4 from "uuid4";
 import { customAlerts } from './alerts/Alerts.styled';
@@ -33,12 +33,38 @@ export type CustomModalsPayload = {
   control: {
     hideMessage: (id: string) => void
   }
-}
+};
+
+export type CustomModalsMap = { [key in DefaultModals_OR]?: CustomModalsPayload } & { [key in string]?: CustomModalsPayload };
 
 interface InteractiveMessageProps {
   children: React.ReactNode;
-  CustomModals?: (payload: CustomModalsPayload) => ({ [key in DefaultModals_OR]?: React.ReactNode } & { [key in string]?: React.ReactNode })
+  CustomModals?: CustomModalsMap
 }
+
+
+const ModalRenderer: FC<{
+  modal: ModalCustomItem_P;
+  control: { hideMessage: (id: string) => void };
+  CustomModals?: CustomModalsMap;
+}> = ({ modal, control, CustomModals }) => {
+  const ModalComponent = useMemo(() => {
+    if (CustomModals && modal.mode && CustomModals[modal.mode]) {
+      return CustomModals[modal.mode];
+    }
+
+    switch (modal.mode || 'default') {
+      case 'success': return ModalsSuccess as any;
+      case 'delete': return ModalsDelete as any;
+      case 'update': return ModalsUpdate as any;
+      case 'info': return ModalsInfo as any;
+      default: return ModalsDefault as any;
+    }
+  }, [modal.visual, CustomModals]);
+
+  return <ModalComponent modal={modal as any} control={control} />;
+};
+
 
 
 const InteractiveMessage: FC<InteractiveMessageProps> = ({ children, CustomModals }) => {
@@ -110,17 +136,7 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children, CustomModal
 
 
 
-  const Modal = useCallback(({ modal, control }: CustomModalsPayload) => {
-    const defaultModals: { [key in DefaultModals_OR]: JSX.Element } = {
-      success: <ModalsSuccess modal={modal} />,
-      delete: <ModalsDelete modal={modal as any} />,
-      update: <ModalsUpdate modal={modal as any} />,
-      info: <ModalsInfo modal={modal as any} />,
-      default: <ModalsDefault modal={modal as any} hideMessage={control.hideMessage} />,
-      ...(CustomModals && Object.entries(CustomModals).reduce((acc, [key, Component]) => ({ ...acc, [key]: <Component modal={modal} control={control} /> }), {}))
-    }
-    return defaultModals[modal.visual || 'default'];
-  }, [CustomModals]);
+
 
   const value = {
     removeMessage: hideMessage,
@@ -159,12 +175,11 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children, CustomModal
                 }
               }}
             >
-
-              {Modal({
-                modal, control: {
-                  hideMessage: hideMessageModal
-                }
-              })}
+              <ModalRenderer
+                modal={modal}
+                control={{ hideMessage: hideMessageModal }}
+                CustomModals={CustomModals}
+              />
             </Dialog>
           </Portal>
         )
