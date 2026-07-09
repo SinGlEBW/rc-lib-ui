@@ -162,8 +162,8 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children, CustomModal
               fullWidth
               TransitionProps={{
                 onExited: (e) => {
-                  modal.onExited && modal.onExited();
                   if (modal.isExiting) {
+                    modal.onExited && modal.onExited();
                     handleDeleteModal(modal.key || modal.id);
                   }
                 }
