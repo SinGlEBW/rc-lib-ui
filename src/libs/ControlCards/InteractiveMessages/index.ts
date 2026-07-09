@@ -5,6 +5,7 @@ export type {
   InteractiveMessageModalsProps,
   DefaultShowAlertsVariant,
   DefaultModals_OR,
+  ExtendsModalMap,
   ModalCustomItem_P,
   CustomModalsPayload,
   CustomModalsMap,
