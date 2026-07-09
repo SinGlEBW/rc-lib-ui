@@ -51,7 +51,7 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children }) => {
       closeSnackbar(id);
     }
     if (viewMessage === 'modal') {
-      setModals(prev => prev.map(msg => msg.id === id ? { ...msg, isExiting: true } : msg));
+      setModals(prev => prev.map(msg => msg.key || msg.id === id ? { ...msg, isExiting: true } : msg));
     }
   }, []);
 
@@ -119,13 +119,13 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children }) => {
       {modals.filter((item) => ['modal', 'fullModal'].includes(item.view!)).map((modal, inx) => {
         
         return (
-          <Portal key={modal.id}>
+          <Portal key={modal.key || modal.id}>
             <Dialog
               open={!modal.isExiting}
               {...(modal.view == 'fullModal' && { fullWidth: true, fullScreen: true })}
 
               onClick={(e) => {
-                hideMessageModal(modal.id);
+                hideMessageModal(modal.key || modal.id);
               }}
 
               maxWidth="sm"
@@ -134,7 +134,7 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children }) => {
                 onExited: (e) => {
                   modal.onExited && modal.onExited();
                   if (modal.isExiting) {
-                    handleDeleteModal(modal.id);
+                    handleDeleteModal(modal.key || modal.id);
                   }
                 }
               }}

@@ -8,7 +8,7 @@ import { StyledButtonDefault } from '@libs/common/StyledButtonDefault'
 // import type { GetExtendsTypeModal, InteractiveMessageItemDefault } from '@features/InteractiveMessages/types';
 // import { StyledButtonDefault } from '@components/Buttons/Buttons.styled';
 
-DialogActions
+
 export interface ModalDefault1Props {
   modal: GetExtendsTypeModal<InteractiveMessageItemDefault>
   hideMessage: (id: string) => void
@@ -27,12 +27,12 @@ const ModalDefault1Memo: FC<ModalDefault1Props> = ({ modal, hideMessage }) => {
       </DialogContent>
       <DialogActions sx={{ justifyContent: 'space-around' }}>
         {
-          modal.actions.map(({ text, onClick, ...props }) => (
+          modal?.actions?.map(({ text, onClick, ...props }) => (
             <StyledButtonDefault
               children={text}
               onClick={(e) => {
                 onClick && onClick(e);
-                hideMessage(modal.id);
+                hideMessage(modal.key || modal.id);
               }}
               {...props}
             />
