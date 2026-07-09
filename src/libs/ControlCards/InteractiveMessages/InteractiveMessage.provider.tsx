@@ -165,7 +165,7 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children, CustomModal
 };
 
 
-interface InteractiveMessageProviderProps extends Pick<InteractiveMessageProps, 'CustomModals'>{
+export interface InteractiveMessageProviderProps extends Pick<InteractiveMessageProps, 'CustomModals'>{
   children: React.ReactNode;
   CustomAlerts?: Partial<SnackbarProviderProps['Components']>
 }
