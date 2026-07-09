@@ -35,7 +35,10 @@ export type CustomModalsPayload = {
   }
 };
 
-export type CustomModalsMap = { [key in DefaultModals_OR]?: CustomModalsPayload } & { [key in string]?: CustomModalsPayload };
+type ModalTypesComponent = ComponentType<CustomModalsPayload>
+
+
+export type CustomModalsMap = { [key in DefaultModals_OR]?: ModalTypesComponent } & { [key in string]?: ModalTypesComponent };
 
 interface InteractiveMessageProps {
   children: React.ReactNode;
