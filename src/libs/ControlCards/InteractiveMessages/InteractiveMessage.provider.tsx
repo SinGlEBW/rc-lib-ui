@@ -117,7 +117,7 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children }) => {
     <InteractiveMessageContext.Provider value={value}>
       {children}
       {modals.filter((item) => ['modal', 'fullModal'].includes(item.view!)).map((modal, inx) => {
-
+        
         return (
           <Portal key={modal.id}>
             <Dialog
@@ -132,6 +132,7 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children }) => {
               fullWidth
               TransitionProps={{
                 onExited: (e) => {
+                  modal.onExited && modal.onExited();
                   if (modal.isExiting) {
                     handleDeleteModal(modal.id);
                   }

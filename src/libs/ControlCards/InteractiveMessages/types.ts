@@ -30,6 +30,8 @@ interface ViewModal extends InteractiveMessageItemCommon{
   title?: string;
   view?: 'modal' | 'fullModal'
   severity?: 'success' | 'error' | 'warning' | 'info';
+  key?: string;
+  onExited?(): void;
 }
 
 
@@ -82,6 +84,8 @@ export type InteractiveMessageModalsProps =
   | InteractiveMessageItemSuccess 
   | InteractiveMessageItemDefault; 
 
+  let a: InteractiveMessageModalsProps
+  
 
 export type InteractiveMessageControl = {
   id: string;

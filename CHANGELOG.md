@@ -197,3 +197,6 @@
 ## [1.5.10] - 2026-07-07
 ### Edit
 - setCallInfo для local теперь реагирует на isMirrorVideo 
+## [1.5.11] - 2026-07-09
+### Edit
+- Добавлены доп ключи для showModal в useInteractiveMessage  
