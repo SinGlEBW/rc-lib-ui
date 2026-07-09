@@ -14,6 +14,7 @@ import { ModalsUpdate } from './modals/ModalsUpdate/ModalsUpdate';
 import {
   InteractiveMessageModalsProps,
   type AddMessageFn,
+  type CustomModalsMap,
   type DefaultModals_OR,
   type DefaultShowAlertsVariant,
   type InteractiveMessageAlertProps,
@@ -28,25 +29,7 @@ import { AnimationAlertNotistack } from './animation';
 
 
 
-export type CustomModalsPayload = {
-  modal: ModalCustomItem_P
-  control: {
-    hideMessage: (id: string) => void
-  }
-};
 
-type ModalTypesComponent = ComponentType<CustomModalsPayload>
-
-
-
-export interface CustomModalsMap {
-  [key: string]: ModalTypesComponent | undefined;
-  success?: ModalTypesComponent;
-  delete?: ModalTypesComponent;
-  update?: ModalTypesComponent;
-  info?: ModalTypesComponent;
-  default?: ModalTypesComponent;
-}
 
 interface InteractiveMessageProps {
   children: React.ReactNode;

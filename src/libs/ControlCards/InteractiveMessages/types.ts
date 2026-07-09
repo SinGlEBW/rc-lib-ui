@@ -1,11 +1,9 @@
-import type { ButtonProps } from '@mui/material';
-import type { OptionsObject, SnackbarMessage, VariantType } from 'notistack';
-import type { ReactNode } from 'react';
-import { DeleteCountdownAlertProps } from './alerts/Alerts.styled';
+import type { ButtonProps } from "@mui/material";
+import type { OptionsObject, SnackbarMessage, VariantType } from "notistack";
+import type { ComponentType, ReactNode } from "react";
+import { DeleteCountdownAlertProps } from "./alerts/Alerts.styled";
 
-
-type ViewMessage =  'modal' | 'fullModal';
-
+type ViewMessage = "modal" | "fullModal";
 
 export interface InteractiveMessageItemCommon {
   message: string | ReactNode;
@@ -13,131 +11,126 @@ export interface InteractiveMessageItemCommon {
   dismissible?: boolean;
 }
 
+export type CustomModalsPayload = {
+  modal: ModalCustomItem_P;
+  control: {
+    hideMessage: (id: string) => void;
+  };
+};
 
-export type DefaultShowAlertsVariant = Exclude<VariantType, 'deleteCountdown'>;
+type ModalTypesComponent = ComponentType<CustomModalsPayload>;
 
 
-
-
-
-export type InteractiveMessageAlertProps = InteractiveMessageItemCommon 
-& OptionsObject<DefaultShowAlertsVariant> & 
-{
-  animation?: 'Fade' | 'Grow' | 'Zoom' | 'Slide';
-  variant?: DefaultShowAlertsVariant;
-  // variant?: "filled" | "standard" | "outlined";
-  // severity?: DefaultShowAlertsVariant
+export interface CustomModalsMap{
+  success?: ModalTypesComponent;
+  delete?: ModalTypesComponent;
+  update?: ModalTypesComponent;
+  info?: ModalTypesComponent;
+  default?: ModalTypesComponent;
 }
 
+export type DefaultModals_OR = keyof CustomModalsMap;
 
-interface ViewModal extends InteractiveMessageItemCommon{  
+export type DefaultShowAlertsVariant = Exclude<VariantType, "deleteCountdown">;
+
+export type InteractiveMessageAlertProps = InteractiveMessageItemCommon &
+  OptionsObject<DefaultShowAlertsVariant> & {
+    animation?: "Fade" | "Grow" | "Zoom" | "Slide";
+    variant?: DefaultShowAlertsVariant;
+    // variant?: "filled" | "standard" | "outlined";
+    // severity?: DefaultShowAlertsVariant
+  };
+
+interface ViewModal extends InteractiveMessageItemCommon {
   title?: string;
-  view?: 'modal' | 'fullModal'
-  severity?: 'success' | 'error' | 'warning' | 'info';
+  view?: "modal" | "fullModal";
+  severity?: "success" | "error" | "warning" | "info";
   key?: string;
   onExited?(): void;
+  mode: DefaultModals_OR
 }
-
 
 export interface InteractiveMessageItemUpdate extends ViewModal {
-  mode: 'update';
+  mode: "update";
   onConfirm?(): void;
   onCancel?(): void;
-  visual?: 'variant1' 
+  visual?: "variant1";
 }
 
-
-
 export interface InteractiveMessageItemInfo extends ViewModal {
-  mode: 'info';
+  mode: "info";
   confirmText?: string;
   onConfirm?(): void;
   onCancel(): void;
-  visual?: 'variant1' 
+  visual?: "variant1";
 }
 
 export interface InteractiveMessageItemDelete extends ViewModal {
   // itemsDelete: PayloadDeleteItems['items'];
-  mode: 'delete';
+  mode: "delete";
   onConfirm(): void;
   onCancel?(): void;
   confirmText?: string;
   cancelText?: string;
 
   // listSection
-  visual?: 'variant1' //можно добавлять
+  visual?: "variant1"; //можно добавлять
 }
 
 export interface InteractiveMessageItemSuccess extends ViewModal {
-  mode: 'success';
+  mode: "success";
   onCancel?(): void;
   buttonText?: string;
-  visual?: 'variant1' | 'variant2' | 'variant3' | 'variant4' | 'variant5' | 'variant6' 
+  visual?: "variant1" | "variant2" | "variant3" | "variant4" | "variant5" | "variant6";
 }
 
 export interface InteractiveMessageItemDefault extends ViewModal {
-  mode: 'default';
-  actions: (Partial<Pick<ButtonProps, 'sx' | 'onClick'> > & { text: string })[]
-  visual?: 'variant1' 
+  mode: "default";
+  actions: (Partial<Pick<ButtonProps, "sx" | "onClick">> & { text: string })[];
+  visual?: "variant1";
 }
 
-export type InteractiveMessageModalsProps = 
-  | InteractiveMessageItemUpdate 
-  | InteractiveMessageItemInfo 
+export type InteractiveMessageModalsProps =
+  | InteractiveMessageItemUpdate
+  | InteractiveMessageItemInfo
   | InteractiveMessageItemDelete
-  | InteractiveMessageItemSuccess 
-  | InteractiveMessageItemDefault; 
-
-  
-  
+  | InteractiveMessageItemSuccess
+  | InteractiveMessageItemDefault;
 
 export type InteractiveMessageControl = {
   id: string;
   isExiting: boolean;
-}
-  
+};
 
+export type InteractiveMessageStateProps = InteractiveMessageControl & Omit<InteractiveMessageModalsProps, "view"> & { view: ViewMessage };
 
-export type InteractiveMessageStateProps =  
-  & InteractiveMessageControl 
- 
-  & Omit<InteractiveMessageModalsProps, 'view'>
-  & {view: ViewMessage};
-
-
-
-  
-export type GetExtendsTypeModal<T> = Omit<T, 'mode' > & Omit<InteractiveMessageModalsProps, 'mode'> & Omit<InteractiveMessageControl, 'isAlert'>
-
+export type GetExtendsTypeModal<T> = Omit<T, "mode"> & Omit<InteractiveMessageModalsProps, "mode"> & Omit<InteractiveMessageControl, "isAlert">;
 
 export type ModalCustomItem_P = InteractiveMessageModalsProps & InteractiveMessageControl;
-export type DefaultModals_OR = 'success' |'delete' |'update' |'info' |'default';
-
-export type AddMessageFn = (payload: Omit<InteractiveMessageStateProps, 'id' | 'isExiting'>) => void 
-
-type ShowDeleteModalProps =  Omit<InteractiveMessageItemDelete, 'mode' | 'severity'>;
-type ShowUpdateModalProps =  Omit<InteractiveMessageItemUpdate, 'mode' | 'severity'>;
-type ShowSuccessModalProps =  Omit<InteractiveMessageItemSuccess, 'mode' | 'severity'>;
-
-type ShowModalProps = InteractiveMessageModalsProps
-// & ShowDeleteModalProps 
-// & ShowUpdateModalProps 
-// & ShowSuccessModalProps 
-// & InteractiveMessageModalsProps 
 
 
+export type AddMessageFn = (payload: Omit<InteractiveMessageStateProps, "id" | "isExiting">) => void;
+
+type ShowDeleteModalProps = Omit<InteractiveMessageItemDelete, "mode" | "severity">;
+type ShowUpdateModalProps = Omit<InteractiveMessageItemUpdate, "mode" | "severity">;
+type ShowSuccessModalProps = Omit<InteractiveMessageItemSuccess, "mode" | "severity">;
+
+type ShowModalProps = InteractiveMessageModalsProps;
+// & ShowDeleteModalProps
+// & ShowUpdateModalProps
+// & ShowSuccessModalProps
+// & InteractiveMessageModalsProps
 
 export interface InteractiveMessageContextProps {
   // addMessage: (config: Omit<InteractiveMessageModalsProps, 'id'>) => void;
-  
+
   removeMessage: (id: string, viewMessage: "alert" | "modal") => void;
   showAlert: (config: InteractiveMessageAlertProps) => void;
-  showAlertDeleteCountdown: (config: DeleteCountdownAlertProps & {message: SnackbarMessage}) => void;
+  showAlertDeleteCountdown: (config: DeleteCountdownAlertProps & { message: SnackbarMessage }) => void;
 
   showModal: (config: ShowModalProps) => void;
-  showSuccessModal: (config:ShowSuccessModalProps) => void;
+  showSuccessModal: (config: ShowSuccessModalProps) => void;
   showDeleteModal: (config: ShowDeleteModalProps) => void;
-  showUpdateModal: (config:ShowUpdateModalProps) => void;
+  showUpdateModal: (config: ShowUpdateModalProps) => void;
   clearAll: () => void;
 }
-

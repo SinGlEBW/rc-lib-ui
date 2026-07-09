@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { ModalDefault1, type ModalDefault1Props } from './variants/ModalDefault1';
-import type { CustomModalsPayload } from '../../InteractiveMessage.provider';
+import type { CustomModalsPayload } from '../../types';
+
 
 
 export type ModalsInfoProps =
