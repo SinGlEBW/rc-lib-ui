@@ -206,3 +206,6 @@
 ## [1.5.13] - 2026-07-09
 ### Fixed
 - Мелкие исправлеия в InteractiveMessageProvider + добавление кастомизации modals.
+## [1.5.14] - 2026-07-09
+### Added
+- Проброс modals из useInteractiveMessage.

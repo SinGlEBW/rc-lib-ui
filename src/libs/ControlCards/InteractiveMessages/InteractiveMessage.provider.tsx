@@ -120,6 +120,7 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children, CustomModal
     clearAll,
     showAlert,
     showAlertDeleteCountdown,
+    modals,
     ...controlsMessages
   };
 
@@ -167,7 +168,6 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children, CustomModal
 interface InteractiveMessageProviderProps extends Pick<InteractiveMessageProps, 'CustomModals'>{
   children: React.ReactNode;
   CustomAlerts?: Partial<SnackbarProviderProps['Components']>
-
 }
 
 export const InteractiveMessageProvider: FC<InteractiveMessageProviderProps> = ({ CustomAlerts = {}, ...params }) => {
