@@ -209,3 +209,6 @@
 ## [1.5.14] - 2026-07-09
 ### Added
 - Проброс modals из useInteractiveMessage.
+## [1.5.15] - 2026-07-09
+### Added
+- Проброс типов для CustomModals в InteractiveMessageProvider.

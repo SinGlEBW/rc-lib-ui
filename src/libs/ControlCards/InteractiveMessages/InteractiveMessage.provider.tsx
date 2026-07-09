@@ -14,11 +14,13 @@ import { ModalsUpdate } from './modals/ModalsUpdate/ModalsUpdate';
 import {
   InteractiveMessageModalsProps,
   type AddMessageFn,
+  type DefaultModals_OR,
   type DefaultShowAlertsVariant,
   type InteractiveMessageAlertProps,
   type InteractiveMessageContextProps,
   type InteractiveMessageControl,
-  type InteractiveMessageStateProps
+  type InteractiveMessageStateProps,
+  type ModalCustomItem_P
 } from './types';
 import s from './stylesNotistack.module.css';
 import { AnimationAlertNotistack } from './animation';
@@ -26,16 +28,14 @@ import { AnimationAlertNotistack } from './animation';
 
 
 
-type Modal_P = InteractiveMessageModalsProps & InteractiveMessageControl;
-type DefaultModals_OR = 'success' |'delete' |'update' |'info' |'default';
 interface InteractiveMessageProps {
   children: React.ReactNode;
-  CustomModals?: (modal: Modal_P, params: { hideMessage: (id: string, viewMessage: 'modal' | 'alert') => void }) => ({[key in DefaultModals_OR]?: React.ReactNode} & {[key in string]?: React.ReactNode})
+  CustomModals?: (modal: ModalCustomItem_P, params: { hideMessage: (id: string, viewMessage: 'modal' | 'alert') => void }) => ({[key in DefaultModals_OR]?: React.ReactNode} & {[key in string]?: React.ReactNode})
 }
 
 
 const InteractiveMessage: FC<InteractiveMessageProps> = ({ children, CustomModals }) => {
-  const [modals, setModals] = useState<Modal_P[]>([]);
+  const [modals, setModals] = useState<ModalCustomItem_P[]>([]);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const addMessage = (message: InteractiveMessageStateProps) => {
@@ -103,7 +103,7 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children, CustomModal
 
 
 
-  const Modal = useCallback((modal: Modal_P, params) => {
+  const Modal = useCallback((modal: ModalCustomItem_P, params) => {
     const defaultModals = {
       success: <ModalsSuccess modal={modal} />,
       delete: <ModalsDelete modal={modal as any} />,

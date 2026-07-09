@@ -16,6 +16,10 @@ export interface InteractiveMessageItemCommon {
 
 export type DefaultShowAlertsVariant = Exclude<VariantType, 'deleteCountdown'>;
 
+
+
+
+
 export type InteractiveMessageAlertProps = InteractiveMessageItemCommon 
 & OptionsObject<DefaultShowAlertsVariant> & 
 {
@@ -106,7 +110,8 @@ export type InteractiveMessageStateProps =
 export type GetExtendsTypeModal<T> = Omit<T, 'mode' > & Omit<InteractiveMessageModalsProps, 'mode'> & Omit<InteractiveMessageControl, 'isAlert'>
 
 
-
+export type ModalCustomItem_P = InteractiveMessageModalsProps & InteractiveMessageControl;
+export type DefaultModals_OR = 'success' |'delete' |'update' |'info' |'default';
 
 export type AddMessageFn = (payload: Omit<InteractiveMessageStateProps, 'id' | 'isExiting'>) => void 
 
