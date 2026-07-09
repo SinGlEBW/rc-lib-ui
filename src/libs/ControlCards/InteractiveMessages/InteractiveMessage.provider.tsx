@@ -111,13 +111,13 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children, CustomModal
 
 
   const Modal = useCallback(({ modal, control }: CustomModalsPayload) => {
-    const defaultModals = {
+    const defaultModals: { [key in DefaultModals_OR]: JSX.Element } = {
       success: <ModalsSuccess modal={modal} />,
       delete: <ModalsDelete modal={modal as any} />,
       update: <ModalsUpdate modal={modal as any} />,
       info: <ModalsInfo modal={modal as any} />,
       default: <ModalsDefault modal={modal as any} hideMessage={control.hideMessage} />,
-      ...(CustomModals && CustomModals({ modal, control }))
+      ...(CustomModals && Object.entries(CustomModals).reduce((acc, [key, Component]) => ({ ...acc, [key]: <Component modal={modal} control={control} /> }), {}))
     }
     return defaultModals[modal.visual || 'default'];
   }, [CustomModals]);
