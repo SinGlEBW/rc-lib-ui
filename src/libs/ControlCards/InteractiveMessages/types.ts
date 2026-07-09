@@ -20,8 +20,8 @@ export type CustomModalsPayload = {
 
 type ModalTypesComponent = ComponentType<CustomModalsPayload>;
 
-
-export interface CustomModalsMap{
+export interface ExtendsModalMap {}
+export interface CustomModalsMap extends ExtendsModalMap{
   success?: ModalTypesComponent;
   delete?: ModalTypesComponent;
   update?: ModalTypesComponent;
@@ -85,7 +85,7 @@ export interface InteractiveMessageItemSuccess extends ViewModal {
 }
 
 export interface InteractiveMessageItemDefault extends ViewModal {
-  mode: "default";
+  mode: "default" | keyof ExtendsModalMap;
   actions: (Partial<Pick<ButtonProps, "sx" | "onClick">> & { text: string })[];
   visual?: "variant1";
 }

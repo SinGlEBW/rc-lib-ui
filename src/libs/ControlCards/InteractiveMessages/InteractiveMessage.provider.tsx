@@ -87,7 +87,7 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children, CustomModal
 
 
   const hideMessageModal = (id: string) => { hideMessage(id, 'modal'); }
-  const handleDeleteModal = (id: string) => { setModals(prev => prev.filter(msg => msg.key || msg.id !== id)); }
+  const handleDeleteModal = (id: string) => { setModals(prev => prev.filter(msg => (msg.key || msg.id) !== id)); }
 
   /*------------------------------------------------------------------------------------------------------*/
   const clearAll = useCallback(() => {
