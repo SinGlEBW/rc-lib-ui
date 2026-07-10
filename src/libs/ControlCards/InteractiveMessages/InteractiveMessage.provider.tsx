@@ -1,8 +1,8 @@
 import { Portal } from '@mui/material';
 import { SnackbarProvider, useSnackbar, type SnackbarProviderProps } from 'notistack';
-import React, { useCallback, useMemo, useState, type ComponentType, type FC, type MemoExoticComponent } from 'react';
-
+import React, { useCallback, useMemo, useState, type ComponentType, type FC } from 'react';
 import uuid4 from "uuid4";
+
 import { customAlerts } from './alerts/Alerts.styled';
 import { InteractiveMessageContext } from './controls';
 import { Dialog } from '@mui/material';
@@ -12,21 +12,15 @@ import { ModalsInfo } from './modals/ModalsInfo/ModalsInfo';
 import { ModalsSuccess } from './modals/ModalsSuccess/ModalsSuccess';
 import { ModalsUpdate } from './modals/ModalsUpdate/ModalsUpdate';
 import {
-  InteractiveMessageModalsProps,
   type AddMessageFn,
   type CustomModalsMap,
-  type DefaultModals_OR,
-  type DefaultShowAlertsVariant,
   type InteractiveMessageAlertProps,
   type InteractiveMessageContextProps,
-  type InteractiveMessageControl,
   type InteractiveMessageStateProps,
   type ModalCustomItem_P
 } from './types';
 import s from './stylesNotistack.module.css';
 import { AnimationAlertNotistack } from './animation';
-
-
 
 
 
