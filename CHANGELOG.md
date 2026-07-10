@@ -215,3 +215,7 @@
 ## [1.5.21] - 2026-07-09
 ### Fixed
 - Исправлены типы в InteractiveMessageProvider.
+## [1.5.29] - 2026-07-10
+### Added
+- Добавлены ивенты в ControlWebRTC "timeoutDisconnected" | "remoteRestart". Так же передача доп свойств в 
+   ControlWebRTC.initPeerConnection({ configuration }, { timeReConnect, numberOfRepit });

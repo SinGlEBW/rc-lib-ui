@@ -1,8 +1,7 @@
-import { ControlState, EventSubscribers } from "dev-classes";
+import { ControlState, EventSubscribers, Utils, DelaysPromise } from "dev-classes";
 import { ChannelsRTC } from "./ChannelsRTC";
 import type { ControlWebRTC_Events, DefaultStateProps, InitPeerConnectionPayload } from "./ControlWebRTC.types";
 import { ModernControlBitrate } from "./ModernControlBitrate";
-
 
 const defaultState: DefaultStateProps = {
   pc: null,
@@ -11,13 +10,20 @@ const defaultState: DefaultStateProps = {
   isPlayLocalVideo: false,
   iceRestart: false,
   isInitEvents: false,
+  iceRestartInProgress: false,
+  totalNumberOfRepit: 0,
+  numberOfRepit: 10,
+  timeReConnect: 2000,
+  isInitiator: false,
+  previousRemoteUfrag: null,
+  previousRemotePwd: null,
 };
 
 export class ControlWebRTC {
   static controlComponent = {};
   private static msgErr = "функция не может быть использована без предварительной инициализации initPC";
-
-  static events = new EventSubscribers<ControlWebRTC_Events>(["pc", "offer", "candidate", "remoteTracks", "onStopingStart", "iceConnection", "localStream"]);
+  private static controlDelay = new DelaysPromise();
+  static events = new EventSubscribers<ControlWebRTC_Events>(["pc", "offer", "candidate", "remoteTracks", "stopingStart", "iceConnection", "localStream", "remoteRestart", "timeoutDisconnected"]);
   private static restartTimeout: NodeJS.Timeout | null = null;
   private static controlState = new ControlState<DefaultStateProps>(defaultState);
   static channels = new ChannelsRTC(ControlWebRTC.events);
@@ -25,7 +31,9 @@ export class ControlWebRTC {
   static getPeerConnection() {
     return ControlWebRTC.controlState.getState().pc;
   }
-
+  static setInitiatorRole(isInitiator: boolean) {
+    ControlWebRTC.controlState.setState({ isInitiator });
+  }
   private static getArrayKeyAndWatchEvents = () =>
     Object.entries({
       negotiationneeded: ControlWebRTC.watchEventNegotiationneeded,
@@ -55,35 +63,43 @@ export class ControlWebRTC {
     return localStream;
   };
 
-  static sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
   static async stopTrack(onStopingStart?: () => void) {
     const localStream = ControlWebRTC.getLocalStream();
     if (localStream) {
       onStopingStart && onStopingStart();
-      ControlWebRTC.events.publish("onStopingStart");
+      ControlWebRTC.events.publish("stopingStart");
       //Сделано что быкорректно отработал Preloader. Требуеться использовать visibility для video + Preloader
-      await ControlWebRTC.sleep(10);
+      await Utils.sleep(10);
       localStream.getTracks().forEach((track) => {
         track.stop();
         localStream.removeTrack(track);
       });
     }
-    await ControlWebRTC.sleep(50);
+    await Utils.sleep(50);
   }
 
   /*#############----------<{ Основной функционал }>-----------#############*/
-  static async initPeerConnection({ configuration }: InitPeerConnectionPayload) {
+  static async initPeerConnection({ configuration }: InitPeerConnectionPayload, options?: { timeReConnect: number; numberOfRepit: number }) {
     const state = ControlWebRTC.controlState.getState();
     if (state.pc) {
       await ControlWebRTC.destroy();
     }
     const pc = new RTCPeerConnection(configuration);
-    ControlWebRTC.controlState.setState({ pc });
+    ControlWebRTC.controlState.setState({
+      pc,
+      timeReConnect: options?.timeReConnect ?? defaultState.timeReConnect,
+      numberOfRepit: options?.numberOfRepit ?? defaultState.numberOfRepit,
+    });
     ControlWebRTC.peerConnectionsEvents("add", pc).then(() => {});
     ControlWebRTC.events.publish("pc", pc);
 
     // const senders = pc.getSenders(); //Массив треков
     // const receiv = pc.getReceivers(); //массив треков
+  }
+
+  static startInitiatorCalling() {
+    ControlWebRTC.setInitiatorRole(true);
+    ControlWebRTC.startCreateOffer();
   }
 
   static addIceCandidate({ candidate }: { candidate: RTCIceCandidateInit | RTCIceCandidate }) {
@@ -115,12 +131,16 @@ export class ControlWebRTC {
 
   private static watchEventNegotiationneeded(e) {
     console.log("Ивент: negotiationneeded: ", e);
-    // const { activeUpdateOffer, pc } = ControlWebRTC.controlState.getState();
-    // neotiationNeededCount > 0 && ControlWebRTC.startCreateOffer();
+    const { iceRestart, iceRestartInProgress, isInitiator } = ControlWebRTC.controlState.getState();
+    const pc = ControlWebRTC.getPeerConnection();
 
-    // if (pc.iceConnectionState === "failed") {
-    //   pc.restartIce();
-    // }
+    if (!pc) return;
+
+    if (iceRestartInProgress && isInitiator) {
+      console.log("Перезапуск ICE в процессе, создаем offer");
+      ControlWebRTC.startCreateOffer(); //TODO:  временнная мера
+      return;
+    }
   }
 
   private static watchEventCandidate(e) {
@@ -143,13 +163,20 @@ export class ControlWebRTC {
 
   private static watchEventSignalingstatechange(e) {
     console.log("Статус: signalingState > ", e.target.signalingState);
+    const { iceRestartInProgress } = ControlWebRTC.controlState.getState();
     switch (e.target.signalingState) {
       case "have-local-offer":
         console.log("signalingState: (have-local-offer): offer добавлен в setLocalDescription");
         break;
+      case "have-remote-offer":
+        console.log("signalingState: (have-remote-offer): offer добавлен в setRemoteDescription");
+        break;
       case "stable":
         console.log("signalingState: (stable): ICE переговоры завершены");
         ControlWebRTC.controlState.setState({ iceRestart: true });
+        if (iceRestartInProgress) {
+          ControlWebRTC.resetRestartOfRepit();
+        }
         break;
     }
   }
@@ -171,68 +198,116 @@ export class ControlWebRTC {
 
   private static watchEventIceconnectionstatechange(e) {
     console.log("Статус: iceConnectionState > ", e.target.iceConnectionState);
-
+    const { timeReConnect, numberOfRepit } = ControlWebRTC.controlState.getState();
     const pc = e.target as RTCPeerConnection;
-    const state = pc.iceConnectionState;
+    const status = pc.iceConnectionState;
 
     /*
       failed | disconnected - автоматический способ востановления соединения когда уже проблема случилась
       handleNetworkChange метод ручного востановления failed | disconnected
     */
-    ControlWebRTC.events.publish("iceConnection", state);
-    switch (state) {
+    ControlWebRTC.events.publish("iceConnection", status);
+
+    ControlWebRTC.resetRestartTimeout();
+
+    switch (status) {
+      //failed - означает, что ICE-агент исчерпал все попытки и окончательно признал соединение потерянным.
       case "failed":
-        console.log("ICE соединение провалилось, пытаемся перезапустить...");
+        console.log("ICE (failed) агент исчерпал все попытки автоматически подключиться, пытаемся перезапустить...");
         ControlWebRTC.restartIce();
         break;
-
+      /*
+        disconnected - означает, что ICE-агент временно потерял связь с удаленной стороной, но всё еще пытается восстановить соединение 
+        автоматически (ищет альтернативные кандидаты, повторяет проверки). Система не сдалась.
+        */
       case "disconnected":
-        console.log("ICE соединение потеряно, ожидаем восстановления...");
-        // Даем небольшую задержку перед перезапуском
-        if (ControlWebRTC.restartTimeout) {
-          clearTimeout(ControlWebRTC.restartTimeout);
+        console.log("ICE соединение потеряно, ожидаем восстановления от браузера...");
+        {
+          if (timeReConnect <= 0) return;
+          console.log("Устанавливаем и ориентируемся на таймер восстановления соединения...");
+          const controlStartActionEvery = ControlWebRTC.controlDelay.startActionEvery(() => ["connected", "completed"].includes(pc.iceConnectionState), {
+            interval: timeReConnect,
+            countAction: numberOfRepit,
+          });
+          controlStartActionEvery.promise
+            .then(() => {
+              ControlWebRTC.events.publish("timeoutDisconnected", "connected");
+            })
+            .catch(() => {
+              ControlWebRTC.events.publish("timeoutDisconnected", "timeoutOff");
+            });
         }
-        ControlWebRTC.restartTimeout = setTimeout(() => {
-          if (pc.iceConnectionState === "disconnected") {
-            console.log("Соединение не восстановилось, перезапускаем ICE");
-            ControlWebRTC.restartIce();
-          }
-        }, 3000);
+
         break;
 
       case "connected":
       case "completed":
-        console.log("ICE соединение установлено");
-        console.log("pc.getSenders", pc.getSenders());
-        console.log("pc.getReceivers", pc.getReceivers());
-
-        if (ControlWebRTC.restartTimeout) {
-          clearTimeout(ControlWebRTC.restartTimeout);
-        }
+        console.log("ICE соединение установлено. Отработал после  signalingState >  stable");
+        ControlWebRTC.resetRestartOfRepit();
+        break;
+      case "checking":
+        console.log("ICE проверка соединения...");
         break;
     }
   }
 
   /*--------------------------------------------------------------------------------------------------------------------------*/
   /*--------------------------------------------------------------------------------------------------------------------------*/
-  static isIceRestart(sdp: string) {
-    return sdp.includes("ice-ufrag");
+
+  private static extractIceCredentials(sdp: string): Record<"ufrag" | "pwd", string | null> {
+    const ufragMatch = sdp.match(/a=ice-ufrag:([^\r\n]+)/);
+    const pwdMatch = sdp.match(/a=ice-pwd:([^\r\n]+)/);
+
+    return {
+      ufrag: ufragMatch ? ufragMatch[1] : null,
+      pwd: pwdMatch ? pwdMatch[1] : null,
+    };
   }
 
-  static startCreateOffer() {
+  static getIceRestartInfo(sdp: string) {
+    const { previousRemoteUfrag, previousRemotePwd } = ControlWebRTC.controlState.getState();
+    const { ufrag, pwd } = ControlWebRTC.extractIceCredentials(sdp);
+    const isFirstOffer = !previousRemoteUfrag || !previousRemotePwd;
+
+    const isRestart = !isFirstOffer && ufrag !== null && previousRemoteUfrag !== ufrag;
+
+    ControlWebRTC.controlState.setState({
+      previousRemoteUfrag: ufrag,
+      previousRemotePwd: pwd,
+    });
+
+    return { isRestart, ufrag, pwd };
+  }
+  private static async startCreateOffer() {
     const { iceRestart } = ControlWebRTC.controlState.getState();
     const pc = ControlWebRTC.getPeerConnection();
     if (!pc) return;
     console.log("##########--------<{ Создание offer }>---------##########");
-
     const options = { offerToReceiveAudio: true, offerToReceiveVideo: true, iceRestart };
-    pc.createOffer(options).then(({ type, sdp }) => {
-      pc.setLocalDescription({ type, sdp }).then(() => {
-        ControlWebRTC.events.publish("offer", { type: "offer", sdp: sdp! });
-      });
-    });
+
+    const { type, sdp } = await pc.createOffer(options);
+    await pc.setLocalDescription({ type, sdp });
+    ControlWebRTC.events.publish("offer", { type: "offer", sdp: sdp! });
   }
 
+  static async setRemoteOffer({ sdp }: { sdp: string }) {
+    let pc = ControlWebRTC.getPeerConnection()!;
+    const { isRestart, ufrag, pwd } = ControlWebRTC.getIceRestartInfo(sdp);
+    if (isRestart) {
+      ControlWebRTC.events.publish("remoteRestart", { ufrag: ufrag!, pwd: pwd! });
+    }
+
+    await pc.setRemoteDescription({ type: "offer", sdp });
+    const answer = await pc.createAnswer();
+    await pc.setLocalDescription(answer);
+    return answer;
+  }
+  static async setRemoteAnswer({ sdp }: { sdp: string }) {
+    const pc = ControlWebRTC.getPeerConnection();
+    if (!pc) return;
+    await pc.setRemoteDescription({ type: "answer", sdp });
+    return null;
+  }
   /*#############----------<{ Helpers }>-----------#############*/
 
   private static async peerConnectionsEvents(status: "add" | "remove", pc: RTCPeerConnection) {
@@ -304,35 +379,37 @@ export class ControlWebRTC {
         ControlWebRTC.controlState.resetState();
         resolve(null);
       }
-      if (ControlWebRTC.restartTimeout) {
-        clearTimeout(ControlWebRTC.restartTimeout);
-        ControlWebRTC.restartTimeout = null;
-      }
+      ControlWebRTC.resetRestartTimeout();
+    });
+  }
+  private static resetRestartTimeout() {
+    if (ControlWebRTC.restartTimeout) {
+      clearTimeout(ControlWebRTC.restartTimeout);
+      ControlWebRTC.restartTimeout = null;
+    }
+  }
+  private static resetRestartOfRepit() {
+    ControlWebRTC.controlState.setState({
+      iceRestartInProgress: false,
+      totalNumberOfRepit: 0,
     });
   }
 
-  static handleNetworkChange() {
-    console.log("Обнаружено изменение сети, инициируем перезапуск ICE");
-    const pc = ControlWebRTC.getPeerConnection();
-
+  private static restartIce() {
+    const { pc } = ControlWebRTC.controlState.getState();
     if (!pc) {
-      console.log("PeerConnection не инициализирован");
+      ControlWebRTC.controlState.setState({ iceRestartInProgress: false });
       return;
     }
-    ControlWebRTC.restartIce();
-  }
-
-  private static restartIce() {
-    const pc = ControlWebRTC.getPeerConnection();
-    if (!pc) return;
     console.log("Перезапуск ICE...");
     try {
       if (pc.restartIce) {
         pc.restartIce();
-        console.log("ICE перезапущен через restartIce()");
+        console.log("ICE перезапущен через restartIce(). Будет вызов negotiationneeded");
       }
     } catch (error) {
       console.error("Ошибка при перезапуске ICE:", error);
+      ControlWebRTC.controlState.setState({ iceRestartInProgress: false });
     }
   }
 
@@ -367,7 +444,6 @@ export class ControlWebRTC {
     }, 200);
   };
 }
-
 
 //INFO: negotiationneeded отрабатывает на addTrack removeTrack addTransceiver
 /*
