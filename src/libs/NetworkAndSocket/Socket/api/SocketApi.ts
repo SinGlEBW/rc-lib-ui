@@ -310,7 +310,7 @@ export class SocketApi {
     }
   };
 
-  static async request<P extends BasePayloadSocket, Data extends BasePayloadSocket>(payload: P, options: SocketApiOptionsRequest = {}): Promise<Data> {
+  static async request<Result, P extends BasePayloadSocket>(payload: P, options: SocketApiOptionsRequest = {}): Promise<Result> {
     return new Promise((resolve, reject) => {
       if (options?.signal?.aborted) {
         reject(new DOMException("Aborted", "AbortError"));
@@ -342,7 +342,7 @@ export class SocketApi {
         reject(error);
       };
 
-      const handleResponse = (res: SocketResponse<P, Data>) => {
+      const handleResponse = (res: SocketResponse<P, Result>) => {
         const reqItem = this.wsApi.findDataRequestByAction(keyRequest);
         if (!reqItem || res?.request?.requestAction !== reqItem.requestAction) return;
         cleanup();

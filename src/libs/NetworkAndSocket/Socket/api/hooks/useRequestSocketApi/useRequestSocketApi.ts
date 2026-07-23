@@ -49,7 +49,7 @@ export const useRequestSocketApi = <P extends BasePayloadSocket, Data extends Ba
     const signal = abortControllerRef.current.signal;
 
     try {
-      const response = await SocketApi.request<P, Data>(payload, { timeout, signal });
+      const response = await SocketApi.request<Data, P>(payload, { timeout, signal });
 
       if (signal.aborted) return;
 

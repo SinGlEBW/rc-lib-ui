@@ -219,3 +219,6 @@
 ### Added
 - Добавлены ивенты в ControlWebRTC "timeoutDisconnected" | "remoteRestart". Так же передача доп свойств в 
    ControlWebRTC.initPeerConnection({ configuration }, { timeReConnect, numberOfRepit });
+## [1.5.32] - 2026-07-23
+### Edit
+- Поменял местами передачу типа в SocketApi.reqeust<Result, Request>(...)
