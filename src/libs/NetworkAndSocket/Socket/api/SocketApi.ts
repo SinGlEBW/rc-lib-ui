@@ -310,7 +310,7 @@ export class SocketApi {
     }
   };
 
-  static async request<Result, P extends BasePayloadSocket>(payload: P, options: SocketApiOptionsRequest = {}): Promise<Result> {
+  static async request<Result, P extends BasePayloadSocket = BasePayloadSocket>(payload: P, options: SocketApiOptionsRequest = {}): Promise<Result> {
     return new Promise((resolve, reject) => {
       if (options?.signal?.aborted) {
         reject(new DOMException("Aborted", "AbortError"));
