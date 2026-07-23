@@ -12,7 +12,7 @@ interface StateTypes<D> {
   isSuccess: boolean;
 }
 
-export const useRequestSocketApi = <P extends BasePayloadSocket, Data extends BasePayloadSocket>(payload: P, options: UseRequestSocketOptions<Data> = {}) => {
+export const useRequestSocketApi = <P extends BasePayloadSocket, Data extends BasePayloadSocket = BasePayloadSocket>(payload: P, options: UseRequestSocketOptions<Data> = {}) => {
   const keyRequest = payload.action;
   const { skip = false, timeout = 5000 } = options;
 
