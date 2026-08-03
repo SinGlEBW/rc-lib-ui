@@ -96,7 +96,6 @@ const TestSocketMemo: FC<TestSocketProps> = (props) => {
         }}
       />
     
-
       <Box>
         <Button onClick={handleConnect}>Connect</Button>
         <Button onClick={handleClose}>Close</Button>
