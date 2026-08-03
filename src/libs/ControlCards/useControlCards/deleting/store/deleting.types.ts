@@ -1,5 +1,5 @@
 
-export type KeysListDell = ''
+export type KeysListDell = string;
 
 interface DeleteItem_P {
   id: string;

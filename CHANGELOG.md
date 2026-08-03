@@ -228,3 +228,6 @@
 ## [1.5.36] - 2026-08-03
 ### Edit
 - useControlCards -> Переименована функция onDelete в showModalDelete 
+## [1.5.37] - 2026-08-03
+### Fixed
+- useControlCards -> исправлена типизация keyAction 
