@@ -225,3 +225,6 @@
 ## [1.5.35] - 2026-08-03
 ### Added
 - Добавлено управление заголовками через useControlCards
+## [1.5.36] - 2026-08-03
+### Edit
+- useControlCards -> Переименована функция onDelete в showModalDelete 

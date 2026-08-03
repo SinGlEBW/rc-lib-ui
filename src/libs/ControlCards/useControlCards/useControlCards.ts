@@ -31,7 +31,7 @@ export const useControlCards = ({
   const selectedData = useSelected(list);
   const deleting = useDeleting({ sectionDel: keyAction });
 
-  const onDelete = useCallback(() => {
+  const showModalDelete = useCallback(() => {
     showDeleteModal({
       message: typeof messageDelete === "function" ? messageDelete() : `Вы действительно хотите удалить ?`,
       title: typeof title === "function" ? title() : title,
@@ -78,7 +78,7 @@ export const useControlCards = ({
   }, [deleting, durationDelete, list, onExpire, selectedData, setMessageProgress, showAlert, showAlertDeleteCountdown, showDeleteModal, timeoutSuccess]);
 
   return {
-    onDelete,
+    showModalDelete,
     checkIsReadyDelete: deleting.checkIsReadyDelete,
     ...selectedData,
   };
