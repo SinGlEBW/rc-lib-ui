@@ -12,19 +12,19 @@ type ContrlsListProps = Record<"name" | "id", string>[];
 interface UseControlCardsProps {
   keyAction: KeysListDell;
   list: (ContrlsListProps[number] & { [key in string]: any })[];
-  onExpire(items: ContrlsListProps): void;
+  onEndTimeout(items: ContrlsListProps): void;
   setMessageProgress(items: ContrlsListProps): string;
   durationDelete?: number;
   timeoutSuccess?: number;
   messageDelete?: (() => React.ReactNode);
   title?: string | (() => string);
-  optionAlert?: Pick<InteractiveMessageAlertProps, 'anchorOrigin'>
+  optionAlert?: Pick<InteractiveMessageAlertProps, 'anchorOrigin'> & { isOffAlertBySuccess?: boolean }
 }
 
 export const useControlCards = ({ 
   list, keyAction, setMessageProgress, 
-  onExpire, durationDelete = 5000, timeoutSuccess = 2000,
-  messageDelete, title, optionAlert
+  onEndTimeout, durationDelete = 5000, timeoutSuccess = 2000,
+  messageDelete, title, optionAlert,
  }: UseControlCardsProps) => {
   const { showDeleteModal, showAlert, showAlertDeleteCountdown } = useInteractiveMessage();
 
@@ -40,7 +40,7 @@ export const useControlCards = ({
           const { id, name } = list.find((item) => item.id === selectId)!;
           return { id, name };
         });
-
+        
         selectedData.clearSelection();
         const delPackID = uuid4();
         deleting.setItems({ delPackID, items });
@@ -53,18 +53,20 @@ export const useControlCards = ({
           duration: durationDelete,
           message: setMessageProgress(items),
           onExpire: () => {
-            onExpire(items);
+            onEndTimeout(items);
             clearDeletingActive();
-            showAlert({
-              variant: "success",
-              message: "Успешное удаление",
-              timeout: timeoutSuccess,
-              anchorOrigin: {
-                vertical: "bottom",
-                horizontal: "left",
-              },
-              ...optionAlert
-            });
+            !optionAlert?.isOffAlertBySuccess && (
+              showAlert({
+                variant: "success",
+                message: "Успешное удаление",
+                timeout: timeoutSuccess,
+                anchorOrigin: {
+                  vertical: "bottom",
+                  horizontal: "left",
+                },
+                ...optionAlert
+              })
+            )
           },
           onUndo: () => {
             clearDeletingActive();
@@ -75,7 +77,7 @@ export const useControlCards = ({
         console.dir("No");
       },
     });
-  }, [deleting, durationDelete, list, onExpire, selectedData, setMessageProgress, showAlert, showAlertDeleteCountdown, showDeleteModal, timeoutSuccess]);
+  }, [deleting, durationDelete, list, onEndTimeout, selectedData, setMessageProgress, showAlert, showAlertDeleteCountdown, showDeleteModal, timeoutSuccess]);
 
   return {
     showModalDelete,

@@ -231,3 +231,8 @@
 ## [1.5.37] - 2026-08-03
 ### Fixed
 - useControlCards -> исправлена типизация keyAction 
+## [1.6.0] - 2026-08-05
+### Add
+- useControlCards -> Добавлено свойство optionAlert
+### Edit
+- useControlCards -> переименована функция onExpire на onEndTimeout
