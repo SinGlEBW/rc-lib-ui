@@ -236,3 +236,6 @@
 - useControlCards -> Добавлено свойство optionAlert
 ### Edit
 - useControlCards -> переименована функция onExpire на onEndTimeout
+## [1.6.2] - 2026-08-05
+### Add
+- useControlCards -> Добавлено свойство isDeletingByTimeout. Так же добавлен функционал в onEndTimeout для контроля удаления после запроса 
