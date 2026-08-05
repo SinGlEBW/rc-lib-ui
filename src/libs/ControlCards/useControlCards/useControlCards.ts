@@ -72,7 +72,7 @@ export const useControlCards = ({
             onEndTimeout(items, { clearDeletingActive, deletingPackID, showAlert, showModal, delPackID });
             if (isDeletingByTimeout) {
               clearDeletingActive();
-              !optionAlert?.isOffAlertBySuccess &&
+              !optionAlert?.isOffAlertBySuccess && (
                 showAlert({
                   variant: "success",
                   message: "Успешное удаление",
@@ -82,7 +82,8 @@ export const useControlCards = ({
                     horizontal: "left",
                   },
                   ...optionAlert,
-                });
+                })
+              )
             }
           },
           onUndo: () => {
