@@ -1,5 +1,3 @@
-
-
 import { useInteractiveMessage } from '@libs/ControlCards/InteractiveMessages/controls';
 import { useCallback } from "react";
 import uuid4 from "uuid4";
@@ -8,12 +6,12 @@ import { useDeleting } from './deleting/useDeleting';
 import { useSelected } from '../useSelected/useSelected';
 import type { InteractiveMessageAlertProps } from '../InteractiveMessages';
 
-type ContrlsListProps = Record<"name" | "id", string>[];
+type ControlCardsListItem = Record<"id", string> & { [key in string]: any };
 interface UseControlCardsProps {
   keyAction: KeysListDell;
-  list: (ContrlsListProps[number] & { [key in string]: any })[];
-  onEndTimeout(items: ContrlsListProps): void;
-  setMessageProgress(items: ContrlsListProps): string;
+  list: ControlCardsListItem[];
+  onEndTimeout(items: ControlCardsListItem[]): void;
+  setMessageProgress(items: ControlCardsListItem[]): string;
   durationDelete?: number;
   timeoutSuccess?: number;
   messageDelete?: (() => React.ReactNode);
@@ -37,8 +35,8 @@ export const useControlCards = ({
       title: typeof title === "function" ? title() : title,
       onConfirm: () => {
         const items = selectedData.selectedIds.map((selectId) => {
-          const { id, name } = list.find((item) => item.id === selectId)!;
-          return { id, name };
+          const findItem = list.find((item) => item.id === selectId)!;
+          return findItem;
         });
         
         selectedData.clearSelection();
