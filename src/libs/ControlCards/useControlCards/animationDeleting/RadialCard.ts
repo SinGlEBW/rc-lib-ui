@@ -1,6 +1,6 @@
 import { keyframes } from "@mui/material/styles";
 
-export const getRadial = ({ theme, isDeleting }) => {
+export const getRadial = ({ isDeleting }) => {
   const expandCircle = keyframes({
     "0%": {
       width: "0%",

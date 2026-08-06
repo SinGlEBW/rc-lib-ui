@@ -1,7 +1,7 @@
 import { keyframes } from "@mui/material/styles";
 
 
-export const getGradient = ({theme, isDeleting}) => {
+export const getGradient = ({isDeleting}) => {
   const gradientFlow = keyframes({
     "0%": { backgroundPosition: "-200% 0" },
     "100%": { backgroundPosition: "200% 0" },

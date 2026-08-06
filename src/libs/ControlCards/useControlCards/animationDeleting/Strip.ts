@@ -13,7 +13,7 @@ export const getBacgroundStripe = ({ isDeleting, rgb, sx }:BacgroundStripe) => {
   });
 
   return (
-    isDeleting && {
+    isDeleting ? {
       outline: "0 !important",
       transition: "all 0.3s ease",
       animation: isDeleting ? `${loadingStripes} 2.5s linear infinite` : "none",
@@ -28,6 +28,6 @@ export const getBacgroundStripe = ({ isDeleting, rgb, sx }:BacgroundStripe) => {
     ) !important`,
       backgroundSize: `${stripeWidth} ${stripeWidth} !important`,
       ...sx,
-    }
+    } : {}
   );
 };

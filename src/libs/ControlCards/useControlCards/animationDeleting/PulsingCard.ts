@@ -1,6 +1,6 @@
 import { keyframes } from "@mui/material/styles";
 
-export const getPulseBorder = ({ theme, isDeleting }) => {
+export const getPulseBorder = ({ isDeleting }) => {
   const pulseBorder = keyframes({
     "0%, 100%": {
       borderColor: "#ff4444",

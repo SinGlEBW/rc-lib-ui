@@ -1,6 +1,6 @@
 import { keyframes } from "@mui/material/styles";
 
-export const getNoise = ({ theme, isDeleting }) => {
+export const getNoise = ({ isDeleting }) => {
   const waveDistortion = keyframes({
     "0%": { transform: "translateY(0)" },
     "100%": { transform: "translateY(4px)" },
