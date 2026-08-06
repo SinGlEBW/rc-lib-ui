@@ -1,5 +1,5 @@
 import { keyframes, type SxProps } from "@mui/material/styles";
-interface BacgroundStripe{
+export interface BacgroundStripe{
   isDeleting: boolean;
   rgb?: string;
   sx?: SxProps
