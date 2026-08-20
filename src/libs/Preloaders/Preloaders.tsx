@@ -1,5 +1,6 @@
 import React, { FC, useRef } from "react";
-import { CSSTransition, SwitchTransition } from "react-transition-group";
+import { CSSTransition, SwitchTransition, } from "react-transition-group";
+import { CSSTransitionProps } from "react-transition-group/CSSTransition";
 
 import { SpinnerGrow, SpinnerGrowProps } from './components/SpinnerGrow/SpinnerGrow';
 import { SpinnerBorder, SpinnerBorderProps } from './components/SpinnerBorder/SpinnerBorder';
@@ -12,6 +13,9 @@ import { RotateCube, RotateCubeProps } from './components/RotateCube/RotateCube'
 import s from './Preloaders.module.css';
 
 /*Добавлять прелоадеры threeJS */
+
+
+
 
 const PreloaderComponents = {
   SpinnerGrow,
@@ -28,18 +32,23 @@ type ListPreloaders_P =
   ({ name: 'SpinnerBorder' } & SpinnerBorderProps) |
   ({ name: 'Spinner3D' } & Spinner3DProps) |
   ({ name: 'Ball' } & BallProps) |
-  ({ name: 'Time' } & TimeProps) | 
+  ({ name: 'Time' } & TimeProps) |
   ({ name: 'Cube' } & CubeProps) |
   ({ name: 'RotateCube' } & RotateCubeProps);
 
+type WatcherAnimation = Pick<CSSTransitionProps, 'onEnter' | 'onEntering' | 'onEntered' | 'onExit' | 'onExiting' | 'onExited'>
 
 export type PreloadersProps = {
   timeout?: number;
   show: boolean;
   children?: React.ReactNode;
-} & ListPreloaders_P;
+} & ListPreloaders_P & WatcherAnimation;
 
-const PreloadersMemo: FC<PreloadersProps> = ({ timeout = 300, show, name, children = null,  ...props }) => {
+const PreloadersMemo: FC<PreloadersProps> = ({
+  timeout = 300, show, name, children = null,
+  onEnter, onEntering, onEntered, onExit, onExiting, onExited,
+  ...props
+}) => {
   const PreloaderComponent = PreloaderComponents[name];
   // debugger
   const preloaderRef = useRef(null);
@@ -60,6 +69,12 @@ const PreloadersMemo: FC<PreloadersProps> = ({ timeout = 300, show, name, childr
           exitActive: s.fadeExitActive,
         }}
         unmountOnExit
+        onEnter={onEnter}
+        onEntering={onEntering}
+        onEntered={onEntered}
+        onExit={onExit}
+        onExiting={onExiting}
+        onExited={onExited}
       >
         <>
           {switchData.element}

@@ -242,3 +242,6 @@
 ## [1.6.3] - 2026-08-05
 ### Fixed
 - Исправлена ошибка бесконечного перерендера при использовании useControlCards 
+## [1.6.7] - 2026-08-20
+### Added
+- Preloaders. Добавлены события: onEnter onEntering onEntered onExit onExiting onExited
