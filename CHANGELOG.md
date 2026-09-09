@@ -245,3 +245,6 @@
 ## [1.6.7] - 2026-08-20
 ### Added
 - Preloaders. Добавлены события: onEnter onEntering onEntered onExit onExiting onExited
+## [1.6.8] - 2026-09-09
+### Fixed
+- Изменено начальное состояние isDisableConnectSocket с false на true

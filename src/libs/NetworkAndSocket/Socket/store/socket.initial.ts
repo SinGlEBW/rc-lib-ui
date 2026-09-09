@@ -4,7 +4,7 @@ const initialState:InitialStatePropsSocket = {
   statusConnect: "disconnect",
   isOfflineSocket: false, //Текущее состояние сокета. Зависит от события timeOffReConnect и если задаёться isDisableConnectSocket: true
   isReConnectSocket: false,
-  isDisableConnectSocket: false,
+  isDisableConnectSocket: true,
   isReadySocket: false,
   infoNoConnectServer: {
     isModal: false,
