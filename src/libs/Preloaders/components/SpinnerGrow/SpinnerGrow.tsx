@@ -13,7 +13,7 @@ export interface SpinnerGrowProps {
 const SpinnerGrowMemo = forwardRef<HTMLDivElement, SpinnerGrowProps>(({ sx, bgColor = 'primary' }, ref) => {
   const color = bgColor.startsWith('#') ? bgColor : `${bgColor}.main`
   return (
-    <Box sx={sx} className={s.positionCenterByParent} id="preloader" ref={ref}>
+    <Box sx={sx} className={s.positionCenterByParent} ref={ref}>
       <Box className={`${s['spinner-grow']} `} bgcolor={color} role="status"></Box>
     </Box>
   );
