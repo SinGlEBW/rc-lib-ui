@@ -4,20 +4,21 @@ import cn from 'classnames';
 import { Box, type SxProps, type Theme } from '@mui/material';
 
 export interface CubeProps {
-  color?:string;
+  className?: string;
   sx?: SxProps<Theme>;
+  color?: string;
 }
 
-const CubeMemo = forwardRef<HTMLDivElement, CubeProps>(({color = 'primary', sx }, ref) => {
+const CubeMemo = forwardRef<HTMLDivElement, CubeProps>(({ color = 'primary', className, sx }, ref) => {
   const _color = color.startsWith('#') ? color : `${color}.main`;
   return (
-    <Box sx={sx}  className={s.wrap} ref={ref}>
-        <div className={s.loader}>
-          <Box sx={{'&::before': { backgroundColor: _color} }} className={cn(s.cube, s.one)}></Box>
-          <Box sx={{'&::before': { backgroundColor: _color} }} className={cn(s.cube, s.two)}></Box>
-          <Box sx={{'&::before': { backgroundColor: _color} }} className={cn(s.cube, s.four)}></Box>
-          <Box sx={{'&::before': { backgroundColor: _color} }} className={cn(s.cube, s.three)}></Box>
-        </div>
+    <Box sx={sx} className={cn(className, 'Cube', s.wrap)} ref={ref}>
+      <div className={s.loader}>
+        <Box sx={{ '&::before': { backgroundColor: _color } }} className={cn(s.cube, s.one)}></Box>
+        <Box sx={{ '&::before': { backgroundColor: _color } }} className={cn(s.cube, s.two)}></Box>
+        <Box sx={{ '&::before': { backgroundColor: _color } }} className={cn(s.cube, s.four)}></Box>
+        <Box sx={{ '&::before': { backgroundColor: _color } }} className={cn(s.cube, s.three)}></Box>
+      </div>
     </Box>
   );
 });

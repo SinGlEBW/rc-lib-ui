@@ -7,7 +7,7 @@ export interface TestingPreloadersProps {
 }
 
 const TestingPreloadersMemo: FC<TestingPreloadersProps> = (props) => {
-  const [isPreloader, setIsPreloader] = useState(false)
+  const [isPreloader, setIsPreloader] = useState(true)
   const toggleActivePreloader = () => {
     setIsPreloader((prev) => !prev);
   }
@@ -22,7 +22,7 @@ const TestingPreloadersMemo: FC<TestingPreloadersProps> = (props) => {
           // onExit={() => { debugger; console.log('onExit')}}
           // onExiting={() => { debugger; console.log('onExiting')}}
           // onExited={() => { debugger; console.log('onExited')}}
-          name='SpinnerBorder'
+          name='Time'
           show={isPreloader} text='asdas' size={30} bgColor='#456789'
           sx={() => ({ backgroundColor: 'MenuText', zIndex: 1301 })}
         >

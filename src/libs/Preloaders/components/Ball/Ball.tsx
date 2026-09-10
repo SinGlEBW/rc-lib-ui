@@ -1,20 +1,22 @@
 import React from 'react';
 import { Box, type SxProps, type Theme } from '@mui/material';
 import s from "./Ball.module.scss";
+import cn from 'classnames';
 
 export interface BallProps {
   text?: string;
+  className?: string;
   textPosition?: 'top' | 'bottom';
   sx?: SxProps<Theme>;
 }
 
 
-const BallMemo = React.forwardRef<HTMLDivElement, BallProps>(({ text, sx, textPosition = 'top' }, ref) => {
+const BallMemo = React.forwardRef<HTMLDivElement, BallProps>(({ text, sx, className, textPosition = 'top' }, ref) => {
   // const _textPosition 
   // [textPosition]: '-50%' 
   return (
 
-    <Box sx={sx} className={s.wrap} ref={ref}>
+    <Box sx={sx} className={cn(className, 'Ball', s.wrap)} ref={ref}>
       <Box className={s.inner}>
         {
           (text)

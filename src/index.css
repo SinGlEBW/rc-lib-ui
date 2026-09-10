@@ -13,3 +13,6 @@ body, #root{
   height: 100%;
 }
 
+.Preloaders{
+  background-color: aqua;
+}

@@ -68,9 +68,9 @@ const SpinnerBorderMemo = forwardRef<HTMLDivElement, SpinnerBorderProps>(({ sx =
   }, [color, sx]);
 
   return (
-    <Box className={cn(s.wrap, className)} sx={mergedSx} ref={ref} >
+    <Box className={cn(className, 'SpinnerBorder', s.wrap)} sx={mergedSx} ref={ref} >
       <StyledInner textPosition={textPosition}>
-        <Box className={cn('SpinnerBorder', `${s.spinner} ${s.spinnerSm}`, classNameBody)}
+        <Box className={cn(`${s.spinner} ${s.spinnerSm}`, classNameBody)}
           sx={{ width: size, height: size }}
         />
         {

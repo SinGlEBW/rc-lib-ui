@@ -6,6 +6,7 @@ import { Box, styled, type SxProps, type Theme } from '@mui/material';
 export interface RotateCubeProps {
   isCircle?: boolean;
   sx?: SxProps<Theme>;
+  className?: string;
   size?: number;
   variant?: 'spread' | 'nearby'
   textPosition?: 'top' | 'bottom';
@@ -117,12 +118,12 @@ const BoxItem = styled(
 
 
 
-const RotateCubeMemo = forwardRef<HTMLDivElement, RotateCubeProps>(({ textPosition = 'bottom', text, isCircle = false, variant = 'nearby', size = 50, sx }, ref) => {
+const RotateCubeMemo = forwardRef<HTMLDivElement, RotateCubeProps>(({ textPosition = 'bottom', text, isCircle = false, variant = 'nearby', size = 50, className, sx }, ref) => {
   // const _color = color.startsWith('#') ? color : `${color}.main`;
   const sizeItem = size / 2;
   const spread = variant === 'spread' ? 20 : 0;//spread в пикселях
   return (
-    <Box sx={sx} className={cn('RotateCube', s.wrap)} ref={ref} >
+    <Box sx={sx} className={cn(className, 'RotateCube',  s.wrap)} ref={ref} >
       <BoxInner sizeInner={size} className={cn('RotateCube-Inner', s.inner)}
         sx={{ [`& .${s.item}`]: { borderRadius: isCircle ? '50%' : '0' } }}
       >

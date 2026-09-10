@@ -252,3 +252,6 @@
 ### Fixed
 - Вернул обратно начальное состояние isDisableConnectSocket false. 
 - Убрал #preloader на SpinnerGrow
+## [1.6.11] - 2026-09-10
+### Added
+- Добавлен общий класс на Preloaders

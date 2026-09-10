@@ -53,15 +53,16 @@ const PreloadersMemo: FC<PreloadersProps> = ({
   // debugger
   const preloaderRef = useRef(null);
   const switchData = show
-    ? { key: 'preloader', element: <PreloaderComponent ref={preloaderRef} {...props as any} /> }
+    ? { key: 'preloader', element: <PreloaderComponent ref={preloaderRef} className="Preloaders" {...props as any} /> }
     : { key: 'content', element: <>{children}</> };
 
   return (
-    <SwitchTransition >
+    <SwitchTransition  >
       <CSSTransition
         key={switchData.key}
         nodeRef={preloaderRef}
         timeout={timeout}
+        
         classNames={{
           enter: s.fadeEnter,
           enterActive: s.fadeEnterActive,
