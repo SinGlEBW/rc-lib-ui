@@ -248,3 +248,7 @@
 ## [1.6.8] - 2026-09-09
 ### Fixed
 - Изменено начальное состояние isDisableConnectSocket с false на true
+## [1.6.10] - 2026-09-10
+### Fixed
+- Вернул обратно начальное состояние isDisableConnectSocket false. 
+- Убрал #preloader на SpinnerGrow
