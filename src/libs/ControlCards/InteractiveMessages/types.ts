@@ -17,19 +17,40 @@ interface ControlModal{
   };
 }
 
-export interface CustomModalsPayload extends ControlModal {
-  modal: ModalCustomItem_P;
+type InteractiveMessageControlBase = {
+  id: string;
+  isExiting: boolean;
 };
 
-type ModalTypesComponent = ComponentType<CustomModalsPayload>;
+
+type GetExtendsTypeModal<T> = Omit<T, "mode"> & InteractiveMessageControlBase;
+
+export interface InteractiveModalDefaultProps extends ControlModal {
+  modal: GetExtendsTypeModal<InteractiveMessageItemDefault>
+}
+export interface InteractiveModalInfoProps extends ControlModal {
+  modal: GetExtendsTypeModal<InteractiveMessageItemInfo>
+}
+export interface InteractiveModalSuccessProps extends ControlModal {
+  modal: GetExtendsTypeModal<InteractiveMessageItemSuccess>
+}
+export interface InteractiveModalDeleteProps extends ControlModal {
+  modal: GetExtendsTypeModal<InteractiveMessageItemDelete>
+}
+export interface InteractiveModalUpdateProps extends ControlModal {
+  modal: GetExtendsTypeModal<InteractiveMessageItemUpdate>
+}
+
+
+
 
 export interface ExtendsModalMap {}
 export interface CustomModalsMap extends ExtendsModalMap{
-  success?: ModalTypesComponent;
-  delete?: ModalTypesComponent;
-  update?: ModalTypesComponent;
-  info?: ModalTypesComponent;
-  default?: ModalTypesComponent;
+  default?: ComponentType<InteractiveModalDefaultProps>;
+  success?: ComponentType<InteractiveModalSuccessProps>
+  delete?: ComponentType<InteractiveModalDeleteProps>;
+  update?: ComponentType<InteractiveModalUpdateProps>;
+  info?: ComponentType<InteractiveModalInfoProps>;
 }
 
 export type DefaultModals_OR = keyof CustomModalsMap;
@@ -54,14 +75,14 @@ interface ViewModal extends InteractiveMessageItemCommon {
   // closeByDialog?: boolean;
 }
 
-export interface InteractiveMessageItemUpdate extends ViewModal {
+interface InteractiveMessageItemUpdate extends ViewModal {
   mode: "update";
   onConfirm?(): void;
   onCancel?(): void;
   visual?: "variant1";
 }
 
-export interface InteractiveMessageItemInfo extends ViewModal {
+interface InteractiveMessageItemInfo extends ViewModal {
   mode: "info";
   confirmText?: string;
   onConfirm?(): void;
@@ -69,7 +90,7 @@ export interface InteractiveMessageItemInfo extends ViewModal {
   visual?: "variant1";
 }
 
-export interface InteractiveMessageItemDelete extends ViewModal {
+interface InteractiveMessageItemDelete extends ViewModal {
   // itemsDelete: PayloadDeleteItems['items'];
   mode: "delete";
   onConfirm(): void;
@@ -81,14 +102,14 @@ export interface InteractiveMessageItemDelete extends ViewModal {
   visual?: "variant1"; //можно добавлять
 }
 
-export interface InteractiveMessageItemSuccess extends ViewModal {
+interface InteractiveMessageItemSuccess extends ViewModal {
   mode: "success";
   onCancel?(): void;
   buttonText?: string;
   visual?: "variant1" | "variant2" | "variant3" | "variant4" | "variant5" | "variant6";
 }
 
-export interface InteractiveMessageItemDefault extends ViewModal {
+interface InteractiveMessageItemDefault extends ViewModal {
   mode: "default" | keyof ExtendsModalMap;
   actions: (Partial<Pick<ButtonProps, "sx" | "onClick">> & { text: string })[];
   visual?: "variant1";
@@ -101,16 +122,18 @@ export type InteractiveMessageModalsProps =
   | InteractiveMessageItemSuccess
   | InteractiveMessageItemDefault;
 
-export type InteractiveMessageControl = {
-  id: string;
-  isExiting: boolean;
-};
 
-export type InteractiveMessageStateProps = InteractiveMessageControl & Omit<InteractiveMessageModalsProps, "view"> & { view: ViewMessage };
 
-export type GetExtendsTypeModal<T> = Omit<T, "mode"> & Omit<InteractiveMessageModalsProps, "mode"> & Omit<InteractiveMessageControl, "isAlert">;
 
-export type ModalCustomItem_P = InteractiveMessageModalsProps & InteractiveMessageControl;
+export type InteractiveMessageStateProps = InteractiveMessageControlBase & Omit<InteractiveMessageModalsProps, "view"> & { view: ViewMessage };
+
+export type ModalCustomItem_P = InteractiveMessageControlBase & InteractiveMessageModalsProps;
+
+
+export interface ModalRendererProps extends ControlModal {
+  modal: ModalCustomItem_P;
+  CustomModals?: CustomModalsMap;
+}
 
 
 export type AddMessageFn = (payload: Omit<InteractiveMessageStateProps, "id" | "isExiting">) => void;
@@ -120,10 +143,7 @@ type ShowUpdateModalProps = Omit<InteractiveMessageItemUpdate, "mode" | "severit
 type ShowSuccessModalProps = Omit<InteractiveMessageItemSuccess, "mode" | "severity">;
 
 type ShowModalProps = InteractiveMessageModalsProps;
-// & ShowDeleteModalProps
-// & ShowUpdateModalProps
-// & ShowSuccessModalProps
-// & InteractiveMessageModalsProps
+
 
 export interface InteractiveMessageContextProps {
   // addMessage: (config: Omit<InteractiveMessageModalsProps, 'id'>) => void;
@@ -140,20 +160,5 @@ export interface InteractiveMessageContextProps {
 }
 
 
-export interface InteractiveModalInfoProps extends ControlModal {
-  modal: GetExtendsTypeModal<InteractiveMessageItemInfo>
-}
-export interface InteractiveModalSuccessProps extends ControlModal {
-  modal: GetExtendsTypeModal<InteractiveMessageItemSuccess>
-}
-export interface InteractiveModalDeleteProps extends ControlModal {
-  modal: GetExtendsTypeModal<InteractiveMessageItemDelete>
-}
-export interface InteractiveModalUpdateProps extends ControlModal {
-  modal: GetExtendsTypeModal<InteractiveMessageItemUpdate>
-}
-export interface InteractiveModalDefaultProps extends ControlModal {
-  modal: GetExtendsTypeModal<InteractiveMessageItemDefault>
-}
 
 

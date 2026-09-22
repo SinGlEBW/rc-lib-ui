@@ -5,8 +5,7 @@ import { InteractiveModalDefaultProps } from '../../../types'
 import { StyledButtonDefault } from '@libs/common/StyledButtonDefault'
 
 
-// import type { GetExtendsTypeModal, InteractiveMessageItemDefault } from '@features/InteractiveMessages/types';
-// import { StyledButtonDefault } from '@components/Buttons/Buttons.styled';
+
 
 
 export interface ModalDefault1Props extends InteractiveModalDefaultProps{}

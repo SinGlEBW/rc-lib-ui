@@ -6,8 +6,11 @@ export type {
   DefaultShowAlertsVariant,
   DefaultModals_OR,
   ExtendsModalMap,
-  ModalCustomItem_P,
-  CustomModalsPayload,
+  InteractiveModalDefaultProps,
+  InteractiveModalInfoProps,
+  InteractiveModalSuccessProps,
+  InteractiveModalDeleteProps,
+  InteractiveModalUpdateProps,
   CustomModalsMap,
 } from "./types";
 export { InteractiveMessageProvider, type InteractiveMessageProviderProps } from "./InteractiveMessage.provider";

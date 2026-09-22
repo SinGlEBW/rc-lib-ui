@@ -17,7 +17,8 @@ import {
   type InteractiveMessageAlertProps,
   type InteractiveMessageContextProps,
   type InteractiveMessageStateProps,
-  type ModalCustomItem_P
+  type ModalCustomItem_P,
+  type ModalRendererProps
 } from './types';
 import s from './stylesNotistack.module.css';
 import { AnimationAlertNotistack } from './animation';
@@ -31,11 +32,8 @@ interface InteractiveMessageProps {
 }
 
 
-const ModalRenderer: FC<{
-  modal: ModalCustomItem_P;
-  control: { hideMessage: (id: string) => void };
-  CustomModals?: CustomModalsMap;
-}> = ({ modal, control, CustomModals }) => {
+
+const ModalRenderer: FC<ModalRendererProps> = ({ modal, control, CustomModals }) => {
   const ModalComponent = useMemo(() => {
     if (CustomModals && modal.mode && CustomModals[modal.mode]) {
       return CustomModals[modal.mode];
