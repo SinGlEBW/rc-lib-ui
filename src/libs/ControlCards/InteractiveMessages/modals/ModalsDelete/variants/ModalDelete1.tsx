@@ -1,17 +1,24 @@
 import { Delete } from '@mui/icons-material';
 import { Box, DialogContent, DialogTitle, Typography } from "@mui/material";
-import React, { FC } from "react";
+import React, { FC, useCallback } from "react";
 
 import { DialogActions } from '@libs/ControlCards/InteractiveMessages/InteractiveMessage.styled';
 import { StyledButtonDefault } from '@libs/common/StyledButtonDefault';
-import { GetExtendsTypeModal, InteractiveMessageItemDelete } from '../../../types';
+import { InteractiveModalDeleteProps } from '../../../types';
 
-export interface ModalDelete1Props {
-  modal: GetExtendsTypeModal<InteractiveMessageItemDelete>
-}
+export interface ModalDelete1Props extends InteractiveModalDeleteProps{}
 
-const ModalDelete1Memo: FC<ModalDelete1Props> = ({ modal }) => {
+const ModalDelete1Memo: FC<ModalDelete1Props> = ({ modal, control }) => {
   const isFullModal = modal.view == 'fullModal'
+  const handleOnCansel = useCallback(() => {
+    modal.onCancel && modal.onCancel();
+    control.hideMessage(modal.id);
+  }, []);
+
+  const handleOnConfirm = useCallback(() => {
+    modal.onConfirm && modal.onConfirm();
+    control.hideMessage(modal.id);
+  }, []);
 
   return (
     <>
@@ -25,19 +32,15 @@ const ModalDelete1Memo: FC<ModalDelete1Props> = ({ modal }) => {
           {modal.message}
         </Typography>
       </DialogContent>
-
       <DialogActions>
-        <StyledButtonDefault onClick={modal.onCancel} variant="outlined">
-          Отмена
-        </StyledButtonDefault>
+        <StyledButtonDefault onClick={handleOnCansel} variant="outlined" children={'Отмена'}/>
         <StyledButtonDefault
-          onClick={modal.onConfirm}
+          onClick={handleOnConfirm}
           variant="contained"
           color="error"
           startIcon={<Delete />}
-        >
-          Удалить
-        </StyledButtonDefault>
+          children={'Удалить'}
+        />
       </DialogActions>
     </>
   )

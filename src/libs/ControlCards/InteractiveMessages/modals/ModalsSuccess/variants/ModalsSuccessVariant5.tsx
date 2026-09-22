@@ -1,9 +1,9 @@
-import React, { FC } from "react"
+import React, { FC, useCallback } from "react"
 import { Box, DialogContent, Typography, styled } from '@mui/material';
 import { TaskAlt } from '@mui/icons-material';
 
 import { StyledButtonDefault } from '@libs/common/StyledButtonDefault';
-import { GetExtendsTypeModal, InteractiveMessageItemSuccess  } from '../../../types';
+import { InteractiveModalSuccessProps } from '../../../types';
 
 
 const GradientBox = styled(Box)(({ theme }) => ({
@@ -13,11 +13,15 @@ const GradientBox = styled(Box)(({ theme }) => ({
   textAlign: 'center'
 }));
 
-export interface ModalsSuccessVariant5Props {
-  modal: GetExtendsTypeModal<InteractiveMessageItemSuccess>
-}
+export interface ModalsSuccessVariant5Props extends InteractiveModalSuccessProps{}
 
-const ModalsSuccessVariant5Memo: FC<ModalsSuccessVariant5Props> = ({ modal }) => {
+const ModalsSuccessVariant5Memo: FC<ModalsSuccessVariant5Props> = ({ modal, control }) => {
+
+  const handleOnCansel = useCallback(() => {
+    modal.onCancel && modal.onCancel();
+    control.hideMessage(modal.id);
+  }, []);
+
   return (
     <>
       <GradientBox>
@@ -29,7 +33,7 @@ const ModalsSuccessVariant5Memo: FC<ModalsSuccessVariant5Props> = ({ modal }) =>
       </GradientBox>
       <DialogContent sx={{ textAlign: 'center', py: 3 }}>
         <StyledButtonDefault
-          onClick={modal.onCancel}
+          onClick={handleOnCansel}
           variant="contained"
           color="success"
           size="large"

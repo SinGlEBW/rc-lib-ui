@@ -1,17 +1,20 @@
 import { InfoOutlined } from '@mui/icons-material';
 import { alpha, DialogContent, Divider } from "@mui/material";
-import React, { FC } from "react";
+import React, { FC, useCallback } from "react";
 
 import { DialogActions, StuledDialogTitle } from '@libs/ControlCards/InteractiveMessages/InteractiveMessage.styled';
 import { StyledButtonDefault } from '@libs/common/StyledButtonDefault';
-import { GetExtendsTypeModal, InteractiveMessageItemInfo } from '../../../types';
+import { InteractiveModalInfoProps } from '../../../types';
+
+export interface ModalInfo1Props extends InteractiveModalInfoProps{}
 
 
-export interface ModalInfo1Props {
-  modal: GetExtendsTypeModal<InteractiveMessageItemInfo>
-}
-
-const ModalInfo1Memo: FC<ModalInfo1Props> = ({ modal }) => {
+const ModalInfo1Memo: FC<ModalInfo1Props> = ({ modal, control }) => {
+  
+  const handleCancel = useCallback(() => {
+    control.hideMessage(modal.id);
+    modal.onCancel();
+  },[]);
 
   return (
     <>
@@ -27,7 +30,7 @@ const ModalInfo1Memo: FC<ModalInfo1Props> = ({ modal }) => {
         <StyledButtonDefault
           sx={{ width: '45%' }}
           color={modal.severity! || 'info'}
-          onClick={modal?.onConfirm}
+          onClick={handleCancel}
           children={modal.confirmText || `Закрыть`}
         />
       </DialogActions>

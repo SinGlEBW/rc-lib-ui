@@ -6,6 +6,7 @@
 // import { TestingNetwork } from './LibTesting/TestingComponents/network/TestingNetwork.tsx';
 // import { TestSocket } from './LibTesting/TestingComponents/socket/TestSocket.tsx';
 // import { TestingPreloaders } from './LibTesting/TestingComponents/TestingPreloaders.tsx';
+// import { App } from './LibTesting/App.tsx';
 // // import {} from '@libs/NetworkAndSocket'
 // // import { Preloaders, } from '../dist/Preloaders/index.js';
 // const start = () => {
@@ -13,14 +14,12 @@
 //     <BrowserRouter>
 //       {/* <MaterialDarkMode isDarkTheme={false}> */}
 //       {/* <Preloaders name='SpinnerBorder' show={true} text='asdas' size={30} bgColor='#456789' sx={() => ({backgroundColor: 'red'})}/> */}
-//       {/* <InteractiveMessageProvider >
-//         <Alerts>
-//           <App />
-//         </Alerts>
-//       </InteractiveMessageProvider> */}
+//       <InteractiveMessageProvider >
+//         <Alerts children={<App />}/>          
+//       </InteractiveMessageProvider>
 //       {/* </Preloaders> */}
 //       {/* </MaterialDarkMode> */}
-//       <TestingPreloaders />
+//       {/* <TestingPreloaders /> */}
 //       {/* <TestSocket />
 //       <TestingNetwork /> */}
 //     </BrowserRouter>

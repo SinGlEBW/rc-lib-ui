@@ -1,16 +1,20 @@
+import React, { FC, useCallback } from "react";
 import { DialogActions, DialogContent, Divider, Typography } from '@mui/material';
-import React, { FC } from "react";
 
 import { StyledButtonDefault } from '@libs/common/StyledButtonDefault';
 import { StuledDialogTitle } from '@libs/ControlCards/InteractiveMessages/InteractiveMessage.styled';
-import { GetExtendsTypeModal, InteractiveMessageItemSuccess } from '../../../types';
+import { InteractiveModalSuccessProps } from '../../../types';
 
 
-export interface ModalsSuccessVariant3Props {
-    modal: GetExtendsTypeModal<InteractiveMessageItemSuccess>
- }
+export interface ModalsSuccessVariant3Props extends InteractiveModalSuccessProps{}
 
-const ModalsSuccessVariant3Memo: FC<ModalsSuccessVariant3Props> = ({ modal }) => {
+const ModalsSuccessVariant3Memo: FC<ModalsSuccessVariant3Props> = ({ modal, control }) => {
+  
+  const handleOnCansel = useCallback(() => {
+    modal.onCancel && modal.onCancel();
+    control.hideMessage(modal.id);
+  }, []);
+
   return (
     <>
       <StuledDialogTitle color={modal.severity || ''}>
@@ -26,7 +30,7 @@ const ModalsSuccessVariant3Memo: FC<ModalsSuccessVariant3Props> = ({ modal }) =>
       </DialogContent>
       <DialogActions sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <StyledButtonDefault color={modal.severity || "success"}
-          onClick={modal.onCancel}>
+          onClick={handleOnCansel}>
           {modal.buttonText || 'OK'}
         </StyledButtonDefault>
       </DialogActions>

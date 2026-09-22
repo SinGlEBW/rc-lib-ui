@@ -6,15 +6,12 @@ export type ModalsInfoProps =
 |  ModalInfo1Props;
 
 
-const ModalsInfoMemo: FC<ModalsInfoProps> = ({ modal }) => {
+const ModalsInfoMemo: FC<ModalsInfoProps> = (props) => {
 
-  /*#############-----------<{ Handlers }>-----------#############*/
-
-  /*#############-----------<{ Helpers }>-----------#############*/
-  switch (modal.visual) {
-    case 'variant1': return <ModalInfo1 modal={modal} />
+  switch (props.modal.visual) {
+    case 'variant1': return <ModalInfo1 {...props} />
     // case 'variant2': return <ModalDelete2 {...modal} />
-    default: return <ModalInfo1 modal={modal} />;
+    default: return <ModalInfo1 {...props} />;
   }
 };
 

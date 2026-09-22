@@ -58,7 +58,7 @@ const InitializationMemo:FC<InitializationSocketProps> = (props) => {
           isModal: false,
           isSelectOffline: false
         });
-    }
+      }
       socketActions.setStatusConnectSocket({ statusConnect: status });
     });
   

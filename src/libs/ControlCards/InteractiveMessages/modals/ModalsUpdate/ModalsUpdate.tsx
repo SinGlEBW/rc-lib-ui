@@ -6,15 +6,15 @@ type ModalsUpdateProps =
 |  ModalUpdate1Props;
 
 
-const ModalsUpdateMemo: FC<ModalsUpdateProps> = ({ modal }) => {
+const ModalsUpdateMemo: FC<ModalsUpdateProps> = (props) => {
 
   /*#############-----------<{ Handlers }>-----------#############*/
 
   /*#############-----------<{ Helpers }>-----------#############*/
-  switch (modal.visual) {
-    case 'variant1': return <ModalUpdate1 modal={modal} />
+  switch (props.modal.visual) {
+    case 'variant1': return <ModalUpdate1 {...props} />
     // case 'variant2': return <ModalDelete2 {...modal} />
-    default: return <ModalUpdate1 modal={modal} />;
+    default: return <ModalUpdate1 {...props} />;
   }
 };
 

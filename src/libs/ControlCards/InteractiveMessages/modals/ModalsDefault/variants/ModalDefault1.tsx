@@ -1,7 +1,7 @@
 import React, { FC } from "react"
 import { DialogContent, Divider } from "@mui/material"
 import { DialogActions, StuledDialogTitle } from '../../../InteractiveMessage.styled'
-import { GetExtendsTypeModal, InteractiveMessageItemDefault } from '../../../types'
+import { InteractiveModalDefaultProps } from '../../../types'
 import { StyledButtonDefault } from '@libs/common/StyledButtonDefault'
 
 
@@ -9,12 +9,9 @@ import { StyledButtonDefault } from '@libs/common/StyledButtonDefault'
 // import { StyledButtonDefault } from '@components/Buttons/Buttons.styled';
 
 
-export interface ModalDefault1Props {
-  modal: GetExtendsTypeModal<InteractiveMessageItemDefault>
-  hideMessage: (id: string) => void
-}
+export interface ModalDefault1Props extends InteractiveModalDefaultProps{}
 
-const ModalDefault1Memo: FC<ModalDefault1Props> = ({ modal, hideMessage }) => {
+const ModalDefault1Memo: FC<ModalDefault1Props> = ({ modal, control }) => {
 
   return (
     <>
@@ -32,8 +29,8 @@ const ModalDefault1Memo: FC<ModalDefault1Props> = ({ modal, hideMessage }) => {
               key={inx}
               children={text}
               onClick={(e) => {
+                control.hideMessage(modal.key || modal.id);
                 onClick && onClick(e);
-                hideMessage(modal.key || modal.id);
               }}
               {...props}
             />

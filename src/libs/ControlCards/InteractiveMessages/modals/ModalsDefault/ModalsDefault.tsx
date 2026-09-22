@@ -1,22 +1,19 @@
 import React, { FC } from 'react';
 import { ModalDefault1, type ModalDefault1Props } from './variants/ModalDefault1';
-import type { CustomModalsPayload } from '../../types';
+
+export type ModalsInfoProps = 
+| ModalDefault1Props;
 
 
-
-export type ModalsInfoProps =
-  | CustomModalsPayload;
-
-
-const ModalsDefaultMemo: FC<ModalsInfoProps> = ({ modal, control: { hideMessage } }) => {
+const ModalsDefaultMemo: FC<ModalsInfoProps> = (props) => {
 
   /*#############-----------<{ Handlers }>-----------#############*/
 
   /*#############-----------<{ Helpers }>-----------#############*/
-  switch (modal.visual) {
-    case 'variant1': return <ModalDefault1 modal={modal as any} hideMessage={hideMessage} />
+  switch (props.modal.visual) {
+    case 'variant1': return <ModalDefault1 {...props} />
     // case 'variant2': return <ModalDelete2 {...modal} />
-    default: return <ModalDefault1 modal={modal as any} hideMessage={hideMessage} />;
+    default: return <ModalDefault1 {...props} />;
   }
 };
 

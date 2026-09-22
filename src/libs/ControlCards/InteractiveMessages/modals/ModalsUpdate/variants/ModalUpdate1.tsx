@@ -1,31 +1,31 @@
+import React, { FC, useCallback } from "react";
 import { Box, DialogContent } from "@mui/material";
-import React, { FC } from "react";
 
 import { StyledButtonDefault } from '@libs/common/StyledButtonDefault';
 import { DialogActions, StuledDialogTitle } from '@libs/ControlCards/InteractiveMessages/InteractiveMessage.styled';
-import { GetExtendsTypeModal, InteractiveMessageItemUpdate } from '../../../types';
+import { InteractiveModalUpdateProps } from '../../../types';
 
-export interface ModalUpdate1Props {
-  modal: GetExtendsTypeModal<InteractiveMessageItemUpdate>
-}
+export interface ModalUpdate1Props extends InteractiveModalUpdateProps { }
 
-const ModalUpdate1Memo: FC<ModalUpdate1Props> = ({ modal }) => {
+const ModalUpdate1Memo: FC<ModalUpdate1Props> = ({ modal, control }) => {
+
+  const handleOnCansel = useCallback(() => {
+    modal.onCancel && modal.onCancel();
+    control.hideMessage(modal.id);
+  }, []);
+
+  const handleOnConfirm = useCallback(() => {
+    modal.onConfirm && modal.onConfirm();
+    control.hideMessage(modal.id);
+  }, []);
 
   return (
     <>
       <StuledDialogTitle>Обновление</StuledDialogTitle>
       <DialogContent><Box py={2}>{modal.message}</Box></DialogContent>
       <DialogActions>
-        {modal.onCancel && (
-          <StyledButtonDefault onClick={modal.onCancel} >
-            Отмена
-          </StyledButtonDefault>
-        )}
-        {modal.onConfirm && (
-          <StyledButtonDefault color="primary" onClick={modal.onConfirm} >
-            Обновить
-          </StyledButtonDefault>
-        )}
+        {modal.onCancel && ( <StyledButtonDefault onClick={handleOnCansel} children={'Отмена'} /> )}
+        {modal.onConfirm && ( <StyledButtonDefault color="primary" onClick={handleOnConfirm} children={'Обновить'} /> )}
       </DialogActions>
     </>
   )

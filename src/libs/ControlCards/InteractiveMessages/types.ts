@@ -11,11 +11,14 @@ export interface InteractiveMessageItemCommon {
   dismissible?: boolean;
 }
 
-export type CustomModalsPayload = {
-  modal: ModalCustomItem_P;
-  control: {
+interface ControlModal{
+   control: {
     hideMessage: (id: string) => void;
   };
+}
+
+export interface CustomModalsPayload extends ControlModal {
+  modal: ModalCustomItem_P;
 };
 
 type ModalTypesComponent = ComponentType<CustomModalsPayload>;
@@ -47,7 +50,8 @@ interface ViewModal extends InteractiveMessageItemCommon {
   severity?: "success" | "error" | "warning" | "info";
   key?: string;
   onExited?(): void;
-  mode: DefaultModals_OR
+  mode: DefaultModals_OR;
+  // closeByDialog?: boolean;
 }
 
 export interface InteractiveMessageItemUpdate extends ViewModal {
@@ -135,5 +139,21 @@ export interface InteractiveMessageContextProps {
   clearAll: () => void;
 }
 
+
+export interface InteractiveModalInfoProps extends ControlModal {
+  modal: GetExtendsTypeModal<InteractiveMessageItemInfo>
+}
+export interface InteractiveModalSuccessProps extends ControlModal {
+  modal: GetExtendsTypeModal<InteractiveMessageItemSuccess>
+}
+export interface InteractiveModalDeleteProps extends ControlModal {
+  modal: GetExtendsTypeModal<InteractiveMessageItemDelete>
+}
+export interface InteractiveModalUpdateProps extends ControlModal {
+  modal: GetExtendsTypeModal<InteractiveMessageItemUpdate>
+}
+export interface InteractiveModalDefaultProps extends ControlModal {
+  modal: GetExtendsTypeModal<InteractiveMessageItemDefault>
+}
 
 

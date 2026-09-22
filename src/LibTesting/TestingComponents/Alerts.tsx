@@ -10,7 +10,7 @@ export interface AlertsProps {
 
 
 const AlertsMemo: FC<AlertsProps> = ({ children }) => {
-  const { showAlert, removeMessage } = useInteractiveMessage();
+  const { showAlert, showModal, removeMessage } = useInteractiveMessage();
   const setAlert = () => {
     showAlert({
 
@@ -20,9 +20,23 @@ const AlertsMemo: FC<AlertsProps> = ({ children }) => {
       animation: 'Fade' //| 'Grow' | 'Zoom' | 'Slide';
     })
   }
+  const setModal = () => {
+    showModal({
+
+      message: 'asdsadsads',
+      // variant: 'success',
+      visual: 'variant3',
+      mode: "success",
+      view: 'modal',
+      onCancel: () => { 
+        console.dir(2);
+       }
+    })
+  }
   return (
     <>
       <StyledButtonDefault color='success' onClick={setAlert}>Добавить алерт</StyledButtonDefault>
+      <StyledButtonDefault color='success' onClick={setModal}>Добавить Modal</StyledButtonDefault>
       {children}
     </>
   )

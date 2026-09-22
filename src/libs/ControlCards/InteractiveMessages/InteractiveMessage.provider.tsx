@@ -146,11 +146,11 @@ const InteractiveMessage: FC<InteractiveMessageProps> = ({ children, CustomModal
           <Portal key={modal.key || modal.id}>
             <Dialog
               open={!modal.isExiting}
+              
               {...(modal.view == 'fullModal' && { fullWidth: true, fullScreen: true })}
-
-              onClick={(e) => {
-                hideMessageModal(modal.key || modal.id);
-              }}
+              //onClick={(e) => {
+              //  modal.closeByDialog && hideMessageModal(modal.key || modal.id);
+              //}}
 
               maxWidth="sm"
               fullWidth

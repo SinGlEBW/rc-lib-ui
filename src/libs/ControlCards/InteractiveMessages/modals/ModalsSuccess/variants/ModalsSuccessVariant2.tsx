@@ -1,14 +1,18 @@
-import React, { FC } from "react"
-import { Box, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
+import React, { FC, useCallback } from "react"
+import { DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
 
 import { StyledButtonDefault } from '@libs/common/StyledButtonDefault';
-import { GetExtendsTypeModal, InteractiveMessageItemSuccess  } from '../../../types';
+import { InteractiveModalSuccessProps } from '../../../types';
 
-export interface ModalsSuccessVariant2Props {
-  modal: GetExtendsTypeModal<InteractiveMessageItemSuccess>
-}
+export interface ModalsSuccessVariant2Props extends InteractiveModalSuccessProps{}
 
-const ModalsSuccessVariant2Memo: FC<ModalsSuccessVariant2Props> = ({ modal }) => {
+const ModalsSuccessVariant2Memo: FC<ModalsSuccessVariant2Props> = ({ modal, control }) => {
+
+  const handleOnCansel = useCallback(() => {
+    modal.onCancel && modal.onCancel();
+    control.hideMessage(modal.id);
+  }, []);
+
   return (
     <>
       <DialogTitle>{modal.title}</DialogTitle>
@@ -17,7 +21,7 @@ const ModalsSuccessVariant2Memo: FC<ModalsSuccessVariant2Props> = ({ modal }) =>
       </DialogContent>
       <DialogActions>
         <StyledButtonDefault
-          onClick={modal.onCancel}
+          onClick={handleOnCansel}
           variant="contained" color="success">
           {modal.buttonText || 'OK'}
         </StyledButtonDefault>

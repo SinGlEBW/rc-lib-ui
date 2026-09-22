@@ -1,16 +1,20 @@
-import React, { FC } from "react"
+import React, { FC, useCallback } from "react"
 import { Box, Typography } from '@mui/material';
 import { CheckCircle } from '@mui/icons-material';
 
 import { StyledButtonDefault } from '@libs/common/StyledButtonDefault';
-import { GetExtendsTypeModal, InteractiveMessageItemSuccess  } from '../../../types';
+import { InteractiveModalSuccessProps } from '../../../types';
 
 
-export interface ModalsSuccessVariant4Props {
-    modal: GetExtendsTypeModal<InteractiveMessageItemSuccess>
- }
+export interface ModalsSuccessVariant4Props extends InteractiveModalSuccessProps{}
 
-const ModalsSuccessVariant4Memo: FC<ModalsSuccessVariant4Props> = ({ modal }) => {
+const ModalsSuccessVariant4Memo: FC<ModalsSuccessVariant4Props> = ({ modal, control }) => {
+
+  const handleOnCansel = useCallback(() => {
+    modal.onCancel && modal.onCancel();
+    control.hideMessage(modal.id);
+  }, []);
+
   return (
     <Box sx={{ textAlign: 'center', p: 3 }}>
       <CheckCircle
@@ -28,7 +32,7 @@ const ModalsSuccessVariant4Memo: FC<ModalsSuccessVariant4Props> = ({ modal }) =>
       </Typography>
       <StyledButtonDefault
         fullWidth
-        onClick={modal.onCancel}
+        onClick={handleOnCansel}
         variant="contained"
         color="success"
         size="large"

@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-
 import { ModalDelete1, type ModalDelete1Props } from './variants/ModalDelete1';
 
 
@@ -8,17 +7,15 @@ type ModalsDeleteProps =
 // |  ModalDelete2Props;
 
 
-const ModalsDeleteMemo: FC<ModalsDeleteProps> = ({ modal }) => {
-
-
+const ModalsDeleteMemo: FC<ModalsDeleteProps> = (props) => {
   /*#############-----------<{ Handlers }>-----------#############*/
 
 
   /*#############-----------<{ Helpers }>-----------#############*/
-  switch (modal.visual) {
-    case 'variant1': return <ModalDelete1 modal={modal} />
+  switch (props.modal.visual) {
+    case 'variant1': return <ModalDelete1 {...props} />
     // case 'variant2': return <ModalDelete2 {...modal} />
-    default: return <ModalDelete1 modal={modal} />;
+    default: return <ModalDelete1 {...props} />;
   }
 };
 
