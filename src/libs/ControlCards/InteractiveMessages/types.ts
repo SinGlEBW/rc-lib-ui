@@ -7,7 +7,7 @@ type ViewMessage = "modal" | "fullModal";
 
 export interface InteractiveMessageItemCommon {
   message: string | ReactNode;
-  timeout?: number;
+  timeout?: number;//зачем добавлял для modal?
   dismissible?: boolean;
 }
 

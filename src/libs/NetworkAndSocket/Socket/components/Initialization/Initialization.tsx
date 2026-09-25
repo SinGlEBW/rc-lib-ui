@@ -1,6 +1,6 @@
 import React, { useEffect, useState, type FC } from "react";
 import { SocketApi } from '../../api';
-import { socketActions, socketSelectors, socketStore, useSocketSelector } from '../../store/socket.store';
+import { socketActions, socketSelectors, socketStore, useSocketSelector } from '../../store/socket/socket.store';
 
 // import { networkActions, networkSelectors, useNetworkSelector } from '../Network/store/network.store';
 

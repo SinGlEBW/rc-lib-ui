@@ -1,4 +1,3 @@
-import type { NetworkStatusInfoTracker } from 'dev-classes';
 import type { WsApiE_StatusConnect_OR } from './deps/WsApi';
 import type { WsApi_Response } from './deps/WsApi/WsApi.types';
 
@@ -18,7 +17,8 @@ export type BasePayloadSocket = {
 } & {[key: string]: any;};
 
 
-export type SocketResponse<P = any, Data = any> = WsApi_Response<P, Data>
+
+export type SocketMessage<P = any, Data = any> = WsApi_Response<P, Data>
 
 export interface SocketApiOptionsRequest {
   timeout?: number,

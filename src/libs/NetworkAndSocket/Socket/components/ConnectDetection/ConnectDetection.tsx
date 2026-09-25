@@ -1,11 +1,11 @@
-import React, { type FC } from 'react';
 import { type CollapseProps } from '@mui/material';
-import { socketSelectors, useSocketSelector } from '../../store/socket.store';
+import cn from 'classnames';
+import React, { type FC } from 'react';
+import { socketSelectors, useSocketSelector } from '../../store/socket/socket.store';
 import { SocketCollapse } from '../ui/CollapseCustom';
 import s from './ConnectDetection.module.scss';
-import cn from 'classnames';
 
-import { styled } from '@mui/material'
+import { styled } from '@mui/material';
 
 interface StyledSocketDirectionProps extends CollapseProps { }
 

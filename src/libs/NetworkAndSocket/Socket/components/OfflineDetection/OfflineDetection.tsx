@@ -1,11 +1,10 @@
 import { type CollapseProps } from '@mui/material';
-import React, { type FC } from "react";
 import cn from 'classnames';
+import React, { type FC } from "react";
 
-import { useSocketSelector } from '../../store/socket.store';
-import { socketSelectors } from '../../store/socket.store';
+import { styled } from '@mui/material';
+import { socketSelectors, useSocketSelector } from '../../store/socket/socket.store';
 import { SocketCollapse } from '../ui/CollapseCustom';
-import { styled } from '@mui/material'
 
 interface StyledOfflineCollapseProps extends CollapseProps{ }
 

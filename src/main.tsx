@@ -14,14 +14,15 @@
 //     <BrowserRouter>
 //       {/* <MaterialDarkMode isDarkTheme={false}> */}
 //       {/* <Preloaders name='SpinnerBorder' show={true} text='asdas' size={30} bgColor='#456789' sx={() => ({backgroundColor: 'red'})}/> */}
-//       <InteractiveMessageProvider >
+//       {/* <InteractiveMessageProvider >
 //         <Alerts children={<App />}/>          
-//       </InteractiveMessageProvider>
+//       </InteractiveMessageProvider> */}
 //       {/* </Preloaders> */}
 //       {/* </MaterialDarkMode> */}
 //       {/* <TestingPreloaders /> */}
-//       {/* <TestSocket />
-//       <TestingNetwork /> */}
+      
+//       {/* <TestSocket /> */}
+//       <TestingNetwork />
 //     </BrowserRouter>
 //   )
 

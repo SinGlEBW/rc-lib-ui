@@ -1,11 +1,11 @@
 import uuid4 from "uuid4";
-import { DelaysPromise, type DelaysPromiseProps } from "./deps/DelaysPromise";
+import { DelaysPromise } from "./deps/DelaysPromise";
 import { EventSubscribers } from "./deps/EventSubscribers/EventSubscribers";
 import { WsApi, WsApi_Options_P } from "./deps/WsApi";
 import type { WsApi_Events } from "./deps/WsApi/WsApi.types";
 
-import type { BasePayloadSocket, SocketApi_Options_P, SocketApi_StateProps_P, SocketApiOptionsRequest, SocketResponse } from "./SocketApi.types";
-import { NetworkStatusTracker, NetworkStatusInfoTracker } from "dev-classes";
+import { NetworkStatusInfoTracker, NetworkStatusTracker } from "dev-classes";
+import type { BasePayloadSocket, SocketApi_Options_P, SocketApi_StateProps_P, SocketApiOptionsRequest, SocketMessage } from "./SocketApi.types";
 
 interface ConnectInfoProps {
   status: boolean;
@@ -38,7 +38,7 @@ export class SocketApi {
     listUrlsCheckConnectNetwork: [],
   };
   
-   static wsApi = new WsApi();
+  static wsApi = new WsApi();
   private static delay = new DelaysPromise();
   private static networkTicker: NetworkStatusTracker | null = null;
   private static events = new EventSubscribers<SocketApi_Events>(["timeOffReConnect", "reConnect", "network", 'destroy']);
@@ -310,7 +310,7 @@ export class SocketApi {
     }
   };
 
-  static async request<Result, P extends BasePayloadSocket = BasePayloadSocket>(payload: P, options: SocketApiOptionsRequest = {}): Promise<Result> {
+  static async request<Result = any, P extends BasePayloadSocket = BasePayloadSocket>(payload: P, options: SocketApiOptionsRequest = {}): Promise<SocketMessage<P, Result>> {
     return new Promise((resolve, reject) => {
       if (options?.signal?.aborted) {
         reject(new DOMException("Aborted", "AbortError"));
@@ -342,11 +342,12 @@ export class SocketApi {
         reject(error);
       };
 
-      const handleResponse = (res: SocketResponse<P, Result>) => {
+      const handleResponse = (message: SocketMessage<P, Result>) => {
+          message.response
         const reqItem = this.wsApi.findDataRequestByAction(keyRequest);
-        if (!reqItem || res?.request?.requestAction !== reqItem.requestAction) return;
+        if (!reqItem || message?.request?.requestAction !== reqItem.requestAction) return;
         cleanup();
-        resolve({ ...res });
+        resolve(message);
       };
 
       const handleAbort = () => {
@@ -355,13 +356,13 @@ export class SocketApi {
       };
 
       const cleanup = () => {
-        SocketApi.off("msg", handleResponse);
+        SocketApi.off("msg", handleResponse as any);
         SocketApi.off("error", handleError);
         timeoutId && clearTimeout(timeoutId);
         options?.signal?.removeEventListener("abort", handleAbort);
       };
 
-      SocketApi.on("msg", handleResponse);
+      SocketApi.on("msg", handleResponse as any);
       SocketApi.on("error", handleError);
       options?.signal?.addEventListener("abort", handleAbort);
 

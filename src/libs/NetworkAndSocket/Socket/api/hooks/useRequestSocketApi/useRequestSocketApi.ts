@@ -1,8 +1,8 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import { socketSelectors, useSocketSelector } from "@libs/NetworkAndSocket/Socket/store/socket/socket.store";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { SocketApi } from "../../SocketApi";
-import type { ResultUseRequestSocketApi, UseRequestSocketOptions } from "./useRequestSocketApi.types";
 import type { BasePayloadSocket } from "../../SocketApi.types";
-import { socketSelectors, useSocketSelector } from "@libs/NetworkAndSocket/Socket/store/socket.store";
+import type { UseRequestSocketOptions } from "./useRequestSocketApi.types";
 
 interface StateTypes<D> {
   data: D | null;
@@ -55,11 +55,13 @@ export const useRequestSocketApi = <P extends BasePayloadSocket, Data extends Ba
 
       setState((prev) => ({
         ...prev,
-        data: response,
+        error: "",
+        isError: false,
+        data: response as any,
         isSuccess: true,
         isLoading: false,
       }));
-
+      
       optionsRef.current.onSuccess?.(response);
     } catch (err) {
       if (signal.aborted) return;
@@ -91,7 +93,7 @@ export const useRequestSocketApi = <P extends BasePayloadSocket, Data extends Ba
     if (!isReadySocket && statusConnect === "pending") {
       setState((prev) => ({
         ...prev,
-        isError: false,
+        isError: true,
         isSuccess: false,
         error: "Потеряно соединение с сервером",
       }));

@@ -1,10 +1,19 @@
-import { Box, Button, Dialog, FormHelperText } from '@mui/material';
-import { SocketApi, socketSelectors, useSocketSelector, Socket, socketActions } from '@libs/NetworkAndSocket/Socket';
-import React, { FC, ReactNode, useState } from "react"
+import { Socket, SocketApi, socketSelectors, useSocketSelector, type BasePayloadSocket } from '@libs/NetworkAndSocket/Socket';
+import { Box, Button } from '@mui/material';
+import React, { FC, ReactNode, useState } from "react";
 import uuid4 from 'uuid4';
 import { ModalReloadApp } from './ModalReloadApp';
 export interface TestSocketProps {
   children?: ReactNode;
+}
+
+
+interface ResponseTypes<Data> {
+  type: 0 | 1 | 2 | 3;
+  mess: string;
+  data: Data;
+  action: string;
+  request_id?: string;
 }
 
 const TestSocketMemo: FC<TestSocketProps> = (props) => {
@@ -46,25 +55,32 @@ const TestSocketMemo: FC<TestSocketProps> = (props) => {
   }
 
   const changeUrl = () => {
-   SocketApi.wsApi.setOptions({ url: 'wss://echo.websocket.org', });
+    SocketApi.wsApi.setOptions({ url: 'wss://echo.websocket.org', });
   }
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const requestSocket = () => {
     const message = inputRef.current?.value || `Promise 1`
-    SocketApi.request(
-      {
-        action: "echo",
-        request_id: uuid4(),
-        data: { message }
-      },
+    const payload = {
+      action: "echo",
+      request_id: uuid4() as string,
+      data: { message }
+    };
+    SocketApi.request<ResponseTypes<{ message: string }>, typeof payload>(
+      payload,
       { timeout: 5000 }
-    ).catch(err => ({ error: err.message }))
+    )
+      .then(result => {
+        debugger
+
+        console.log(result.);
+      })
+      .catch(err => ({ error: err.message }))
   }
 
   (window as any).SocketApi = SocketApi
- 
+
 
 
 
@@ -95,7 +111,7 @@ const TestSocketMemo: FC<TestSocketProps> = (props) => {
           isReConnectNetworkOnline: true,
         }}
       />
-    
+
       <Box>
         <Button onClick={handleConnect}>Connect</Button>
         <Button onClick={handleClose}>Close</Button>

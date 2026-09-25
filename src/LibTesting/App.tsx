@@ -1,6 +1,6 @@
 
 import { Dashboard, DashboardProps, type DashboardControlProps } from '@libs/Dashboard';
-import { socketActions, socketSelectors, socketStore } from '@libs/NetworkAndSocket/Socket/store/socket.store';
+import { socketActions, socketSelectors, socketStore } from '@libs/NetworkAndSocket/Socket/store/socket/socket.store';
 import { Preloaders } from '@libs/Preloaders';
 import { Fragment, useRef } from 'react';
 

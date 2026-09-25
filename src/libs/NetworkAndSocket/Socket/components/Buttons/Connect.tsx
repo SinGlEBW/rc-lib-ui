@@ -1,6 +1,6 @@
 import React, { useCallback, type FC } from "react";
-import { socketSelectors, useSocketSelector } from '../../store/socket.store';
 import { SocketApi } from '../../api';
+import { socketSelectors, useSocketSelector } from '../../store/socket/socket.store';
 
 
 interface ButtonActionsProps {

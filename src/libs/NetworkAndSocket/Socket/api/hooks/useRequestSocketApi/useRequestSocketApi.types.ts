@@ -1,7 +1,9 @@
-export interface UseRequestSocketOptions<Data = any> {
+import type { SocketMessage } from '../../SocketApi.types';
+
+export interface UseRequestSocketOptions<Data = any, P = any,> {
   skip?: boolean;
   timeout?: number;
-  onSuccess?: (data: Data) => void;
+  onSuccess?: (data: SocketMessage<P, Data>) => void;
   onError?: (error: string) => void;
 }
 

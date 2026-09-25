@@ -59,14 +59,23 @@ export class WsApi {
       if (itemReq) {
         const { cb, ...other } = itemReq;
         const { payload, ...otherData } = other;
-        this.events.publish("msg", { ...data, request: { ...otherData, ...payload } });
+        
+        this.events.publish("msg", { response: data, request: { ...otherData, payload } });
       } else {
-        this.events.publish("msg", data);
+        this.events.publish("msg", {response: data, request: null});
       }
       //Отправляем в cb
       action && this.filterSaveItemsByResponse(data);
     } catch (error) {
-      this.events.publish("msg", {});
+      this.events.publish("msg", {
+        request: { 
+          requestAction: '',
+          request_id: '0',
+          requestTime: 0,
+          payload: null,
+        }, 
+        response: null
+      });
     }
   };
 
