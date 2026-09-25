@@ -72,9 +72,7 @@ const TestSocketMemo: FC<TestSocketProps> = (props) => {
       { timeout: 5000 }
     )
       .then(result => {
-        debugger
 
-        console.log(result.);
       })
       .catch(err => ({ error: err.message }))
   }

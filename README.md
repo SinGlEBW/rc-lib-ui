@@ -1,6 +1,5 @@
 <h1 align="center">rc-ui-lib</h1>
 
-
 <h3 align="center">Preloaders</h3>
 
 ```tsx
@@ -19,9 +18,8 @@ export const App = () => {
 };
 ```
 
+---
 
-
-___
 <h3 align="center">Dashboard</h3>
 
 ```tsx
@@ -45,7 +43,6 @@ const listMen = [
   },
 ] as DashboardProps["listMenu"];
 
-
 export const App = () => {
   return (
     <Dashboard
@@ -59,6 +56,7 @@ export const App = () => {
   );
 };
 ```
+
 ```tsx
 /*
   //default
@@ -88,25 +86,25 @@ export const App = () => {
       </Toolbar>
     </>
   )}
- itemsProps={{MuiHeader: {AfterComponent: <OfflineDetection/>}}}
+  itemsProps={{ MuiHeader: { AfterComponent: <OfflineDetection /> } }}
   children={/*...*/}
-/>;
-
+/>
 ```
+
 ```tsx
 // My Header. variant control by ref
 export const App = () => {
-
-  const dashboardControlRef = useRef<DashboardControlProps>(null)
-  const handleMenuToggle = () => { dashboardControlRef.current?.handleMenuToggle() }
+  const dashboardControlRef = useRef<DashboardControlProps>(null);
+  const handleMenuToggle = () => {
+    dashboardControlRef.current?.handleMenuToggle();
+  };
 
   return (
     <>
       <Dashboard
         ref={dashboardControlRef}
-        styleList='variant2'
+        styleList="variant2"
         listMenu={listMenu}
-
         columnMenu={{
           initWidth: 280,
           minWidthColumn: {
@@ -124,28 +122,23 @@ export const App = () => {
         }
         statuses={{
           isHeaderDefault: false,
-          isButtonCenterMenu: false
+          isButtonCenterMenu: false,
           //isHeader: false, full off header
         }}
-        Footer={
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
-            Footer
-          </div>
-        }
+        Footer={<div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>Footer</div>}
         children={/*...*/}
       />
     </>
-  )
-}
+  );
+};
 ```
 
-___
+---
 
 <h3 align="center">Socket Components</h3>
 
-
 ```tsx
-import { Socket } from "rc-lib-ui/socket";
+import { Socket, SocketApi, BasePayloadSocket } from "rc-lib-ui/socket";
 
 <Socket.Initialization
     onMount={() => {
@@ -157,21 +150,86 @@ import { Socket } from "rc-lib-ui/socket";
       url: process.env.REACT_APP_URL_WS as string,
       timeReConnect: 10000,
       isReConnectNetworkOnline: true,
-   
+
     }}
   />
 
 // Отображение состояния сокета
-  <Socket.ConnectDetection/> 
-  <Socket.OfflineDetection 
-    isNetwork={!!isNetwork}
-    children={({isDisableConnectSocket}) => {
-      const titleOffline = 'Оффлайн';
-      return isDisableConnectSocket ? `Режим ${titleOffline}` : titleOffline
-    }}
-    />
-  //Воздействие на сокет
-  <Socket.Buttons.OfflineActive chidlren={({offlineActive}) => <Button onClick={offlineActive}/> } />,
-  <Socket.Buttons.ReConnect chidlren={({reConnect}) => <Button onClick={reConnect}/> } />,
- 
+<Socket.ConnectDetection/>
+<Socket.OfflineDetection
+  isNetwork={!!isNetwork}
+  children={({isDisableConnectSocket}) => {
+    const titleOffline = 'Оффлайн';
+    return isDisableConnectSocket ? `Режим ${titleOffline}` : titleOffline
+  }}
+  />
+//Воздействие на сокет
+<Socket.Buttons.OfflineActive chidlren={({offlineActive}) => <Button onClick={offlineActive}/> } />,
+<Socket.Buttons.ReConnect chidlren={({reConnect}) => <Button onClick={reConnect}/> } />,
+
+
+
+
+//Запросы
+const options = { timeout: 5000 }
+const payload = {
+  action: 'actionExample1'//требуется для того что бы получать ответ в then
+  //далее что угодно
+}
+//Можно обработать ломально
+const result = await SocketApi.request<MyResponseTypes<any>, BasePayloadSocket>(payload, options)//result: { request, response }
+
+//Или получить ответ на глобальном уровне
+//Пример использования события
+export const InitSocketEvents = createThunk(() => (dispatch, getState) => {
+  SocketApi.on('msg', socketMessage => {
+
+    if ((socketMessage as any).type === 3) {
+      dispatch(resetStoreApp());
+      SocketApi.disconnect();
+      return;
+    }
+
+    if (socketMessage.action === APP.OPEN) {
+      dispatch(fetchingApp.connect());
+      dispatch(fetchingApp.online({ isOnline: true }));
+      dispatch(fetchingApp.sendDeviceUID());
+    } else {
+
+      if (socketMessage.type === 2 && socketMessage.action) {
+        dispatch(errorsActions.setError({ keyAction: socketMessage.action, msg: socketMessage.mess }));
+        return;
+      }
+
+      ArrIncludesCalling.includes(socketMessage.action) && dispatch(watchVideoCall(socketMessage));
+      ArrIncludesDialogs.includes(socketMessage.action) && dispatch(watchDialogs(socketMessage));
+    }
+  });
+});
+```
+
+---
+
+<h3 align="center">Control Cards</h3>
+
+```tsx
+import { InteractiveMessageProvider, useInteractiveMessage } from "rc-lib-ui/control-cards";
+
+<InteractiveMessageProvider CustomAlerts={customAlerts} CustomModals={customModals}>
+  <App />
+</InteractiveMessageProvider>;
+
+
+//в App
+const { showAlert, showModal, removeMessage, ...props } = useInteractiveMessage();
+
+const handleShowAlert = (params) => {
+  showAlert({
+    message: "Какое-то сообщение",
+    key: "key1",
+    variant: "info",
+    onExited: () => {},
+    //всякие доп настройки алерта
+  });
+};
 ```
