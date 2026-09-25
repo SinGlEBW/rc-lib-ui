@@ -343,7 +343,6 @@ export class SocketApi {
       };
 
       const handleResponse = (message: SocketMessage<P, Result>) => {
-          message.response
         const reqItem = this.wsApi.findDataRequestByAction(keyRequest);
         if (!reqItem || message?.request?.requestAction !== reqItem.requestAction) return;
         cleanup();

@@ -182,7 +182,7 @@ const result = await SocketApi.request<MyResponseTypes<any>, BasePayloadSocket>(
 //Или получить ответ на глобальном уровне
 //Пример использования события
 export const InitSocketEvents = createThunk(() => (dispatch, getState) => {
-  SocketApi.on('msg', socketMessage => {
+  SocketApi.on('msg',  ({ response: socketMessage }) => {
 
     if ((socketMessage as any).type === 3) {
       dispatch(resetStoreApp());
