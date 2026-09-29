@@ -9,10 +9,32 @@ export const App = () => {
   //SpinnerGrow | SpinnerBorder | Spinner3D | Ball | Time | Cube | RotateCube
 
   return (
-    <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
-      <Preloaders name="Ball" show={true}>
-        <div className="content"></div>
-      </Preloaders>
+    <div style={{ flexGrow: 1, position: 'relative', display: 'flex' }}>
+        <Box sx={{ flexGrow: 1, position: 'relative', display: 'flex' }}>
+        <Preloaders
+          // onEnter={() => {  console.log('onEnter')}}
+          // onEntering={() => {  console.log('onEntering')}}
+          // onEntered={() => {  console.log('onEntered')}}
+          // onExit={() => {  console.log('onExit')}}
+          // onExiting={() => {  console.log('onExiting')}}
+          // onExited={() => {  console.log('onExited')}}
+          name='RotateCube'
+          timeout={300}
+          show={isPreloader} 
+          slotProps={{
+            transition: {
+              animation: 'fade',
+            },
+            preloader: {
+              sx: {
+                backgroundColor: 'info.dark'
+              }
+            }
+          }}
+        >
+          <div className="content" style={{height: '100%'}}>Контент</div>
+        </Preloaders>
+      </Box>
     </div>
   );
 };

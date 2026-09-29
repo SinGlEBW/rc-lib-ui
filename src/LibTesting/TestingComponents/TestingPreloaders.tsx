@@ -9,24 +9,38 @@ export interface TestingPreloadersProps {
 const TestingPreloadersMemo: FC<TestingPreloadersProps> = (props) => {
   const [isPreloader, setIsPreloader] = useState(true)
   const toggleActivePreloader = () => {
+    console.dir(1);
     setIsPreloader((prev) => !prev);
   }
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Button onClick={toggleActivePreloader}>toggle</Button>
-      <Box sx={{ flexGrow: 1, position: 'relative' }}>
+      <Box sx={{ flexGrow: 1, position: 'relative', display: 'flex' }}>
         <Preloaders
-          // onEnter={() => { debugger; console.log('onEnter')}}
-          // onEntering={() => { debugger; console.log('onEntering')}}
-          // onEntered={() => { debugger; console.log('onEntered')}}
-          // onExit={() => { debugger; console.log('onExit')}}
-          // onExiting={() => { debugger; console.log('onExiting')}}
-          // onExited={() => { debugger; console.log('onExited')}}
-          name='Time'
-          show={isPreloader} text='asdas' size={30} bgColor='#456789'
-          sx={() => ({ backgroundColor: 'MenuText', zIndex: 1301 })}
+          // onEnter={() => {  console.log('onEnter')}}
+          // onEntering={() => {  console.log('onEntering')}}
+          // onEntered={() => {  console.log('onEntered')}}
+          // onExit={() => {  console.log('onExit')}}
+          // onExiting={() => {  console.log('onExiting')}}
+          // onExited={() => {  console.log('onExited')}}
+          
+          name='RotateCube'
+          timeout={300}
+          show={isPreloader} 
+          slotProps={{
+            transition: {
+              animation: 'fade',
+            },
+            preloader: {
+              sx: {
+                backgroundColor: 'info.dark'
+              }
+            }
+          }}
+          // sx={() => ({ backgroundColor: 'MenuText', zIndex: 1301 })}
         >
-          <div className='TestingPreloaders'>
+          <div className='TestingPreloaders' style={{height: '100%'}}>
             Контент
           </div>
         </Preloaders>
