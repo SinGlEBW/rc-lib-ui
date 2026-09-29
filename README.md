@@ -198,7 +198,7 @@ const payload = {
   action: 'actionExample1'//требуется для того что бы получать ответ в then
   //далее что угодно
 }
-//Можно обработать ломально
+//Можно обработать локально
 const result = await SocketApi.request<MyResponseTypes<any>, BasePayloadSocket>(payload, options)//result: { request, response }
 
 //Или получить ответ на глобальном уровне

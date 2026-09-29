@@ -261,8 +261,11 @@
 ## [1.7.0] - 2026-09-25
 ### Edit
 - SocketApi.request возвращает { request, response }
-## [1.8.0] - 2026-09-25
+## [1.8.0] - 2026-09-29
 ### Edit
 - Preloaders: Перенесен sx в slotProps. Изменёна анимация на SwitchTransition 
 ### Added
 - добавлены компоненты анимации в корень rc-lib-ui   SwitchAnimationsTransition и TransitionAnimationsOne
+## [1.8.1] - 2026-09-29
+### Edit
+- Preloaders: по умолчанию установлен fade 

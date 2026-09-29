@@ -65,7 +65,7 @@ const PreloadersMemo: FC<PreloadersProps> = ({
     <SwitchTransition mode="out-in">
       <TransitionAnimationsOne
         key={switchData.key}
-        animation={`slide-top`}
+        animation={`fade`}
         timeout={timeout}
         onEnter={onEnter}
         onEntering={onEntering}
