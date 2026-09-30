@@ -1,4 +1,4 @@
-<h1 align="center">rc-ui-lib</h1>
+<h1 align="center">rc-lib-ui</h1>
 
 <p align="center">
   <a href="https://www.npmjs.com/package/rc-lib-ui">
