@@ -1,5 +1,21 @@
 <h1 align="center">rc-ui-lib</h1>
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/rc-lib-ui">
+    <img src="https://img.shields.io/npm/v/rc-lib-ui?label=Latest%20Release&logo=npm&style=flat-square" alt="npm version" />
+  </a>
+  <a href="https://www.npmjs.com/package/rc-lib-ui">
+    <img src="https://img.shields.io/npm/dm/rc-lib-ui?label=Downloads&logo=npm&style=flat-square" alt="npm downloads" />
+  </a>
+  <a href="https://github.com/SinGlEBW/rc-lib-ui/blob/main/LICENSE">
+    <img src="https://img.shields.io/npm/l/rc-lib-ui?label=License&style=flat-square" alt="license" />
+  </a>
+  <a href="https://github.com/SinGlEBW/rc-lib-ui">
+    <img src="https://img.shields.io/github/last-commit/SinGlEBW/rc-lib-ui?label=Last%20Commit&style=flat-square" alt="last commit" />
+  </a>
+</p>
+
+
 <h3 align="center">Preloaders</h3>
 
 ```tsx
