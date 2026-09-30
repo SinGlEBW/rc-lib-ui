@@ -25,7 +25,7 @@ const TestingPreloadersMemo: FC<TestingPreloadersProps> = (props) => {
           // onExiting={() => {  console.log('onExiting')}}
           // onExited={() => {  console.log('onExited')}}
           
-          name='RotateCube'
+        
           timeout={300}
           show={isPreloader} 
           slotProps={{
@@ -33,8 +33,9 @@ const TestingPreloadersMemo: FC<TestingPreloadersProps> = (props) => {
               animation: 'fade',
             },
             preloader: {
+              name: 'SpinnerBorder',
               sx: {
-                backgroundColor: 'info.dark'
+                backgroundColor: 'info.dark',
               }
             }
           }}

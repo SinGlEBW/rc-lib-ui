@@ -9,7 +9,7 @@ import { Time, type TimeProps, } from './components/Time/Time';
 import { Cube, CubeProps } from './components/Cube/Cube';
 import { RotateCube, RotateCubeProps } from './components/RotateCube/RotateCube';
 import { TransitionAnimationsOne, type TransitionAnimationsOneProps } from '@libs/ui/Animations';
-
+import cn from 'classnames';
 
 const PreloaderComponents = {
   SpinnerGrow,
@@ -31,36 +31,36 @@ type ListPreloaders_P =
   ({ name: 'RotateCube' } & RotateCubeProps);
 
 type WatcherAnimation = Pick<TransitionAnimationsOneProps, 'onEnter' | 'onEntering' | 'onEntered' | 'onExit' | 'onExiting' | 'onExited'>
-type OmitUnion<T, K extends string> = T extends any ? Omit<T, K> : never;
+type OmitUnion<T, K extends string> = T extends any ? Omit<T, K> : never;//Использовать вместо обычного Omit что бы не пропадали свойства
+
 export type PreloadersProps = {
   timeout?: number;
   show: boolean;
   children?: React.ReactNode;
 
-} & OmitUnion<ListPreloaders_P, 'sx'> & WatcherAnimation & {
+} & WatcherAnimation & {
   slotProps?: {
     transition?: Partial<Pick<TransitionAnimationsOneProps, 'animation' | 'sx'>>
-    preloader?: Partial<Pick<ListPreloaders_P, 'sx'>>
+    preloader?: Partial<ListPreloaders_P>
   }
 };
 
+
 const PreloadersMemo: FC<PreloadersProps> = ({
-  timeout = 300, show, name, children = null,
+  timeout = 300, show,  children = null,
   slotProps,
   onEnter, onEntering, onEntered, onExit, onExiting, onExited,
-  ...props
 }) => {
-  const PreloaderComponent = PreloaderComponents[name];
-
-  const preloaderProps = slotProps?.preloader || {};
+  const { name: preloaderName, className: classNamePreloader,...otherPtopsPreloader } = slotProps?.preloader || {};
+  const PreloaderComponent = PreloaderComponents[preloaderName || 'SpinnerBorder'];
+  const isDefaultSizeSpinnerBorder = !preloaderName;
   const transitionProps = slotProps?.transition || {};
   
   const preloaderRef = useRef(null);
   const switchData = show
-    ? { key: 'preloader', element: <PreloaderComponent ref={preloaderRef} className="Preloaders" {...props as any} {...preloaderProps} /> }
+    ? { key: 'preloader', element: <PreloaderComponent ref={preloaderRef} {...isDefaultSizeSpinnerBorder && { size: 30 }} className={cn("Preloaders", classNamePreloader)} {...otherPtopsPreloader as any} /> }
     : { key: 'content', element: children };
 
-  console.dir(switchData.key);
   return (
     <SwitchTransition mode="out-in">
       <TransitionAnimationsOne
