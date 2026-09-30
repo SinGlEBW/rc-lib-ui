@@ -56,12 +56,10 @@ const PreloadersMemo: FC<PreloadersProps> = ({
   const PreloaderComponent = PreloaderComponents[preloaderName || 'SpinnerBorder'];
   const isDefaultSizeSpinnerBorder = !preloaderName;
 
-  const { className: classNameTransition,...otherPtopsTransition } = slotProps?.transition || {};
-  const transitionProps = slotProps?.transition || {};
-  
-  const preloaderRef = useRef(null);
+  const { animation: animationTransition, className: classNameTransition, sx: transitionPropsSx } = slotProps?.transition || {};
+
   const switchData = show
-    ? { key: 'preloader', element: <PreloaderComponent ref={preloaderRef} {...isDefaultSizeSpinnerBorder && { size: 30 }} className={cn("PreloaderComponent", classNamePreloader)} {...otherPtopsPreloader as any} /> }
+    ? { key: 'preloader', element: <PreloaderComponent {...isDefaultSizeSpinnerBorder && { size: 30 }} className={cn("PreloaderComponent", classNamePreloader)} {...otherPtopsPreloader as any} /> }
     : { key: 'content', element: children };
 
   return (
@@ -69,7 +67,7 @@ const PreloadersMemo: FC<PreloadersProps> = ({
       <TransitionAnimationsOne
         className={cn("Preloaders", classNameTransition)}
         key={switchData.key}
-        animation={`fade`}
+        animation={animationTransition || `fade`}
         timeout={timeout}
         onEnter={onEnter}
         onEntering={onEntering}
@@ -78,8 +76,7 @@ const PreloadersMemo: FC<PreloadersProps> = ({
         onExiting={onExiting}
         onExited={onExited}
         unmountOnExit
-        {...otherPtopsTransition}
-        sx={{position: 'relative', flexGrow: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column', ...transitionProps?.sx}}
+        sx={{position: 'relative', flexGrow: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column', ...transitionPropsSx}}
       >
         {switchData.element}
       </TransitionAnimationsOne>

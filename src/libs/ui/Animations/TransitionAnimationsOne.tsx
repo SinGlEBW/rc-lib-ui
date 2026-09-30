@@ -1,5 +1,5 @@
 import React, { forwardRef, ReactNode, useCallback, useEffect, useRef, useState, type FC } from 'react';
-import { Box, Fade, styled, SxProps, Theme, type BoxProps, type CSSObject } from '@mui/material';
+import { Box, styled, SxProps, Theme, type BoxProps, type CSSObject } from '@mui/material';
 import cn from 'classnames';
 import { CSSTransition, SwitchTransition, type TransitionStatus } from 'react-transition-group';
 import { CSSTransitionProps } from 'react-transition-group/CSSTransition';
@@ -18,7 +18,7 @@ interface FadeContentProps extends BoxProps {
   duration?: number
 }
 const FadeContent = styled(
-  forwardRef<HTMLDivElement, BoxProps>(({ className, ...props }, ref) => (
+  forwardRef<HTMLDivElement, BoxProps>(({ className, sx, ...props }, ref) => (
     <Box ref={ref} className={cn(className, 'animation-fade')} {...props} />
   )),
   {
@@ -46,7 +46,7 @@ interface GrowContentProps extends BoxProps {
   isFade?: boolean;
 }
 const GrowContent = styled(
-  forwardRef<HTMLDivElement, BoxProps>(({ className, ...props }, ref) => (
+  forwardRef<HTMLDivElement, BoxProps>(({ className, sx, ...props }, ref) => (
     <Box ref={ref} className={cn(className, 'animation-slide-grow')} {...props} />
   )),
   {
@@ -82,7 +82,7 @@ interface ZoomContentProps extends BoxProps {
   duration?: number
 }
 const ZoomContent = styled(
-  forwardRef<HTMLDivElement, BoxProps>(({ className, ...props }, ref) => (
+  forwardRef<HTMLDivElement, BoxProps>(({ className, sx, ...props }, ref) => (
     <Box ref={ref} className={cn(className, 'animation-zoom')} {...props} />
   )),
   {
@@ -116,7 +116,7 @@ interface ZoomSizeProps extends BoxProps {
 }
 
 const ZoomSize = styled(
-  forwardRef<HTMLDivElement, ZoomSizeProps>(({ className, initialWidth, initialHeight, ...props }, ref) => (
+  forwardRef<HTMLDivElement, ZoomSizeProps>(({ className, initialWidth, initialHeight, sx, ...props }, ref) => (
     <Box ref={ref} className={cn(className, 'animation-zoom-size', )} {...props} />
   )),
   {
@@ -170,7 +170,7 @@ interface SlideContentProps extends BoxProps {
   isFade?: boolean;
 }
 const SlideLeftContent = styled(
-  forwardRef<HTMLDivElement, SlideContentProps>(({ className, ...props }, ref) => (
+  forwardRef<HTMLDivElement, SlideContentProps>(({ className, sx, ...props }, ref) => (
     <Box ref={ref} className={cn(className, 'animation-slide-left')} {...props} />
   )),
   {
@@ -200,7 +200,7 @@ const SlideLeftContent = styled(
 
 
 const SlideRightContent = styled(
-  forwardRef<HTMLDivElement, BoxProps>(({ className, ...props }, ref) => (
+  forwardRef<HTMLDivElement, BoxProps>(({ className, sx, ...props }, ref) => (
     <Box ref={ref} className={cn(className, 'animation-slide-right')} {...props} />
   )),
   {
@@ -234,7 +234,7 @@ const SlideRightContent = styled(
 
 
 const SlideTopContent = styled(
-  forwardRef<HTMLDivElement, BoxProps>(({ className, ...props }, ref) => (
+  forwardRef<HTMLDivElement, BoxProps>(({ className, sx, ...props }, ref) => (
     <Box ref={ref} className={cn(className, 'animation-slide-top')} {...props} />
   )),
   {
@@ -265,7 +265,7 @@ const SlideTopContent = styled(
 
 
 const SlideBottomContent = styled(
-  forwardRef<HTMLDivElement, BoxProps>(({ className, ...props }, ref) => (
+  forwardRef<HTMLDivElement, BoxProps>(({ className, sx, ...props }, ref) => (
     <Box ref={ref} className={cn(className, 'animation-slide-bottom')} {...props} />
   )),
   {
@@ -370,7 +370,8 @@ export const TransitionAnimationsOne: FC<TransitionAnimationsOneProps> = ({
 
 
   return (
-    <CSSTransition timeout={timeout}
+    <CSSTransition 
+      timeout={timeout}
       nodeRef={nodeRef}
       classNames={classNames}
       appear 
@@ -385,7 +386,7 @@ export const TransitionAnimationsOne: FC<TransitionAnimationsOneProps> = ({
               duration={timeout}
               isFade={isFade}
               sx={sx}
-              {...propsZoomSize}
+              // {...propsZoomSize}
               className={cn(className, classNameTransition)}
             >
               {children}

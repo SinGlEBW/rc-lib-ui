@@ -32,9 +32,13 @@ const TestingPreloadersMemo: FC<TestingPreloadersProps> = (props) => {
             transition: {
               className: 'test',
               animation: 'fade',
+              sx: {
+                color: 'red',
+                fontSize: '20px'
+              }
             },
             preloader: {
-              name: 'SpinnerBorder',
+              name: 'Cube',
               sx: {
                 backgroundColor: 'info.dark',
               }

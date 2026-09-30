@@ -277,4 +277,7 @@
 - className Preloaders теперь основной блок. Бывший Preloaders теперь PreloaderComponent.
 ### Added
 - Добавлен className для slotProps.transition
+## [1.9.2] - 2026-09-30
+### Fixed
+- Preloaders >> убрал дублирование css.
 

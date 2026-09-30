@@ -9,33 +9,33 @@ export const App = () => {
   //SpinnerGrow | SpinnerBorder | Spinner3D | Ball | Time | Cube | RotateCube
 
   return (
-    <div style={{ flexGrow: 1, position: 'relative', display: 'flex' }}>
-        <Box sx={{ flexGrow: 1, position: 'relative', display: 'flex' }}>
-        <Preloaders
-          // onEnter={() => {  console.log('onEnter')}}
-          // onEntering={() => {  console.log('onEntering')}}
-          // onEntered={() => {  console.log('onEntered')}}
-          // onExit={() => {  console.log('onExit')}}
-          // onExiting={() => {  console.log('onExiting')}}
-          // onExited={() => {  console.log('onExited')}}
-          name='RotateCube'
-          timeout={300}
-          show={isPreloader} 
-          slotProps={{
-            transition: {
-              animation: 'fade',
+    <Box sx={{ flexGrow: 1, position: "relative", display: "flex" }}>
+      <Preloaders
+        // onEnter={() => {  console.log('onEnter')}}
+        // onEntering={() => {  console.log('onEntering')}}
+        // onEntered={() => {  console.log('onEntered')}}
+        // onExit={() => {  console.log('onExit')}}
+        // onExiting={() => {  console.log('onExiting')}}
+        // onExited={() => {  console.log('onExited')}}
+        timeout={300}
+        show={isPreloader}
+        slotProps={{
+          transition: {
+            animation: "fade",
+          },
+          preloader: {
+            name: "RotateCube",
+            sx: {
+              backgroundColor: "info.dark",
             },
-            preloader: {
-              sx: {
-                backgroundColor: 'info.dark'
-              }
-            }
-          }}
-        >
-          <div className="content" style={{height: '100%'}}>Контент</div>
-        </Preloaders>
-      </Box>
-    </div>
+          },
+        }}
+      >
+        <div className="content" style={{ height: "100%" }}>
+          Контент
+        </div>
+      </Preloaders>
+    </Box>
   );
 };
 ```
@@ -240,7 +240,6 @@ import { InteractiveMessageProvider, useInteractiveMessage } from "rc-lib-ui/con
 <InteractiveMessageProvider CustomAlerts={customAlerts} CustomModals={customModals}>
   <App />
 </InteractiveMessageProvider>;
-
 
 //в App
 const { showAlert, showModal, removeMessage, ...props } = useInteractiveMessage();
