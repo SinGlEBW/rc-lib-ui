@@ -19,7 +19,7 @@ interface FadeContentProps extends BoxProps {
 }
 const FadeContent = styled(
   forwardRef<HTMLDivElement, BoxProps>(({ className, ...props }, ref) => (
-    <Box ref={ref} className={cn('animation-fade', className)} {...props} />
+    <Box ref={ref} className={cn(className, 'animation-fade')} {...props} />
   )),
   {
     shouldForwardProp: (prop) => !['duration', 'isFade'].includes(prop as string)
@@ -47,7 +47,7 @@ interface GrowContentProps extends BoxProps {
 }
 const GrowContent = styled(
   forwardRef<HTMLDivElement, BoxProps>(({ className, ...props }, ref) => (
-    <Box ref={ref} className={cn('animation-slide-grow', className)} {...props} />
+    <Box ref={ref} className={cn(className, 'animation-slide-grow')} {...props} />
   )),
   {
     shouldForwardProp: (prop) => !['duration', 'isFade'].includes(prop as string)
@@ -83,7 +83,7 @@ interface ZoomContentProps extends BoxProps {
 }
 const ZoomContent = styled(
   forwardRef<HTMLDivElement, BoxProps>(({ className, ...props }, ref) => (
-    <Box ref={ref} className={cn('animation-zoom', className)} {...props} />
+    <Box ref={ref} className={cn(className, 'animation-zoom')} {...props} />
   )),
   {
     shouldForwardProp: (prop) => !['duration', 'isFade'].includes(prop as string)
@@ -117,7 +117,7 @@ interface ZoomSizeProps extends BoxProps {
 
 const ZoomSize = styled(
   forwardRef<HTMLDivElement, ZoomSizeProps>(({ className, initialWidth, initialHeight, ...props }, ref) => (
-    <Box ref={ref} className={cn('animation-zoom-size', className)} {...props} />
+    <Box ref={ref} className={cn(className, 'animation-zoom-size', )} {...props} />
   )),
   {
     shouldForwardProp: (prop) => !['duration', 'initialWidth', 'initialHeight', 'isFade'].includes(prop as string)
@@ -171,7 +171,7 @@ interface SlideContentProps extends BoxProps {
 }
 const SlideLeftContent = styled(
   forwardRef<HTMLDivElement, SlideContentProps>(({ className, ...props }, ref) => (
-    <Box ref={ref} className={cn('animation-slide-left', className)} {...props} />
+    <Box ref={ref} className={cn(className, 'animation-slide-left')} {...props} />
   )),
   {
     shouldForwardProp: (prop) => !['duration', 'isFade'].includes(prop as string)
@@ -201,7 +201,7 @@ const SlideLeftContent = styled(
 
 const SlideRightContent = styled(
   forwardRef<HTMLDivElement, BoxProps>(({ className, ...props }, ref) => (
-    <Box ref={ref} className={cn('animation-slide-right', className)} {...props} />
+    <Box ref={ref} className={cn(className, 'animation-slide-right')} {...props} />
   )),
   {
     shouldForwardProp: (prop) => !['duration', 'isFade'].includes(prop as string)
@@ -235,7 +235,7 @@ const SlideRightContent = styled(
 
 const SlideTopContent = styled(
   forwardRef<HTMLDivElement, BoxProps>(({ className, ...props }, ref) => (
-    <Box ref={ref} className={cn('animation-slide-top', className)} {...props} />
+    <Box ref={ref} className={cn(className, 'animation-slide-top')} {...props} />
   )),
   {
     shouldForwardProp: (prop) => !['duration', 'isFade'].includes(prop as string)
@@ -266,7 +266,7 @@ const SlideTopContent = styled(
 
 const SlideBottomContent = styled(
   forwardRef<HTMLDivElement, BoxProps>(({ className, ...props }, ref) => (
-    <Box ref={ref} className={cn('animation-slide-bottom', className)} {...props} />
+    <Box ref={ref} className={cn(className, 'animation-slide-bottom')} {...props} />
   )),
   {
     shouldForwardProp: (prop) => !['duration', 'isFade'].includes(prop as string)
@@ -311,6 +311,7 @@ export type TransitionAnimationsOneProps = CSSTransitionProps<HTMLDivElement> & 
   sx?: SxProps<Theme>;
   timeout?: number;
   isFade?: boolean;
+  className?: string
 }
 
 
@@ -321,6 +322,7 @@ export const TransitionAnimationsOne: FC<TransitionAnimationsOneProps> = ({
   timeout = 300,
   isFade = true,
   sx,
+  className,
   ...props
 }) => {
   const nodeRef = useRef<HTMLDivElement>(null);
@@ -371,20 +373,20 @@ export const TransitionAnimationsOne: FC<TransitionAnimationsOneProps> = ({
     <CSSTransition timeout={timeout}
       nodeRef={nodeRef}
       classNames={classNames}
-      appear {...props}
+      appear 
+      {...props}
     >
       {
         (status, props) => {
-          const className = getCallDataTransition(status);
+          const classNameTransition = getCallDataTransition(status);
           return (
             <AnimatedComponent
               ref={nodeRef}
               duration={timeout}
               isFade={isFade}
               sx={sx}
-
               {...propsZoomSize}
-              className={className}
+              className={cn(className, classNameTransition)}
             >
               {children}
             </AnimatedComponent>

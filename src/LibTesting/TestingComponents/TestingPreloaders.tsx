@@ -30,6 +30,7 @@ const TestingPreloadersMemo: FC<TestingPreloadersProps> = (props) => {
           show={isPreloader} 
           slotProps={{
             transition: {
+              className: 'test',
               animation: 'fade',
             },
             preloader: {

@@ -272,3 +272,9 @@
 ## [1.9.0] - 2026-09-30
 ### Edit
 - Свойства относящиеся к Preloaders перенесены в slotProps.preloader 
+## [1.9.1] - 2026-09-30
+### Edit
+- className Preloaders теперь основной блок. Бывший Preloaders теперь PreloaderComponent.
+### Added
+- Добавлен className для slotProps.transition
+

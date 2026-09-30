@@ -40,30 +40,34 @@ export type PreloadersProps = {
 
 } & WatcherAnimation & {
   slotProps?: {
-    transition?: Partial<Pick<TransitionAnimationsOneProps, 'animation' | 'sx'>>
+    transition?: Partial<Pick<TransitionAnimationsOneProps, 'animation' | 'sx' | 'className'>>
     preloader?: Partial<ListPreloaders_P>
   }
 };
 
 
+
 const PreloadersMemo: FC<PreloadersProps> = ({
-  timeout = 300, show,  children = null,
+  timeout = 250, show,  children = null,
   slotProps,
   onEnter, onEntering, onEntered, onExit, onExiting, onExited,
 }) => {
   const { name: preloaderName, className: classNamePreloader,...otherPtopsPreloader } = slotProps?.preloader || {};
   const PreloaderComponent = PreloaderComponents[preloaderName || 'SpinnerBorder'];
   const isDefaultSizeSpinnerBorder = !preloaderName;
+
+  const { className: classNameTransition,...otherPtopsTransition } = slotProps?.transition || {};
   const transitionProps = slotProps?.transition || {};
   
   const preloaderRef = useRef(null);
   const switchData = show
-    ? { key: 'preloader', element: <PreloaderComponent ref={preloaderRef} {...isDefaultSizeSpinnerBorder && { size: 30 }} className={cn("Preloaders", classNamePreloader)} {...otherPtopsPreloader as any} /> }
+    ? { key: 'preloader', element: <PreloaderComponent ref={preloaderRef} {...isDefaultSizeSpinnerBorder && { size: 30 }} className={cn("PreloaderComponent", classNamePreloader)} {...otherPtopsPreloader as any} /> }
     : { key: 'content', element: children };
 
   return (
     <SwitchTransition mode="out-in">
       <TransitionAnimationsOne
+        className={cn("Preloaders", classNameTransition)}
         key={switchData.key}
         animation={`fade`}
         timeout={timeout}
@@ -74,8 +78,8 @@ const PreloadersMemo: FC<PreloadersProps> = ({
         onExiting={onExiting}
         onExited={onExited}
         unmountOnExit
-        {...transitionProps}
-        sx={{position: 'relative', flexGrow: 1, display: 'flex', flexDirection: 'column', ...transitionProps?.sx}}
+        {...otherPtopsTransition}
+        sx={{position: 'relative', flexGrow: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column', ...transitionProps?.sx}}
       >
         {switchData.element}
       </TransitionAnimationsOne>
