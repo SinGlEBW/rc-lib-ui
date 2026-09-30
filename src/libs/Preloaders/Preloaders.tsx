@@ -40,30 +40,30 @@ export type PreloadersProps = {
 
 } & WatcherAnimation & {
   slotProps?: {
-    transition?: Partial<Pick<TransitionAnimationsOneProps, 'animation' | 'sx' | 'className'>>
+    transition?: Partial<Pick<TransitionAnimationsOneProps, 'animation' | 'sx' | 'className' | 'appear'>>
     preloader?: Partial<ListPreloaders_P>
   }
 };
 
-
-
 const PreloadersMemo: FC<PreloadersProps> = ({
-  timeout = 250, show,  children = null,
+  timeout = 250, 
+  show,  
+  children = null,
   slotProps,
   onEnter, onEntering, onEntered, onExit, onExiting, onExited,
 }) => {
-  const { name: preloaderName, className: classNamePreloader,...otherPtopsPreloader } = slotProps?.preloader || {};
+  const { name: preloaderName, className: classNamePreloader, ...otherPtopsPreloader } = slotProps?.preloader || {};
   const PreloaderComponent = PreloaderComponents[preloaderName || 'SpinnerBorder'];
   const isDefaultSizeSpinnerBorder = !preloaderName;
 
-  const { animation: animationTransition, className: classNameTransition, sx: transitionPropsSx } = slotProps?.transition || {};
+  const { animation: animationTransition, className: classNameTransition, sx: transitionPropsSx, appear } = slotProps?.transition || {};
 
   const switchData = show
     ? { key: 'preloader', element: <PreloaderComponent {...isDefaultSizeSpinnerBorder && { size: 30 }} className={cn("PreloaderComponent", classNamePreloader)} {...otherPtopsPreloader as any} /> }
     : { key: 'content', element: children };
 
   return (
-    <SwitchTransition mode="out-in">
+    <SwitchTransition mode="out-in" >
       <TransitionAnimationsOne
         className={cn("Preloaders", classNameTransition)}
         key={switchData.key}
@@ -76,6 +76,7 @@ const PreloadersMemo: FC<PreloadersProps> = ({
         onExiting={onExiting}
         onExited={onExited}
         unmountOnExit
+        appear={appear}
         sx={{position: 'relative', flexGrow: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column', ...transitionPropsSx}}
       >
         {switchData.element}

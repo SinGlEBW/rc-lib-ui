@@ -280,4 +280,7 @@
 ## [1.9.2] - 2026-09-30
 ### Fixed
 - Preloaders >> убрал дублирование css.
+## [1.9.3] - 2026-09-30
+### Added
+- Preloaders slotProps.transition >> Добавлен пропс appear для анимации при монтировании компонента. Так же в TransitionAnimationsOne.
 

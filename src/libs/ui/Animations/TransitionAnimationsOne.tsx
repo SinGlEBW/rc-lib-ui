@@ -25,11 +25,12 @@ const FadeContent = styled(
     shouldForwardProp: (prop) => !['duration', 'isFade'].includes(prop as string)
   })<FadeContentProps>(({ theme, duration = 300 }) => ({
     ...baseProps,
-    '&.animation-fade-enter': { opacity: 0 },
-    '&.animation-fade-enter-active': {
+    '&.animation-fade-enter, &.animation-fade-appear': { opacity: 0 },
+    '&.animation-fade-enter-active, &.animation-fade-appear-active': {
       opacity: 1,
       transition: theme.transitions.create('opacity', { duration })
     },
+    '&.animation-fade-enter-done, &.animation-fade-appear-done': { opacity: 1 },
     '&.animation-fade-exit': { opacity: 1 },
     '&.animation-fade-exit-active': {
       opacity: 0,
@@ -53,14 +54,18 @@ const GrowContent = styled(
     shouldForwardProp: (prop) => !['duration', 'isFade'].includes(prop as string)
   })<GrowContentProps>(({ theme, isFade, duration = 300 }) => ({
     ...baseProps,
-    '&.animation-grow-enter': {
+    '&.animation-grow-enter, &.animation-grow-appear': {
       ...(isFade && { opacity: 0 }),
       transform: 'scale(0.8)'
     },
-    '&.animation-grow-enter-active': {
+    '&.animation-grow-enter-active, &.animation-grow-appear-active': {
       ...(isFade && { opacity: 1 }),
       transform: 'scale(1)',
       transition: theme.transitions.create(['opacity', 'transform'], { duration })
+    },
+    '&.animation-grow-enter-done, &.animation-grow-appear-done': {
+      ...(isFade && { opacity: 1 }),
+      transform: 'scale(1)',
     },
     '&.animation-grow-exit': {
       ...(isFade && { opacity: 1 }),
@@ -79,7 +84,8 @@ const GrowContent = styled(
 
 
 interface ZoomContentProps extends BoxProps {
-  duration?: number
+  duration?: number;
+  isFade?: boolean;
 }
 const ZoomContent = styled(
   forwardRef<HTMLDivElement, BoxProps>(({ className, sx, ...props }, ref) => (
@@ -87,23 +93,37 @@ const ZoomContent = styled(
   )),
   {
     shouldForwardProp: (prop) => !['duration', 'isFade'].includes(prop as string)
-  })<ZoomContentProps>(({ theme, duration = 300 }) => ({
+  })<ZoomContentProps>(({ theme, isFade, duration = 300 }) => ({
     ...baseProps,
 
-    '&.animation-zoom-enter': { opacity: 0, transform: 'scale(0.5)' },
-    '&.animation-zoom-enter-active, &.animation-zoom-enter-done': {
-      opacity: '1',
+    '&.animation-zoom-enter, &.animation-zoom-appear': {
+      ...(isFade && { opacity: 0 }),
+      transform: 'scale(0.5)'
+    },
+    '&.animation-zoom-enter-active, &.animation-zoom-appear-active': {
+      ...(isFade && { opacity: 1 }),
       transform: 'scale(1)',
       transition: `${theme.transitions.create(['opacity', 'transform'], { duration })}`
     },
-    '&.animation-zoom-exit': { opacity: 1, transform: 'scale(1)' },
+    '&.animation-zoom-enter-done, &.animation-zoom-appear-done': {
+      ...(isFade && { opacity: 1 }),
+      transform: 'scale(1)',
+      transition: `${theme.transitions.create(['opacity', 'transform'], { duration })}`
+    },
+
+    '&.animation-zoom-exit': {
+      ...(isFade && { opacity: 1 }),
+      transform: 'scale(1)'
+    },
 
     '&.animation-zoom-exit-active': {
-      opacity: 0, transform: 'scale(0.5)',
+      ...(isFade && { opacity: 0 }),
+      transform: 'scale(0.5)',
       transition: theme.transitions.create(['opacity', 'transform'], { duration })
     },
     '&.animation-zoom-exit-done': {
-      opacity: 0, transform: 'scale(0)',
+      ...(isFade && { opacity: 0 }),
+      transform: 'scale(0)',
       transition: theme.transitions.create(['opacity', 'transform'], { duration })
     },
   }));
@@ -117,7 +137,7 @@ interface ZoomSizeProps extends BoxProps {
 
 const ZoomSize = styled(
   forwardRef<HTMLDivElement, ZoomSizeProps>(({ className, initialWidth, initialHeight, sx, ...props }, ref) => (
-    <Box ref={ref} className={cn(className, 'animation-zoom-size', )} {...props} />
+    <Box ref={ref} className={cn(className, 'animation-zoom-size',)} {...props} />
   )),
   {
     shouldForwardProp: (prop) => !['duration', 'initialWidth', 'initialHeight', 'isFade'].includes(prop as string)
@@ -128,13 +148,13 @@ const ZoomSize = styled(
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  '&.animation-zoom-size-enter': {
+  '&.animation-zoom-size-enter, &.animation-zoom-size-appear': {
     opacity: 0,
     transform: 'scale(0.5)',
     width: initialWidth ? 0 : 'auto', // анимируем ширину только если задана начальная
     height: initialHeight ? 0 : 'auto',
   },
-  '&.animation-zoom-size-enter-active': {
+  '&.animation-zoom-size-enter-active, &.animation-zoom-size-appear-active': {
     opacity: 1,
     transform: 'scale(1)',
     width: initialWidth ? `${initialWidth}px` : 'auto',
@@ -143,6 +163,12 @@ const ZoomSize = styled(
       duration,
       easing: theme.transitions.easing.easeOut
     }),
+  },
+  '&.animation-zoom-size-enter-done, &.animation-zoom-size-appear-done': {
+    opacity: 1,
+    transform: 'scale(1)',
+    width: initialWidth ? `${initialWidth}px` : 'auto',
+    height: initialHeight ? `${initialHeight}px` : 'auto',
   },
   '&.animation-zoom-size-exit': {
     opacity: 1,
@@ -177,14 +203,18 @@ const SlideLeftContent = styled(
     shouldForwardProp: (prop) => !['duration', 'isFade'].includes(prop as string)
   })<SlideContentProps>(({ theme, duration = 300, isFade }) => ({
     ...baseProps,
-    '&.animation-slide-left-enter': {
+    '&.animation-slide-left-enter, &.animation-slide-left-appear': {
       ...(isFade && { opacity: 0 }),
       transform: 'translateX(-100%)'
     },
-    '&.animation-slide-left-enter-active': {
+    '&.animation-slide-left-enter-active, &.animation-slide-left-appear-active': {
       ...(isFade && { opacity: 1 }),
       transform: 'translateX(0)',
       transition: theme.transitions.create(['opacity', 'transform'], { duration })
+    },
+    '&.animation-slide-left-enter-done, &.animation-slide-left-appear-done': {
+      ...(isFade && { opacity: 1 }),
+      transform: 'translateX(0)'
     },
     '&.animation-slide-left-exit': {
       ...(isFade && { opacity: 1 }),
@@ -207,17 +237,21 @@ const SlideRightContent = styled(
     shouldForwardProp: (prop) => !['duration', 'isFade'].includes(prop as string)
   })<SlideContentProps>(({ theme, duration = 300, isFade }) => ({
     ...baseProps,
-    '&.animation-slide-right-enter': {
+    '&.animation-slide-right-enter, &.animation-slide-right-appear': {
       ...(isFade && { opacity: 0 }),
       transform: 'translateX(100%)'
     },
-    '&.animation-slide-right-enter-active': {
+    '&.animation-slide-right-enter-active, &.animation-slide-right-appear-active': {
       ...(isFade && { opacity: 1 }),
       transform: 'translateX(0)',
       // Кастомные transition
       transition: isFade
         ? `transform ${duration}ms ease-in-out, opacity ${duration * 0.8}ms ease-in-out`
         : `transform ${duration}ms ease-in-out`
+    },
+    '&.animation-slide-right-enter-done, &.animation-slide-right-appear-done': {
+      ...(isFade && { opacity: 1 }),
+      transform: 'translateX(0)'
     },
     '&.animation-slide-right-exit': {
       ...(isFade && { opacity: 1 }),
@@ -241,14 +275,18 @@ const SlideTopContent = styled(
     shouldForwardProp: (prop) => !['duration', 'isFade'].includes(prop as string)
   })<SlideContentProps>(({ theme, duration = 300, isFade }) => ({
     ...baseProps,
-    '&.animation-slide-top-enter': {
+    '&.animation-slide-top-enter, &.animation-slide-top-appear': {
       ...(isFade && { opacity: 0 }),
       transform: 'translateY(-100%)'
     },
-    '&.animation-slide-top-enter-active': {
+    '&.animation-slide-top-enter-active, &.animation-slide-top-appear-active': {
       ...(isFade && { opacity: 1 }),
       transform: 'translateY(0)',
       transition: theme.transitions.create(['opacity', 'transform'], { duration })
+    },
+    '&.animation-slide-top-enter-done, &.animation-slide-top-appear-done': {
+      ...(isFade && { opacity: 1 }),
+      transform: 'translateY(0)'
     },
     '&.animation-slide-top-exit': {
       ...(isFade && { opacity: 1 }),
@@ -272,14 +310,18 @@ const SlideBottomContent = styled(
     shouldForwardProp: (prop) => !['duration', 'isFade'].includes(prop as string)
   })<SlideContentProps>(({ theme, duration = 300, isFade }) => ({
     ...baseProps,
-    '&.animation-slide-bottom-enter': {
+    '&.animation-slide-bottom-enter, &.animation-slide-bottom-appear': {
       ...(isFade && { opacity: 0 }),
       transform: 'translateY(100%)'
     },
-    '&.animation-slide-bottom-enter-active': {
+    '&.animation-slide-bottom-enter-active, &.animation-slide-bottom-appear-active': {
       ...(isFade && { opacity: 1 }),
       transform: 'translateY(0)',
       transition: theme.transitions.create(['opacity', 'transform'], { duration, })
+    },
+    '&.animation-slide-bottom-enter-done, &.animation-slide-bottom-appear-done': {
+      ...(isFade && { opacity: 1 }),
+      transform: 'translateY(0)'
     },
     '&.animation-slide-bottom-exit': {
       ...(isFade && { opacity: 1 }),
@@ -370,11 +412,10 @@ export const TransitionAnimationsOne: FC<TransitionAnimationsOneProps> = ({
 
 
   return (
-    <CSSTransition 
+    <CSSTransition
       timeout={timeout}
       nodeRef={nodeRef}
       classNames={classNames}
-      appear 
       {...props}
     >
       {
@@ -387,7 +428,7 @@ export const TransitionAnimationsOne: FC<TransitionAnimationsOneProps> = ({
               isFade={isFade}
               sx={sx}
               // {...propsZoomSize}
-              className={cn(className, classNameTransition)}
+              className={cn(className, 'asdasdsad')}
             >
               {children}
             </AnimatedComponent>

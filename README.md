@@ -11,17 +11,12 @@ export const App = () => {
   return (
     <Box sx={{ flexGrow: 1, position: "relative", display: "flex" }}>
       <Preloaders
-        // onEnter={() => {  console.log('onEnter')}}
-        // onEntering={() => {  console.log('onEntering')}}
-        // onEntered={() => {  console.log('onEntered')}}
-        // onExit={() => {  console.log('onExit')}}
-        // onExiting={() => {  console.log('onExiting')}}
-        // onExited={() => {  console.log('onExited')}}
         timeout={300}
         show={isPreloader}
         slotProps={{
           transition: {
             animation: "fade",
+            // appear: true // Если нужна анимация при монтировании компонента
           },
           preloader: {
             name: "RotateCube",
@@ -30,6 +25,7 @@ export const App = () => {
             },
           },
         }}
+        //События анимации
       >
         <div className="content" style={{ height: "100%" }}>
           Контент
