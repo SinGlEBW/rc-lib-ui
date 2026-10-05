@@ -87,12 +87,11 @@ const TestingPreloadersMemo: FC<TestingPreloadersProps> = (props) => {
           isRenderComponent
             ? (
               <Preloaders
-            
                 timeout={300}
                 show={isPreloader}
                 slotProps={{
                   transition: {
-                    animation: 'slide-left',
+                    // animation: 'slide-left',
                     appear: true
                   },
                   preloader: {

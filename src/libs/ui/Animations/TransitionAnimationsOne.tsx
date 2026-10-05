@@ -374,7 +374,6 @@ export const TransitionAnimationsOne: FC<TransitionAnimationsOneProps> = ({
   const AnimatedComponent = animationComponents[animation];
   const inRef = useRef(props.in);
 
-
   useEffect(() => {
     if (inRef.current) {
       setInitClassName(`${classNames}-enter-done`)
@@ -410,7 +409,6 @@ export const TransitionAnimationsOne: FC<TransitionAnimationsOneProps> = ({
     initialHeight: dimensions.height
   } : {};
 
-
   return (
     <CSSTransition
       timeout={timeout}
@@ -428,7 +426,7 @@ export const TransitionAnimationsOne: FC<TransitionAnimationsOneProps> = ({
               isFade={isFade}
               sx={sx}
               // {...propsZoomSize}
-              className={cn(className, 'asdasdsad')}
+              className={cn(className)}
             >
               {children}
             </AnimatedComponent>

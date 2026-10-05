@@ -283,4 +283,7 @@
 ## [1.9.3] - 2026-09-30
 ### Added
 - Preloaders slotProps.transition >> Добавлен пропс appear для анимации при монтировании компонента. Так же в TransitionAnimationsOne.
+## [1.9.6] - 2026-10-05
+### Added
+- TransitionAnimation
 

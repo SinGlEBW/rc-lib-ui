@@ -298,7 +298,6 @@ export const App = () => {
         children={(
           <div className={'content'} style={{ position: 'relative', }} >
             <div style={{ position: 'relative', height: '80vh' }} >
-              <Preloaders show={isPreloader} text='asdsadsadasd' textPosition='bottom' name='Ball' sx={{ width: '100%', height: '100%', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)' }} timeout={600} />
               <div>
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam veniam explicabo, eveniet aliquid enim repellat harum impedit eos voluptatum consequatur non sit id, rerum, voluptatibus quasi natus! Repudiandae, voluptate culpa.
                 Mollitia vitae culpa doloribus! Commodi ratione natus iusto itaque cumque, neque modi delectus cupiditate dolorem quasi at tempora quidem rerum numquam consequatur quos aliquam quas eum ullam obcaecati rem blanditiis?

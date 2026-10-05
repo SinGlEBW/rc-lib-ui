@@ -61,7 +61,7 @@ const PreloadersMemo: FC<PreloadersProps> = ({
   const switchData = show
     ? { key: 'preloader', element: <PreloaderComponent {...isDefaultSizeSpinnerBorder && { size: 30 }} className={cn("PreloaderComponent", classNamePreloader)} {...otherPtopsPreloader as any} /> }
     : { key: 'content', element: children };
-
+// debugger
   return (
     <SwitchTransition mode="out-in" >
       <TransitionAnimationsOne
