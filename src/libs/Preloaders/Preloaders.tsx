@@ -11,7 +11,7 @@ import { RotateCube, RotateCubeProps } from './components/RotateCube/RotateCube'
 import { TransitionAnimationsOne, type TransitionAnimationsOneProps } from '@libs/ui/Animations';
 import cn from 'classnames';
 
-const PreloaderComponents = {
+const PreloadersComponents = {
   SpinnerGrow,
   SpinnerBorder,
   Spinner3D,
@@ -45,15 +45,79 @@ export type PreloadersProps = {
   }
 };
 
+
+
+
+type PreloaderComponentProps = {
+  timeout?: number;
+  show: boolean;
+} & WatcherAnimation & {
+  slotProps?: {
+    transition?: Partial<Pick<TransitionAnimationsOneProps, 'animation' | 'sx' | 'className' | 'appear'>>
+    preloader?: Partial<ListPreloaders_P>
+  }
+}
+
+const PreloaderComponentMemo: FC<PreloaderComponentProps> = ({
+  timeout = 250,
+  slotProps,
+  show,
+  onEnter, onEntering, onEntered, onExit, onExiting, onExited,
+}) => {
+  const { name: preloaderName, className: classNamePreloader, ...otherPtopsPreloader } = slotProps?.preloader || {};
+  const PreloaderComponent = PreloadersComponents[preloaderName || 'SpinnerBorder'];
+  const isDefaultSizeSpinnerBorder = !preloaderName;
+
+  const { animation: animationTransition, className: classNameTransition, sx: transitionPropsSx, appear } = slotProps?.transition || {};
+
+  // debugger
+  return (
+
+    <TransitionAnimationsOne
+      className={cn("PreloaderComponent", classNameTransition)}
+      in={show}
+      animation={animationTransition || `fade`}
+      timeout={timeout}
+      onEnter={onEnter}
+      onEntering={onEntering}
+      onEntered={onEntered}
+      onExit={onExit}
+      onExiting={onExiting}
+      onExited={onExited}
+      unmountOnExit
+      appear={appear}
+      sx={{
+        flex: 0,
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        ...transitionPropsSx
+      }}
+      children={
+        <PreloaderComponent {...isDefaultSizeSpinnerBorder && { size: 30 }} className={cn(classNamePreloader)} {...otherPtopsPreloader as any} />
+      }
+    />
+  );
+};
+
+
+
+
+
 const PreloadersMemo: FC<PreloadersProps> = ({
-  timeout = 250, 
-  show,  
+  timeout = 250,
+  show,
   children = null,
   slotProps,
   onEnter, onEntering, onEntered, onExit, onExiting, onExited,
 }) => {
   const { name: preloaderName, className: classNamePreloader, ...otherPtopsPreloader } = slotProps?.preloader || {};
-  const PreloaderComponent = PreloaderComponents[preloaderName || 'SpinnerBorder'];
+  const PreloaderComponent = PreloadersComponents[preloaderName || 'SpinnerBorder'];
   const isDefaultSizeSpinnerBorder = !preloaderName;
 
   const { animation: animationTransition, className: classNameTransition, sx: transitionPropsSx, appear } = slotProps?.transition || {};
@@ -61,7 +125,7 @@ const PreloadersMemo: FC<PreloadersProps> = ({
   const switchData = show
     ? { key: 'preloader', element: <PreloaderComponent {...isDefaultSizeSpinnerBorder && { size: 30 }} className={cn("PreloaderComponent", classNamePreloader)} {...otherPtopsPreloader as any} /> }
     : { key: 'content', element: children };
-// debugger
+  // debugger
   return (
     <SwitchTransition mode="out-in" >
       <TransitionAnimationsOne
@@ -77,7 +141,7 @@ const PreloadersMemo: FC<PreloadersProps> = ({
         onExited={onExited}
         unmountOnExit
         appear={appear}
-        sx={{position: 'relative', flexGrow: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column', ...transitionPropsSx}}
+        sx={{ position: 'relative', flexGrow: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column', ...transitionPropsSx }}
       >
         {switchData.element}
       </TransitionAnimationsOne>
@@ -109,5 +173,7 @@ const PreloadersMemo: FC<PreloadersProps> = ({
   );
 };
 
-export const Preloaders = React.memo(PreloadersMemo);
+export const Preloaders = Object.assign(React.memo(PreloadersMemo), {
+  PreloaderComponent: React.memo(PreloaderComponentMemo)
+});
 

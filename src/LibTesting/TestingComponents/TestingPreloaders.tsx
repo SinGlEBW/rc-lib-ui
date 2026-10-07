@@ -76,14 +76,32 @@ const TestingPreloadersMemo: FC<TestingPreloadersProps> = (props) => {
 
   }, [currentState]);
 
+
+  const content = (
+    <div className='TestingPreloaders' style={{ height: '100%', display: 'flex' }}>
+      <SwitchTransition mode="out-in">
+        <TransitionAnimationsOne
+          appear={true}
+          sx={Object.assign(isData ? defaultSxContent : defaultSxStateContent)}
+          key={isData ? 'content' : `state-${currentState}`}
+          animation={`fade`}
+          timeout={300}
+          unmountOnExit
+        >
+          {isData ? <div>content</div> : renderStateContent()}
+        </TransitionAnimationsOne>
+      </SwitchTransition>
+    </div>
+  )
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Button onClick={toggleRenderComponent}>toggle render component</Button>
       <Button onClick={toggleActivePreloader}>toggle preloader</Button>
       <Button onClick={toggleStatus}>toggle is status </Button>
       <Button onClick={toggleIsData}>toggle is data</Button>
-      <Box sx={{ flexGrow: 1, position: 'relative', display: 'flex' }}>
-        {
+      <Box sx={{ flexGrow: 1, position: 'relative', display: 'flex', flexDirection: 'column' }}>
+        {/* {
           isRenderComponent
             ? (
               <Preloaders
@@ -91,7 +109,6 @@ const TestingPreloadersMemo: FC<TestingPreloadersProps> = (props) => {
                 show={isPreloader}
                 slotProps={{
                   transition: {
-                    // animation: 'slide-left',
                     appear: true
                   },
                   preloader: {
@@ -99,27 +116,24 @@ const TestingPreloadersMemo: FC<TestingPreloadersProps> = (props) => {
                     sx: { backgroundColor: 'info.dark' }
                   }
                 }}
-              // sx={() => ({ backgroundColor: 'MenuText', zIndex: 1301 })}
-              >
-                <div className='TestingPreloaders' style={{ height: '100%', display: 'flex' }}>
-                  <SwitchTransition mode="out-in">
-                    <TransitionAnimationsOne
-                      appear={true}
-                      sx={Object.assign(isData ? defaultSxContent : defaultSxStateContent)}
-                      key={isData ? 'content' : `state-${currentState}`}
-                      animation={`fade`}
-                      timeout={300}
-                      unmountOnExit
-                    >
-                      {isData ? <div>content</div> : renderStateContent()}
-                    </TransitionAnimationsOne>
-                  </SwitchTransition>
-                </div>
-              </Preloaders>
+                children={content} />
             )
             : null
-        }
-
+        } */}
+        <Preloaders.PreloaderComponent
+          show={isPreloader}
+          slotProps={{
+            transition: {
+              animation: 'slide-left'
+            },
+            preloader: {
+              name: 'SpinnerGrow',
+              sx: {
+                backgroundColor: 'info.dark',
+              }
+            }
+          }} />
+        {content}
       </Box>
     </Box>
   )

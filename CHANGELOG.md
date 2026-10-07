@@ -287,3 +287,7 @@
 ### Added
 - TransitionAnimation
 
+## [1.9.7] - 2026-10-07
+### Added
+- Добавлен Preloaders.PreloaderComponent для того что бы использовать прелодер поверх контента а не заменять его 
+

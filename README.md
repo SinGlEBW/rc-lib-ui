@@ -15,15 +15,15 @@
   </a>
 </p>
 
-
 <h3 align="center">Preloaders</h3>
 
 ```tsx
 import { Preloaders } from "rc-lib-ui/preloaders";
 
+
 export const App = () => {
   //SpinnerGrow | SpinnerBorder | Spinner3D | Ball | Time | Cube | RotateCube
-
+  //прелодер в котором существует либо прелодер либо контент
   return (
     <Box sx={{ flexGrow: 1, position: "relative", display: "flex" }}>
       <Preloaders
@@ -49,7 +49,32 @@ export const App = () => {
       </Preloaders>
     </Box>
   );
+  
+//или если требуется использовть ref контента и нужен прелодер поверх контента
+return (
+  <Box sx={{ flexGrow: 1, position: "relative", display: "flex", flexDirection: "column" }}>
+    <Preloaders.PreloaderComponent
+      show={isPreloader}
+      slotProps={{
+        transition: {
+          animation: "slide-left",
+        },
+        preloader: {
+          name: "SpinnerGrow",
+          sx: {
+            backgroundColor: "info.dark",
+          },
+        },
+      }}
+    />
+    {content}
+  </Box>;
+  )
 };
+
+
+
+
 ```
 
 ---
