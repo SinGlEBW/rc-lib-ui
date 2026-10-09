@@ -69,8 +69,8 @@ const InitializationMemo:FC<InitializationSocketProps> = (props) => {
       const { isReConnectSocket, infoNoConnectServer: { isModal:isModalNoConnectServer } } = stateSocket;   
       isReConnectSocket !== status && socketActions.setStatusIsReConnectSocket({isReConnectSocket: status});
       isModalNoConnectServer && status && socketActions.setInfoNoConnectServer({isModal: false});
-
     });
+
     SocketApi.on('timeOffReConnect', (info) => {  console.log('timeOffReConnect: ', info);
      
       socketActions.setIsOfflineSocket({isOfflineSocket: !info.status})
@@ -94,10 +94,12 @@ const InitializationMemo:FC<InitializationSocketProps> = (props) => {
     };
   },[])
 
+  /*
+    INFO: Close может быть запущен руками или когда отвалилась сеть
+  */
 
   useEffect(() => {
     if(networkState.isNetwork && !isDisableConnectSocket) {
-      
       if (!isModalNoConnectServer && !isReConnectSocket && ['close'].includes(statusWS as any) && networkState.typeNetwork !== 'none') {
         console.log('Запущен socketReConnect');
         //TODO: При смене сети можно добавить снова открытие модалки даже если выбрали оффлайн

@@ -1,6 +1,6 @@
 import { EventSubscribers } from "../EventSubscribers/EventSubscribers";
 import type { WsApi_Events, WsApi_Options_P, WsApi_StateProps, WsApiE_StatusConnect_OR } from "./WsApi.types";
-
+import { Utils } from 'dev-classes';
 //INFO: Назначать функции стрелочными иначе this не читаем
 
 export class WsApi {
@@ -52,7 +52,14 @@ export class WsApi {
   };
 
   private msgHandler = (e) => {
-    const data = JSON.parse(e.data ? e.data : "{}");
+    
+    const isJSON = Utils.isJSON(e.data);
+    let data = { action: '', data: '' };
+    if(isJSON){
+      data = JSON.parse(e.data ? e.data : "{}");
+    }else{
+      data = { action: '', data: e.data };
+    }
     try {
       const { action } = data;
       const itemReq = this.findDataRequestByAction(action);

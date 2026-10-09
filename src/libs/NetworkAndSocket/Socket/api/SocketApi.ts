@@ -21,7 +21,7 @@ interface SocketApi_Events {
 type CommonEvents = SocketApi_Events & WsApi_Events;
 
 export class SocketApi {
-  private static sessionId: string = '';
+  private static sessionId: string = "";
   private static state: SocketApi_StateProps_P = {
     isDisconnect: true,
     isActiveReConnect: false,
@@ -37,11 +37,11 @@ export class SocketApi {
     isReConnectNetworkOnline: false,
     listUrlsCheckConnectNetwork: [],
   };
-  
+
   static wsApi = new WsApi();
   private static delay = new DelaysPromise();
   private static networkTicker: NetworkStatusTracker | null = null;
-  private static events = new EventSubscribers<SocketApi_Events>(["timeOffReConnect", "reConnect", "network", 'destroy']);
+  private static events = new EventSubscribers<SocketApi_Events>(["timeOffReConnect", "reConnect", "network", "destroy"]);
   private static saveID: Partial<Record<"idReConnect" | "checkConnect", number | null>> = {
     idReConnect: null,
     checkConnect: null,
@@ -52,7 +52,7 @@ export class SocketApi {
     return JSON.parse(JSON.stringify(state));
   }
   private static setInfoNetwork(info: NetworkStatusInfoTracker) {
-    SocketApi.infoNetwork = info
+    SocketApi.infoNetwork = info;
   }
   static getInfoNetwork() {
     return SocketApi.infoNetwork;
@@ -93,12 +93,11 @@ export class SocketApi {
     }
   };
   private static offline = () => {
-    //SocketApi.config.isReConnect
-    // SocketApi.setState({ isNetworkStatus: false });
-
-    if (SocketApi.state.isActiveReConnect) {
-      SocketApi.stopReConnect(false);
-    }
+    //INFO: Изменил 8.10.26
+    // if (SocketApi.state.isActiveReConnect) {
+    //   SocketApi.stopReConnect(false);
+    // }
+    SocketApi.close();
   };
 
   private static splitOptions = (options: WsApi_Options_P & SocketApi_Options_P) => {
@@ -137,6 +136,7 @@ export class SocketApi {
   };
   static getRequestSave = SocketApi.wsApi.getRequestSave;
   static getStatusSocket = SocketApi.wsApi.getStatusSocket;
+
   static close = () => {
     if (SocketApi.state.isActiveReConnect) {
       SocketApi.stopReConnect(false);
@@ -153,7 +153,7 @@ export class SocketApi {
   };
   static init = (options: WsApi_Options_P & SocketApi_Options_P) => {
     const { WsOptions, SocketApiOptions } = SocketApi.splitOptions(options);
-   
+
     //TODO: Возможно пересмотреть подход
     //INFO: Убрал для проверки internetControlDelay
     /*#################-----------<{ Убрал 21.08.2025 }>------------############# */
@@ -162,11 +162,11 @@ export class SocketApi {
     //   SocketApi.setNetworkStatus({ isNetwork, typeNetwork: textStatus });
     // });
 
-    
     this.networkTicker = new NetworkStatusTracker(SocketApiOptions.listUrlsCheckConnectNetwork ?? []);
 
     this.networkTicker.startEvents((info) => {
       const state = SocketApi.getState();
+      // debugger
       // if(info.typeNetwork == state.infoNetwork.typeNetwork && info.isNetwork == state.infoNetwork.isNetwork) return;
       SocketApi.setNetworkStatus(info);
     });
@@ -197,7 +197,7 @@ export class SocketApi {
 
   static disconnect() {
     const { isDisconnect, isActiveReConnect } = SocketApi.getState();
-    if(isActiveReConnect){
+    if (isActiveReConnect) {
       SocketApi.stopReConnect(false);
     }
     if (!isDisconnect) {
@@ -216,6 +216,7 @@ export class SocketApi {
       console.log("DISCONNECT WS");
       SocketApi.wsApi.disconnect();
     }
+    SocketApi.isGotWasFirstConnection = false;
     SocketApi.wsApi.destroy();
     SocketApi.resetState();
     SocketApi.events.resetSubscribers();
@@ -252,6 +253,11 @@ export class SocketApi {
 
   static socketReConnect = () => {
     if (!SocketApi.wsApi.getIsInitWS()) {
+      return;
+    }
+
+    if (!SocketApi.infoNetwork.isNetwork) {
+      console.log("Нет сети — реконнект не запускаем");
       return;
     }
 

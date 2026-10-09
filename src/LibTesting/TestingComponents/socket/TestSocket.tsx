@@ -1,4 +1,4 @@
-import { Socket, SocketApi, socketSelectors, useSocketSelector, type BasePayloadSocket } from '@libs/NetworkAndSocket/Socket';
+import { Socket, socketActions, SocketApi, socketSelectors, useSocketSelector, type BasePayloadSocket } from '@libs/NetworkAndSocket/Socket';
 import { Box, Button } from '@mui/material';
 import React, { FC, ReactNode, useState } from "react";
 import uuid4 from 'uuid4';
@@ -39,7 +39,8 @@ const TestSocketMemo: FC<TestSocketProps> = (props) => {
     SocketApi.disconnect();
   }
   const handleClose = () => {
-    SocketApi.close();
+    // SocketApi.close();
+     socketActions.setIsDisableConnectSocket({ isDisableConnectSocket: true });
   }
   const handleDestroy = () => {
     SocketApi.destroy();
@@ -103,7 +104,7 @@ const TestSocketMemo: FC<TestSocketProps> = (props) => {
 
       <Socket.Initialization
         init={{
-          url: 'wss://echo.websocket.org2',
+          url: 'wss://echo.websocket.org',
           timeReConnect: 2000,
           numberOfRepit: 2,
           isReConnectNetworkOnline: true,

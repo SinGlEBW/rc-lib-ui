@@ -70,9 +70,7 @@ const PreloaderComponentMemo: FC<PreloaderComponentProps> = ({
 
   const { animation: animationTransition, className: classNameTransition, sx: transitionPropsSx, appear } = slotProps?.transition || {};
 
-  // debugger
   return (
-
     <TransitionAnimationsOne
       className={cn("PreloaderComponent", classNameTransition)}
       in={show}
