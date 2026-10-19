@@ -42,7 +42,6 @@ type IsDurationDeleteTrue = (IsDeletingByEndTimeoutDurationTrue | IsDeletingByEn
   setMessageProgress(items: ControlCardsListItem[]): string;
   durationDelete?: number;
   onEndTimeoutDuration?(items: ControlCardsListItem[], helperControl: HelperControl): void;
-  onComfirm: never;
 }
 
 type IsDurationDeleteFalse = {
@@ -103,7 +102,7 @@ export const useControlCards = ({
         };
         
         if(!props.isDurationDelete){ 
-          props?.onComfirm && props?.onComfirm(items, { clearDeletingActive, deletingPackID, showAlert, showModal, delPackID });
+          (props as IsDurationDeleteFalse)?.onComfirm && (props as IsDurationDeleteFalse)?.onComfirm(items, { clearDeletingActive, deletingPackID, showAlert, showModal, delPackID });
           return;
         }
         showAlertDeleteCountdown({
