@@ -15,5 +15,5 @@ export type {
 } from "./types";
 export { InteractiveMessageProvider, type InteractiveMessageProviderProps } from "./InteractiveMessage.provider";
 export { useInteractiveMessage } from "./controls";
-export type { CustomSnackbarProps } from "./alerts";
+export type { CustomSnackbarProps, DeleteCountdownAlertProps } from "./alerts";
 // 
