@@ -1,4 +1,4 @@
-export { useSnackbar } from "notistack";
+export { useSnackbar, SnackbarContent } from "notistack";
 export type {
   InteractiveMessageContextProps,
   InteractiveMessageAlertProps,
@@ -16,3 +16,4 @@ export type {
 export { InteractiveMessageProvider, type InteractiveMessageProviderProps } from "./InteractiveMessage.provider";
 export { useInteractiveMessage } from "./controls";
 export type { CustomSnackbarProps } from "./alerts";
+// 

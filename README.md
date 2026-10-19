@@ -49,7 +49,7 @@ export const App = () => {
       </Preloaders>
     </Box>
   );
-  
+
 //или если требуется использовть ref контента и нужен прелодер поверх контента
 return (
   <Box sx={{ flexGrow: 1, position: "relative", display: "flex", flexDirection: "column" }}>
@@ -204,7 +204,7 @@ import { Socket, SocketApi, BasePayloadSocket } from "rc-lib-ui/socket";
       dispatch(InitSocketEvents())
     }}
     isNetwork={!!isNetwork}
-    typeNetwork={typeNetwork}
+    // typeNetwork={typeNetwork}
     init={{
       url: process.env.REACT_APP_URL_WS as string,
       timeReConnect: 10000,
@@ -290,4 +290,233 @@ const handleShowAlert = (params) => {
     //всякие доп настройки алерта
   });
 };
+```
+
+##### Вариант удаления без предаврительной плашки с временем
+
+```tsx
+const { showModalDelete, handleSelect, checkSelected, checkIsReadyDelete } = useControlCards({
+  keyAction: "delete-clients",
+  list: socketLoadClients.data,
+  isDurationDelete: false,
+  onComfirm: (items, controlHelper) => {
+    const { id } = items[0];
+    console.dir(id);
+    const { id } = items[0];
+    dispatch(fetchingDelete.requestDelClient({ id })).then((res) => {
+      debugger;
+      controlHelper.showAlert({
+        variant: "success",
+        message: "Успешное удаление",
+        timeout: 2000,
+        // onExited: () => {}//вариант удаления тут
+      });
+      controlHelper.deletingPackID({ delPackID: controlHelper.delPackID });
+      dispatch(clientsAction.delete({ id }));
+    });
+  },
+  onCancel() {},
+});
+
+const handleStartDelete = useCallback(
+  ({ id, ...otherData }) => {
+    handleSelect(id);
+    showModalDelete();
+  },
+  [handleSelect, showModalDelete],
+);
+
+const itemContent = useCallback(
+  ({ id, snils, fio }) => {
+    const isReadyDelete = checkIsReadyDelete(id);
+    const isSelected = checkSelected(id);
+
+    return (
+      <Box sx={{ my: 0.8 }}>
+        <ContentPage.Container>
+          <CardTimelineWithClose
+            className={cn("timeline-card-custom bg-info m-0", {
+              "anim-skeleton": isReadyDelete,
+              // 'card--selected': isSelected, // если нужно красить
+            })}
+            hiddenBtnDell={statusConnectSocket !== "ready" || isReadyDelete}
+            onCard={() => !isReadyDelete && handleClickClient({ client_id: id, fio, snils })}
+            onDelete={() => handleStartDelete({ id, snils, fio })}
+          >
+            <p className="card__title mb-0 fw-500" style={{ fontSize: 15 }}>
+              {fio}
+            </p>
+            <small>{snils}</small>
+          </CardTimelineWithClose>
+        </ContentPage.Container>
+      </Box>
+    );
+  },
+  [checkIsReadyDelete, checkSelected, statusConnectSocket, handleClickClient, handleStartDelete],
+);
+```
+
+##### Вариант удаления c предаврительной плашки с временем
+
+```tsx
+import { CardDetectionPress, animationDelete, useControlCards } from 'rc-lib-ui/control-cards';
+
+//...
+
+const { showModalDelete, handleSelect, checkSelected, selectionMode, checkIsReadyDelete, selectedIds, clearSelection } = useControlCards({
+    keyAction: USER_CLIENTS.LOAD_CLIENTS_BY_USER,
+    list: socketLoadClients.data,
+    isDurationDelete: true,
+    durationDelete: 5000,
+    setMessageProgress(items) {
+      return `Удаление ${items.length === 1 ? 'записи' : 'записей'}`
+    },
+    onEndTimeoutDuration: (items, controlHelper) => {
+      dispatch(fetchingContacts.deleteContacts({ ids: items.map((item) => item.id) }))
+    }
+  })
+
+ const handleCardClick = (_, contact: (typeof contacts)[number]) => {
+    if (!selectionMode) {
+      // navigate(path)
+    } else {
+      handleSelect?.(contact.id);
+    }
+  };
+
+
+
+  const handleLongPress = (event: React.MouseEvent | React.TouchEvent, contact: (typeof contacts)[number]) => {
+    handleSelect?.(contact.id);
+  };
+  //если требуеться закрывать 
+  const onClose = () => {
+    clearSelection()
+  }
+
+  return (
+      <TransitionGroup component={null}>
+        {filteredContacts.map((contact, index) => {
+          const isReadyDelete = checkIsReadyDelete(contact.id);
+          const isSelected = checkSelected(contact.id);
+
+          return (
+            <Collapse
+              key={contact.id}
+              in={true}
+              timeout={300}
+            >
+              <CardDetectionPress
+                id={contact.id}
+                // handleSelect={handleSelect}
+                selected={isSelected && !isReadyDelete}
+                selectMode={false}
+                onLongPress={
+                  isReadyDelete
+                    ? () => { }
+                    : (event) => handleLongPress(event, contact)
+                }
+                onClick={
+                  isReadyDelete
+                    ? () => { }
+                    : (event) => handleCardClick(event, contact)
+                }
+              >
+                <CardsWithAvatars contact={contact} isChecked={isSelected}
+                  isOnlineHide={false}
+                  sx={(theme) => animationDelete.getBacgroundStripe({ isDeleting: isReadyDelete, })}
+                />
+              </CardDetectionPress>
+            </Collapse>
+
+          )
+        })}
+      </TransitionGroup>
+  )
+
+```
+##### Кастомизация плашки с временем
+
+```tsx
+import React, { FC, forwardRef, ReactNode, useCallback, useEffect, useState } from "react"
+import { useSnackbar, type CustomSnackbarProps, SnackbarContent, DeleteCountdownAlertProps } from 'rc-lib-ui/control-cards';
+
+export type DeleteCountdownProps = CustomSnackbarProps & DeleteCountdownAlertProps & { }
+
+const DeleteCountdownMemo = forwardRef<HTMLDivElement, DeleteCountdownProps>((props, ref) => {
+    const { message, duration = 10000, onUndo, onExpire, id, anchorOrigin, className  } = props;
+
+    const [time, setTime] = useState(duration / 1000);
+    const { closeSnackbar } = useSnackbar();
+
+    const handleOnExpire = useCallback(() => {
+      onExpire && onExpire();
+      closeSnackbar(id)
+    }, [onExpire, closeSnackbar, id]);
+
+
+    useEffect(() => {
+      if (time <= 0) { handleOnExpire(); return };
+      const interval = setInterval(() => {
+        setTime(prev => {
+          const newValue = prev - 1;
+          if (newValue <= 0) {
+            clearInterval(interval)
+          };
+          return newValue;
+        });
+
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }, [handleOnExpire, time]);
+
+    const handleUndo = () => {
+      onUndo && onUndo();
+      closeSnackbar(id)
+    }
+
+
+    const progress = (time / Math.ceil(duration / 1000)) * 100;
+    const style = {
+      ...(anchorOrigin?.horizontal === 'center' && { justifyContent: 'center' }),
+      ...props.style || {},
+    }
+
+    return (
+      <SnackbarContent ref={ref} role="alert" style={style} className={className} >
+        <MyNotificationDeleteComponent
+          time={time}
+          progress={progress}
+          text={message as string}
+          onUndo={handleUndo}
+        />
+      </SnackbarContent>
+    )
+})
+
+
+export const DeleteCountdown = React.memo(DeleteCountdownMemo);
+
+//В своих кастомных алертах добавляем deleteCountdown
+declare module 'notistack' {
+  interface VariantOverrides {
+    //...
+    // Добавляем deleteCountdown к стандартным вариантам
+    deleteCountdown: any;
+  }
+}
+
+
+export const customAlerts = {
+  //...
+  deleteCountdown: DeleteCountdown
+}
+
+//В main.tsx в провайдере доабвляем
+
+<InteractiveMessageProvider CustomAlerts={customAlerts} CustomModals={customModals}>
+  {children}
+</InteractiveMessageProvider>
+
 ```

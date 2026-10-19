@@ -19,7 +19,7 @@ export type DeleteCountdownAlertProps = {
 
 declare module 'notistack' {
   interface VariantOverrides {
-    deleteCountdown: DeleteCountdownAlertProps
+    deleteCountdown: any//DeleteCountdownAlertProps
   }
 }
 

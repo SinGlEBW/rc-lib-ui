@@ -1,1 +1,1 @@
-export { type CustomSnackbarProps } from './Alerts.styled';
+export { type CustomSnackbarProps, type DeleteCountdownAlertProps } from './Alerts.styled';

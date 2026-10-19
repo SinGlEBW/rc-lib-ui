@@ -6,53 +6,90 @@ import { useDeleting } from "./deleting/useDeleting";
 import { useSelected } from "../useSelected/useSelected";
 import type { InteractiveMessageAlertProps, InteractiveMessageContextProps } from "../InteractiveMessages";
 
-type ControlCardsListItem = Record<"id", string> & { [key in string]: any };
-interface HelperControl extends Pick<InteractiveMessageContextProps, 'showModal' | 'showAlert'>{
+
+type ControlCardsListItem = Record<'id', string> & { [key in string]: any };
+
+interface HelperControl extends Pick<InteractiveMessageContextProps, 'showModal' | 'showAlert'> {
   delPackID: string;
   clearDeletingActive: () => void;
   deletingPackID: (payload: { delPackID: string }) => void;
 }
 
-interface UseControlCardsProps {
-  keyAction: KeysListDell;
-  list: ControlCardsListItem[];
-  onEndTimeout(items: ControlCardsListItem[], helperControl: HelperControl): void;
+
+type IsAlertEnable = {
+  isEnable?: true;
+  timeout?: number;
+} & Pick<InteractiveMessageAlertProps, 'anchorOrigin'>
+
+type IsAlertDisable = {
+  isEnable?: false; 
+  timeout?: never;
+}
+
+type IsDeletingByEndTimeoutDurationTrue = {
+  isDeletingByEndTimeoutDuration?: true;
+  slotItems?: {
+    alert?: IsAlertEnable | IsAlertDisable
+  };
+}
+type IsDeletingByEndTimeoutDurationFalse = {
+  isDeletingByEndTimeoutDuration?: false;
+  timeoutSuccess?: never;
+}
+
+type IsDurationDeleteTrue = (IsDeletingByEndTimeoutDurationTrue | IsDeletingByEndTimeoutDurationFalse) & {
+  isDurationDelete: true;
   setMessageProgress(items: ControlCardsListItem[]): string;
   durationDelete?: number;
-  timeoutSuccess?: number;
+  onEndTimeoutDuration?(items: ControlCardsListItem[], helperControl: HelperControl): void;
+  onComfirm: never;
+}
+
+type IsDurationDeleteFalse = {
+  isDurationDelete: false;
+  durationDelete?: never;
+  onComfirm(items: ControlCardsListItem[], helperControl: HelperControl): void;
+}
+
+
+type UseControlCardsProps = {
+  keyAction: KeysListDell;
+  list: ControlCardsListItem[];
+  onCancel?(): void;
+  durationDelete?: number;
   messageDelete?: () => React.ReactNode;
   title?: string | (() => string);
-  isDeletingByTimeout?: boolean;
-  optionAlert?: Pick<InteractiveMessageAlertProps, "anchorOrigin"> & { isOffAlertBySuccess?: boolean };
-}
-useInteractiveMessage
+} & (IsDurationDeleteTrue | IsDurationDeleteFalse);
+
+
 export const useControlCards = ({
   list,
   keyAction,
-  setMessageProgress,
-  onEndTimeout,
+  onCancel,
   durationDelete = 5000,
-  timeoutSuccess = 2000,
   messageDelete,
   title,
-  optionAlert,
-  isDeletingByTimeout = true,
+  ...props
 }: UseControlCardsProps) => {
   const { showDeleteModal, showAlert, showModal, showAlertDeleteCountdown } = useInteractiveMessage();
 
   const selectedData = useSelected(list);
   const deleting = useDeleting({ sectionDel: keyAction });
 
+  const getItemsSelected = useCallback(() => {
+    const items = selectedData.infoRef.current.selectedIds.map(selectId => {
+      const findItem = list.find(item => item.id === selectId)!;
+      return findItem;
+    });
+    return items;
+  }, [list, selectedData.infoRef]);
+
   const showModalDelete = useCallback(() => {
     showDeleteModal({
-      message: typeof messageDelete === "function" ? messageDelete() : `Вы действительно хотите удалить ?`,
-      title: typeof title === "function" ? title() : title,
+      message: typeof messageDelete === 'function' ? messageDelete() : `Вы действительно хотите удалить ?`,
+      title: typeof title === 'function' ? title() : title,
       onConfirm: () => {
-        const items = selectedData.selectedIds.map((selectId) => {
-          const findItem = list.find((item) => item.id === selectId)!;
-          return findItem;
-        });
-
+        const items = getItemsSelected();
         selectedData.clearSelection();
         const delPackID = uuid4();
         deleting.setItems({ delPackID, items });
@@ -64,38 +101,53 @@ export const useControlCards = ({
         const deletingPackID = ({ delPackID }) => {
           deleting.removeItems({ delPackID });
         };
-
+        
+        if(!props.isDurationDelete){ 
+          props?.onComfirm && props?.onComfirm(items, { clearDeletingActive, deletingPackID, showAlert, showModal, delPackID });
+          return;
+        }
         showAlertDeleteCountdown({
           duration: durationDelete,
-          message: setMessageProgress(items),
+          message: props?.setMessageProgress(items),
           onExpire: () => {
-            onEndTimeout(items, { clearDeletingActive, deletingPackID, showAlert, showModal, delPackID });
-            if (isDeletingByTimeout) {
+            props?.onEndTimeoutDuration && props?.onEndTimeoutDuration(items, { clearDeletingActive, deletingPackID, showAlert, showModal, delPackID });
+            if (props?.isDeletingByEndTimeoutDuration) {
               clearDeletingActive();
-              !optionAlert?.isOffAlertBySuccess && (
+              !(props as IsDeletingByEndTimeoutDurationTrue)?.slotItems?.alert?.isEnable &&
                 showAlert({
-                  variant: "success",
-                  message: "Успешное удаление",
-                  timeout: timeoutSuccess,
+                  variant: 'success',
+                  message: 'Успешное удаление',
+                  timeout: (props as IsDeletingByEndTimeoutDurationTrue)?.slotItems?.alert?.timeout || 2000,
                   anchorOrigin: {
-                    vertical: "bottom",
-                    horizontal: "left",
+                    vertical: 'bottom',
+                    horizontal: 'left',
                   },
-                  ...optionAlert,
-                })
-              )
+                  ...((props as IsDeletingByEndTimeoutDurationTrue)?.slotItems?.alert as IsAlertEnable)?.anchorOrigin,
+                });
             }
           },
-          onUndo: () => {
+          onUndo: () => {//кнопка отмены на плашке с таймером
             clearDeletingActive();
           },
         });
       },
       onCancel() {
-        console.dir("No");
+        selectedData.clearSelection();
+        onCancel && onCancel();
       },
     });
-  }, [deleting, durationDelete, list, onEndTimeout, selectedData, setMessageProgress, showAlert, showAlertDeleteCountdown, showDeleteModal, timeoutSuccess]);
+  }, [
+    deleting,
+    durationDelete,
+    list,
+    props.isDurationDelete,
+    selectedData,
+    showAlert,
+    showAlertDeleteCountdown,
+    showDeleteModal,
+    onCancel,
+    getItemsSelected
+  ]);
 
   return {
     showModalDelete,
